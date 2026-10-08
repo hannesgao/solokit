@@ -1,0 +1,31 @@
+name: Change
+description: Work that comes from a change request (CR).
+title: ""
+labels: ["change"]
+body:
+  - type: input
+    id: cr
+    attributes:
+      label: Change request
+      placeholder: CR-0001
+    validations:
+      required: true
+  - type: input
+    id: requirements
+    attributes:
+      label: Requirement IDs
+    validations:
+      required: true
+  - type: input
+    id: prd-version
+    attributes:
+      label: PRD version
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: "- [ ] "
+    validations:
+      required: true

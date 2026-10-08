@@ -1,5 +1,7 @@
 # solokit: per-machine project state (see docs/CONVENTIONS.md)
 .project/local/
+# solokit: CLAUDE.md is generated locally and never committed (ADR 0004)
+/CLAUDE.md
 
 # Logs
 logs
