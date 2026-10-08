@@ -1,0 +1,274 @@
+{
+  "repo": "hannesgao/solokit",
+  "dryRun": true,
+  "at": "2026-10-08T14:51:34.776Z",
+  "steps": {
+    "preflight": {
+      "defaultBranch": "main",
+      "head": "c679b3e3045cbf8cc398cb072870cbcfb7d14470",
+      "blocker": "ci has not passed on main@c679b3e; push ci.yml and wait for a green run first (a real run stops here)"
+    },
+    "ruleset": {
+      "action": "create",
+      "status": "dry-run"
+    },
+    "mergeOptions": {
+      "changes": [
+        {
+          "key": "allow_merge_commit",
+          "from": true,
+          "to": false
+        },
+        {
+          "key": "allow_rebase_merge",
+          "from": true,
+          "to": false
+        },
+        {
+          "key": "allow_auto_merge",
+          "from": false,
+          "to": true
+        },
+        {
+          "key": "delete_branch_on_merge",
+          "from": false,
+          "to": true
+        },
+        {
+          "key": "squash_merge_commit_title",
+          "from": "COMMIT_OR_PR_TITLE",
+          "to": "PR_TITLE"
+        },
+        {
+          "key": "squash_merge_commit_message",
+          "from": "COMMIT_MESSAGES",
+          "to": "PR_BODY"
+        },
+        {
+          "key": "has_wiki",
+          "from": true,
+          "to": false
+        },
+        {
+          "key": "has_projects",
+          "from": true,
+          "to": false
+        }
+      ]
+    },
+    "labels": {
+      "actions": [
+        {
+          "label": "type:feature",
+          "action": "create"
+        },
+        {
+          "label": "type:bug",
+          "action": "create"
+        },
+        {
+          "label": "priority:p0",
+          "action": "update"
+        },
+        {
+          "label": "priority:p1",
+          "action": "create"
+        },
+        {
+          "label": "priority:p2",
+          "action": "create"
+        },
+        {
+          "label": "status:blocked",
+          "action": "create"
+        },
+        {
+          "label": "status:needs-decision",
+          "action": "create"
+        },
+        {
+          "label": "review:waived",
+          "action": "create"
+        },
+        {
+          "label": "change",
+          "action": "create"
+        }
+      ],
+      "otherLabels": [
+        "accessibility",
+        "bug",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "help wanted",
+        "invalid",
+        "question",
+        "wontfix"
+      ]
+    },
+    "security": {
+      "before": {
+        "dependabotAlerts": false,
+        "dependabotSecurityUpdates": false,
+        "secretScanning": true,
+        "pushProtection": true,
+        "codeqlDefaultSetup": false
+      }
+    }
+  },
+  "writes": [
+    {
+      "api": "POST /repos/hannesgao/solokit/rulesets",
+      "body": {
+        "name": "solo-main",
+        "target": "branch",
+        "enforcement": "active",
+        "conditions": {
+          "ref_name": {
+            "include": [
+              "~DEFAULT_BRANCH"
+            ],
+            "exclude": []
+          }
+        },
+        "bypass_actors": [],
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "type": "required_linear_history"
+          },
+          {
+            "type": "pull_request",
+            "parameters": {
+              "required_approving_review_count": 0,
+              "dismiss_stale_reviews_on_push": false,
+              "require_code_owner_review": false,
+              "require_last_push_approval": false,
+              "required_review_thread_resolution": false,
+              "allowed_merge_methods": [
+                "squash"
+              ]
+            }
+          },
+          {
+            "type": "required_status_checks",
+            "parameters": {
+              "strict_required_status_checks_policy": false,
+              "do_not_enforce_on_create": false,
+              "required_status_checks": [
+                {
+                  "context": "ci",
+                  "integration_id": 15368
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "api": "PATCH /repos/hannesgao/solokit",
+      "body": {
+        "allow_merge_commit": false,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": true,
+        "delete_branch_on_merge": true,
+        "squash_merge_commit_title": "PR_TITLE",
+        "squash_merge_commit_message": "PR_BODY",
+        "has_wiki": false,
+        "has_projects": false
+      }
+    },
+    {
+      "api": "POST /repos/hannesgao/solokit/labels",
+      "body": {
+        "name": "type:feature",
+        "color": "a2eeef",
+        "description": "New or changed behaviour from the PRD"
+      }
+    },
+    {
+      "api": "POST /repos/hannesgao/solokit/labels",
+      "body": {
+        "name": "type:bug",
+        "color": "d73a4a",
+        "description": "The product does not do what the PRD says"
+      }
+    },
+    {
+      "api": "PATCH /repos/hannesgao/solokit/labels/priority%3Ap0",
+      "body": {
+        "color": "b60205",
+        "description": "Main path to the milestone done criterion"
+      }
+    },
+    {
+      "api": "POST /repos/hannesgao/solokit/labels",
+      "body": {
+        "name": "priority:p1",
+        "color": "d93f0b",
+        "description": "Guards and robustness"
+      }
+    },
+    {
+      "api": "POST /repos/hannesgao/solokit/labels",
+      "body": {
+        "name": "priority:p2",
+        "color": "fbca04",
+        "description": "Conveniences"
+      }
+    },
+    {
+      "api": "POST /repos/hannesgao/solokit/labels",
+      "body": {
+        "name": "status:blocked",
+        "color": "5319e7",
+        "description": "Cannot proceed; see the issue for why"
+      }
+    },
+    {
+      "api": "POST /repos/hannesgao/solokit/labels",
+      "body": {
+        "name": "status:needs-decision",
+        "color": "d876e3",
+        "description": "Waiting for a decision by the owner"
+      }
+    },
+    {
+      "api": "POST /repos/hannesgao/solokit/labels",
+      "body": {
+        "name": "review:waived",
+        "color": "e99695",
+        "description": "Merged with a waived blocking review finding (never security)"
+      }
+    },
+    {
+      "api": "POST /repos/hannesgao/solokit/labels",
+      "body": {
+        "name": "change",
+        "color": "1d76db",
+        "description": "Born from a change request"
+      }
+    },
+    {
+      "api": "PUT /repos/hannesgao/solokit/vulnerability-alerts"
+    },
+    {
+      "api": "PUT /repos/hannesgao/solokit/automated-security-fixes"
+    },
+    {
+      "api": "PATCH /repos/hannesgao/solokit/code-scanning/default-setup",
+      "body": {
+        "state": "configured",
+        "query_suite": "default"
+      }
+    }
+  ]
+}

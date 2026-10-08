@@ -1,0 +1,71 @@
+name: CI
+
+# Runs on every pull request and every push to main. No paths filter and no
+# branch filter on pull_request, so the required check `ci` always reports
+# (ADR 0003). Work that does not apply to a change is skipped per step.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check PR title (Conventional Commits)
+        if: github.event_name == 'pull_request'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pattern='^(feat|fix|chore|docs|refactor|test|perf|build|ci|style|revert)(\([a-z0-9._/-]+\))?!?: .+'
+          if printf '%s' "$TITLE" | grep -Eq "$pattern"; then
+            echo "PR title ok: $TITLE"
+          else
+            echo "::error::PR title is not a Conventional Commit: $TITLE"
+            exit 1
+          fi
+
+      - name: Detect code changes
+        id: changes
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            echo "code=true" >> "$GITHUB_OUTPUT"
+          elif git diff --name-only "$BASE" HEAD | grep -qv '^docs/'; then
+            echo "code=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.changes.outputs.code == 'true'
+        with:
+          node-version: 22
+
+      - name: Scripts and hooks (node --test)
+        if: steps.changes.outputs.code == 'true'
+        run: node --test
+
+      # Plugin layers start with M1, when .claude-plugin/plugin.json exists.
+      - name: Install Claude Code
+        if: steps.changes.outputs.code == 'true' && hashFiles('.claude-plugin/plugin.json') != ''
+        run: |
+          curl -fsSL https://claude.ai/install.sh | bash -s 2.1.294
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Plugin structure (claude plugin validate --strict)
+        if: steps.changes.outputs.code == 'true' && hashFiles('.claude-plugin/plugin.json') != ''
+        run: claude plugin validate --strict .
+
+      - name: Action band (claude plugin test)
+        if: steps.changes.outputs.code == 'true' && hashFiles('hooks/**/*.test.ts', 'hooks/**/*.test.tsx', 'tests/**/*.test.ts', 'tests/**/*.test.tsx') != ''
+        run: claude plugin test .
