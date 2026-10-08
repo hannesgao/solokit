@@ -1,0 +1,116 @@
+{
+  "case": "ask-prompts-none",
+  "argv": [
+    "claude",
+    "-p",
+    "/solokit-e1:ask",
+    "--plugin-dir",
+    "spikes/e1-handoff",
+    "--output-format",
+    "json",
+    "--permission-prompts",
+    "none"
+  ],
+  "started": "2026-10-08T13:41:30.176Z",
+  "exitCode": 0,
+  "json": {
+    "duration_api_ms": 2993,
+    "stop_reason": "end_turn",
+    "session_id": "0cd2b4e8-3509-4be1-b897-619e6809c19f",
+    "total_cost_usd": 0.014564400000000002,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 190,
+      "cache_read_input_tokens": 45442,
+      "output_tokens": 197,
+      "output_tokens_details": {
+        "thinking_tokens": 69
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 190,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 45,
+          "cache_read_input_tokens": 22721,
+          "cache_creation_input_tokens": 190,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 190
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 197,
+        "cacheReadInputTokens": 45442,
+        "cacheCreationInputTokens": 190,
+        "webSearchRequests": 0,
+        "costUSD": 0.014564400000000002,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 69,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "E1 ask answer: none (AskUserQuestion tool unavailable in this non-interactive session; ToolSearch found no match)",
+    "ttft_ms": 2146,
+    "type": "result",
+    "duration_ms": 3052,
+    "uuid": "ff895bc6-fd0b-4b17-ad91-59aacf9b47f7",
+    "ttft_stream_ms": 718,
+    "time_to_request_ms": 48,
+    "first_content_frame_ms": 718,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "stderr": ""
+}

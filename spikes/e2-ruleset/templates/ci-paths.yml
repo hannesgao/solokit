@@ -1,0 +1,18 @@
+name: CI
+
+# Counter-example for spike E2: a paths filter. A PR that touches no matching
+# path never starts this workflow, so the required check `ci` never reports.
+on:
+  pull_request:
+    paths: ['src/**']
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "placeholder test passed"

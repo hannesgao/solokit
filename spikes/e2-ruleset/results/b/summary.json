@@ -1,0 +1,178 @@
+{
+  "repo": "hannesgao/solokit-e2-b",
+  "steps": [
+    {
+      "step": "create-repo",
+      "startedAt": "2026-10-08T14:15:40.957Z",
+      "outcome": {
+        "created": true,
+        "stdout": "https://github.com/hannesgao/solokit-e2-b",
+        "stderr": ""
+      }
+    },
+    {
+      "step": "apply-ruleset-on-empty-repo",
+      "startedAt": "2026-10-08T14:15:46.510Z",
+      "outcome": {
+        "method": "POST",
+        "status": 201,
+        "id": 24728974
+      }
+    },
+    {
+      "step": "initial-push-without-workflow",
+      "startedAt": "2026-10-08T14:15:47.733Z",
+      "outcome": {
+        "pushExitCode": 1,
+        "pushStderr": "remote: error: GH013: Repository rule violations found for refs/heads/main.        \nremote: Review all repository rules at https://github.com/hannesgao/solokit-e2-b/rules?ref=refs%2Fheads%2Fmain        \nremote: \nremote: - Required status check \"ci\" is expected.        \nremote: \nTo https://github.com/hannesgao/solokit-e2-b.git\n ! [remote rejected] main -> main (push declined due to repository rule violations)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-b.git'",
+        "sha": "c74a228cab8eb263a7dbb33322b727460a4fe601",
+        "defaultBranch": "main",
+        "fallback": {
+          "pushedWithRulesetDisabled": true
+        },
+        "rulesInForce": [
+          "deletion",
+          "non_fast_forward",
+          "required_linear_history",
+          "pull_request",
+          "required_status_checks"
+        ]
+      }
+    },
+    {
+      "step": "readback",
+      "startedAt": "2026-10-08T14:23:16.565Z",
+      "outcome": {
+        "rawDiff": [
+          {
+            "path": ".rules[3].parameters.required_reviewers",
+            "change": "added by GitHub",
+            "value": []
+          },
+          {
+            "path": ".rules[3].parameters.require_extra_approval_for_unattributed_changes",
+            "change": "added by GitHub",
+            "value": true
+          },
+          {
+            "path": ".id",
+            "change": "added by GitHub",
+            "value": 24728974
+          },
+          {
+            "path": ".source_type",
+            "change": "added by GitHub",
+            "value": "Repository"
+          },
+          {
+            "path": ".source",
+            "change": "added by GitHub",
+            "value": "hannesgao/solokit-e2-b"
+          },
+          {
+            "path": ".node_id",
+            "change": "added by GitHub",
+            "value": "RRS_lACqUmVwb3NpdG9yec5UEe5MzgF5VY4"
+          },
+          {
+            "path": ".created_at",
+            "change": "added by GitHub",
+            "value": "2026-10-08T16:15:48.216+02:00"
+          },
+          {
+            "path": ".updated_at",
+            "change": "added by GitHub",
+            "value": "2026-10-08T16:15:56.055+02:00"
+          },
+          {
+            "path": ".current_user_can_bypass",
+            "change": "added by GitHub",
+            "value": "never"
+          },
+          {
+            "path": "._links",
+            "change": "added by GitHub",
+            "value": {
+              "self": {
+                "href": "https://api.github.com/repos/hannesgao/solokit-e2-b/rulesets/24728974"
+              },
+              "html": {
+                "href": "https://github.com/hannesgao/solokit-e2-b/rules/24728974"
+              }
+            }
+          }
+        ],
+        "normalizedDiff": [
+          {
+            "path": ".rules[2].parameters.require_extra_approval_for_unattributed_changes",
+            "change": "added by GitHub",
+            "value": true
+          },
+          {
+            "path": ".rules[2].parameters.required_reviewers",
+            "change": "added by GitHub",
+            "value": []
+          }
+        ],
+        "intentDiff": [],
+        "hashSent": "5dbd15bee5c102a8f597f8b4caf2a47dc33ef7bac273d46110622db05c3da8cf",
+        "hashGotFull": "136959801eb536371cdacf0bd8500a6024f3691108f4ca562172af451e03be9a",
+        "hashGotIntentView": "5dbd15bee5c102a8f597f8b4caf2a47dc33ef7bac273d46110622db05c3da8cf",
+        "intentHashesMatch": true
+      }
+    },
+    {
+      "step": "first-pr-without-workflow",
+      "startedAt": "2026-10-08T14:15:58.891Z",
+      "outcome": {
+        "pr": 1,
+        "mergeStateStatus": "BLOCKED",
+        "rollup": [],
+        "prChecks": {
+          "exitCode": 1,
+          "stdout": "",
+          "stderr": "no checks reported on the 'feat/1-hello' branch"
+        },
+        "merge": {
+          "exitCode": 1,
+          "stdout": "",
+          "stderr": "X Pull request hannesgao/solokit-e2-b#1 is not mergeable: the base branch policy prohibits the merge.\nTo have the pull request merged after all the requirements have been met, add the `--auto` flag.\nTo use administrator privileges to immediately merge the pull request, add the `--admin` flag."
+        }
+      }
+    },
+    {
+      "step": "same-pr-with-workflow",
+      "startedAt": "2026-10-08T14:17:15.642Z",
+      "outcome": {
+        "pr": 1,
+        "ci": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-10-08T14:17:34Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-b/actions/runs/37791232900/job/113358849875",
+            "name": "ci",
+            "startedAt": "2026-10-08T14:17:28Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ],
+        "mergeStateStatus": "CLEAN",
+        "merge": {
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "state": "MERGED",
+        "firstPushRunOnMain": {
+          "conclusion": "success",
+          "databaseId": 37791296075,
+          "event": "push",
+          "headSha": "a13beba114476ac6b2fdcdf1d40f935ec9941599",
+          "name": "CI",
+          "status": "completed"
+        }
+      }
+    }
+  ]
+}
