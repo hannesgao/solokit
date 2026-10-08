@@ -24,10 +24,11 @@ function files(root, dir, test) {
 const isCode = name => /\.(mjs|cjs|js|ts|tsx)$/.test(name);
 const lineOf = (text, index) => text.slice(0, index).split('\n').length;
 
-// The frontmatter's allowed-tools value, as one string.
+// The frontmatter's allowed-tools value, as one string: inline, or a YAML
+// list whose items may sit at column 0.
 function allowedTools(text) {
   const front = /^---\n([\s\S]*?)\n---/.exec(text)?.[1] ?? '';
-  const m = /^allowed-tools:(.*(?:\n[ \t]+-.*)*)/m.exec(front);
+  const m = /^allowed-tools:(.*(?:\n[ \t]*-.*)*)/m.exec(front);
   return m ? m[1] : '';
 }
 
@@ -37,17 +38,23 @@ export function checkConventions(root) {
     violations.push({ rule, file: relative(root, path).split(sep).join('/'), line: lineOf(text, index), message });
 
   // Skills and agents: how they call scripts and pass plugin data (CFG-4).
-  const prose = [...files(root, 'skills', n => n === 'SKILL.md'), ...files(root, 'agents', n => n.endsWith('.md'))];
-  for (const path of prose) {
-    const text = readFileSync(path, 'utf8');
+  // Agents declare `tools`, not `allowed-tools`, so only skills need the grant.
+  const prose = [
+    ...files(root, 'skills', n => n === 'SKILL.md').map(path => ({ path, skill: true })),
+    ...files(root, 'agents', n => n.endsWith('.md')).map(path => ({ path, skill: false })),
+  ];
+  for (const { path, skill } of prose) {
+    const text = readFileSync(path, 'utf8').replace(/\r\n/g, '\n');
     let callsScript = false;
-    for (const m of text.matchAll(/\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/[\w./-]+/g)) {
+    // `scripts/*` in an allowed-tools rule is the grant, not a call.
+    for (const m of text.matchAll(/\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/(?!\*)[\w./-]*/g)) {
       callsScript = true;
-      if (text.slice(m.index - 'node '.length, m.index) !== 'node ') {
+      const isScript = /^\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/[\w-]+\.mjs$/.test(m[0]);
+      if (text.slice(m.index - 'node '.length, m.index) !== 'node ' || !isScript) {
         add('script-call', path, text, m.index, `call kit scripts as \`${SCRIPT_CALL}<name>.mjs\``);
       }
     }
-    if (callsScript && !allowedTools(text).includes(ALLOWED)) {
+    if (skill && callsScript && !allowedTools(text).includes(ALLOWED)) {
       add('allowed-tools', path, text, 0, `pre-approve kit scripts with allowed-tools: ${ALLOWED}`);
     }
     for (const m of text.matchAll(/\$\{CLAUDE_PLUGIN_DATA\}/g)) {
@@ -60,7 +67,9 @@ export function checkConventions(root) {
   // Scripts take the data directory from --data, never from the environment (CFG-4).
   for (const path of files(root, 'scripts', isCode)) {
     const text = readFileSync(path, 'utf8');
-    for (const m of text.matchAll(/process\.env(?:\.CLAUDE_PLUGIN_DATA\b|\[\s*['"`]CLAUDE_PLUGIN_DATA['"`]\s*\])/g)) {
+    // Any mention of the variable outside a string read by name: `process.env.X`,
+    // `env.X`, `process.env['X']`, `{ X } = process.env`.
+    for (const m of text.matchAll(/\benv\??\.CLAUDE_PLUGIN_DATA\b|\benv\s*\[\s*['"`]CLAUDE_PLUGIN_DATA['"`]\s*\]|\{[^}]*\bCLAUDE_PLUGIN_DATA\b[^}]*\}\s*=\s*(?:process\.)?env\b/g)) {
       add('data-env', path, text, m.index, 'scripts take the plugin data directory from --data, not from the environment');
     }
   }
@@ -68,7 +77,7 @@ export function checkConventions(root) {
   // No token handling anywhere in scripts or hooks: GitHub access goes through gh (CFG-3).
   for (const path of [...files(root, 'scripts', isCode), ...files(root, 'hooks', isCode)]) {
     const text = readFileSync(path, 'utf8');
-    for (const m of text.matchAll(/\bGH_TOKEN\b|\bGITHUB_TOKEN\b|\bGH_ENTERPRISE_TOKEN\b|['"`]auth['"`]\s*,\s*['"`]token['"`]|\bgh auth token\b/g)) {
+    for (const m of text.matchAll(/\bGH_TOKEN\b|\bGITHUB_TOKEN\b|\bGH_ENTERPRISE_TOKEN\b|\bGITHUB_ENTERPRISE_TOKEN\b|['"`]auth['"`]\s*,\s*['"`]token['"`]|\bgh auth token\b|--show-token\b|--with-token\b/g)) {
       add('token', path, text, m.index, 'never read or store GitHub tokens; call gh and let it use the login');
     }
   }

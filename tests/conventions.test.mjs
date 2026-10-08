@@ -7,7 +7,7 @@ import { checkConventions } from './lib/conventions.mjs';
 const fixture = name => fileURLToPath(new URL(`./fixtures/conventions/${name}`, import.meta.url));
 const rules = name => checkConventions(fixture(name)).map(v => v.rule);
 
-test('a compliant plugin has no violations, and hooks may read their environment', () => {
+test('a compliant plugin has no violations: list and CRLF frontmatter, injection form, agents, hooks reading their environment', () => {
   assert.deepEqual(checkConventions(fixture('good')), []);
 });
 
@@ -29,6 +29,18 @@ test('CFG-4: scripts never read the plugin data location from the environment', 
 
 test('CFG-3: scripts and hooks never handle GitHub tokens', () => {
   assert.deepEqual(rules('bad-token'), ['token']);
+});
+
+test('CFG-4: a skill calls a script file, not a library module', () => {
+  assert.deepEqual(rules('bad-call-lib'), ['script-call']);
+});
+
+test('CFG-4: destructured and aliased environment reads are caught', () => {
+  assert.deepEqual(rules('bad-env-destructure'), ['data-env', 'data-env']);
+});
+
+test('CFG-3: token flags and enterprise tokens are caught', () => {
+  assert.deepEqual(rules('bad-token-flags'), ['token', 'token']);
 });
 
 test('violations carry file and line', () => {

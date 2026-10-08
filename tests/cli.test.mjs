@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { isAbsolute, join } from 'node:path';
 import { test } from 'node:test';
@@ -13,10 +13,23 @@ test('parseCli returns options, positionals and the dry-run flag', () => {
   assert.equal(cli.dryRun, true);
 });
 
-test('--data resolves to an absolute path', () => {
-  const cli = parseCli(['--data', 'some/dir'], { data: true });
+test('--data takes an absolute path', () => {
+  const dir = join(tmpdir(), 'solokit data');
+  const cli = parseCli(['--data', dir], { data: true });
   assert.ok(isAbsolute(cli.data));
-  assert.ok(cli.data.endsWith(join('some', 'dir')));
+  assert.equal(cli.data, dir);
+});
+
+test('--data rejects a relative path, an empty value and an unsubstituted placeholder', () => {
+  for (const value of ['get', 'some/dir', '', '${CLAUDE_PLUGIN_DATA}', '$CLAUDE_PLUGIN_DATA']) {
+    assert.throws(() => parseCli(['--data', value], { data: true }), CliError, JSON.stringify(value));
+  }
+});
+
+test('script options merge with the built-in ones', () => {
+  const cli = parseCli(['--owner', 'me', '--dry-run'], { options: { owner: { type: 'string' } } });
+  assert.deepEqual(cli.values, { owner: 'me' });
+  assert.equal(cli.dryRun, true);
 });
 
 test('a script that needs --data fails without it, even when CLAUDE_PLUGIN_DATA is set', () => {
@@ -50,4 +63,18 @@ main({ data: true }, cli => ({ data: cli.data, dryRun: cli.dryRun }));
   const error = JSON.parse(bad.stdout);
   assert.equal(error.ok, false);
   assert.match(error.error, /--data/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test('main reports a thrown non-Error value with exit code 1', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'solokit-cli-'));
+  const script = join(dir, 'throw.mjs');
+  const lib = new URL('../scripts/lib/cli.mjs', import.meta.url).href;
+  writeFileSync(script, `import { main } from ${JSON.stringify(lib)};
+main({}, () => { throw 'boom'; });
+`);
+  const r = spawnSync(process.execPath, [script], { encoding: 'utf8' });
+  assert.equal(r.status, 1);
+  assert.deepEqual(JSON.parse(r.stdout), { ok: false, error: 'boom' });
+  rmSync(dir, { recursive: true, force: true });
 });

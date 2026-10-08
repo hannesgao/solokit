@@ -1,7 +1,7 @@
 // Shared command-line conventions for kit scripts (CFG-4, PRD "Technical
 // architecture"): options parsed with node:util, the plugin data directory
 // only from `--data`, `--dry-run` everywhere, one JSON result on stdout.
-import { resolve } from 'node:path';
+import { isAbsolute } from 'node:path';
 import { parseArgs } from 'node:util';
 
 export class CliError extends Error {}
@@ -26,8 +26,19 @@ export function parseCli(argv, spec = {}) {
     throw new CliError(error.message);
   }
   const { 'dry-run': dryRun, data, ...values } = parsed.values;
-  if (spec.data && !data) throw new CliError('missing --data <dir>: pass ${CLAUDE_PLUGIN_DATA} from the skill text');
-  return { values, positionals: parsed.positionals, dryRun, data: data ? resolve(data) : undefined };
+  if (spec.data) checkDataDir(data);
+  return { values, positionals: parsed.positionals, dryRun, data };
+}
+
+// The data directory must arrive as an absolute path. A relative or empty
+// value, or a `$` placeholder left unsubstituted, means the skill text did not
+// pass ${CLAUDE_PLUGIN_DATA} through, and writing there would land in the
+// working directory instead.
+function checkDataDir(data) {
+  if (data === undefined) throw new CliError('missing --data <dir>: pass ${CLAUDE_PLUGIN_DATA} from the skill text');
+  if (data.includes('$') || !isAbsolute(data)) {
+    throw new CliError(`--data must be the absolute plugin data directory, got ${JSON.stringify(data)}`);
+  }
 }
 
 // Runs a script body and prints `{ ok: true, result }`, or `{ ok: false, error }`
@@ -37,7 +48,8 @@ export async function main(spec, body, argv = process.argv.slice(2)) {
     const result = await body(parseCli(argv, spec));
     process.stdout.write(`${JSON.stringify({ ok: true, result })}\n`);
   } catch (error) {
-    process.stdout.write(`${JSON.stringify({ ok: false, error: error.message })}\n`);
+    const message = error instanceof Error ? error.message : String(error);
+    process.stdout.write(`${JSON.stringify({ ok: false, error: message })}\n`);
     process.exitCode = error instanceof CliError ? 2 : 1;
   }
 }
