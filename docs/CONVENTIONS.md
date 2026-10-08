@@ -80,7 +80,7 @@ Rules for the layout:
   "phase": "build",
   "gates": {
     "prd_approved": { "at": "2026-10-08T12:00:00Z", "prd_version": "1.0.0" },
-    "remote_applied": { "at": "2026-10-08T12:30:00Z", "ruleset_sha": "sha256:5dbd15bee5c102a8f597f8b4caf2a47dc33ef7bac273d46110622db05c3da8cf" }
+    "remote_applied": { "at": "2026-10-08T12:30:00Z", "ruleset_sha": "sha256:9e3f6f927eaff9c550bdb676fb5e35d9d23c001a4f2a2705b50a702b848e6b60" }
   },
   "prd": { "version": "1.1.0", "status": "approved", "source": "imported" },
   "counters": { "adr": 3, "cr": 2 },
@@ -145,7 +145,7 @@ One naming scheme ties a commit back to its issue, its requirement and the PRD v
 | Branch | `<type>/<issue>-<slug>`, type is `feat`, `fix`, `chore`, `docs`, `refactor`, `test` | `feat/42-mood-rules-de` |
 | Commit | Conventional Commits; body cites the requirement | `feat(mood): add German frustration rules` / `Refs: FR-11` |
 | PR title | Same as the squash commit | `feat(mood): add German frustration rules (#42)` |
-| PR body | Template: what, why, requirement IDs, `Closes #42`, test evidence |  |
+| PR body | Template: summary, requirement IDs, `Closes #42`, one line of verification result. It becomes the squash commit message, so the full test output and the review findings go in PR comments |  |
 | Release tag | `vMAJOR.MINOR.PATCH` | `v0.3.0` |
 
 **Labels** (created by bootstrap)
@@ -167,7 +167,7 @@ The bootstrap script applies these with `gh` and keeps the ruleset as code in `.
 | Rule | Setting | Why |
 | --- | --- | --- |
 | Require a pull request | On, **0 required approvals** | Every change has a PR and a record; GitHub does not let you approve your own PR, so any approval count locks you out |
-| Required status checks | `ci` from GitHub Actions (`integration_id` 15368) must pass; branch must be up to date. Added only after the first `ci` run on `main` has passed. `ci.yml` never filters `pull_request` by path or branch, so the check always reports; a behind PR is updated with `gh pr update-branch` before it merges | The test suite is the reviewer that never gets tired |
+| Required status checks | `ci` from GitHub Actions (`integration_id` 15368) must pass. Branch need not be up to date. Added only after the first `ci` run on `main` has passed. `ci.yml` never filters `pull_request` by path or branch, so the check always reports | The test suite is the reviewer that never gets tired. "Up to date" stays off: pushes to `main` run `ci` too, a release requires a green `main`, and Dependabot PRs would otherwise wait on a manual update after every merge |
 | Block force pushes | On | History cannot be rewritten |
 | Restrict deletions | On | `main` cannot be deleted |
 | Linear history | On | Pairs with squash merge |
@@ -218,7 +218,7 @@ CLAUDE.md states the rules in a few lines; hooks and permissions enforce the one
 - No code without an issue. New idea? Add it to docs/ideas.md or run the change flow.
 - Changing what the product does means changing docs/PRD.md first.
 - Conventional Commits; cite requirement IDs (Refs: FR-12).
-- Run the tests before opening a PR; paste the result in the PR body.
+- Run the tests before opening a PR; one result line in the PR body, the full output as a PR comment.
 
 ## Commands
 <build, test, lint, run commands for this stack>
@@ -247,7 +247,7 @@ CLAUDE.md states the rules in a few lines; hooks and permissions enforce the one
 | `test-first` | Skill | Adds or updates a failing test for the requirement, then implements until it passes; skipped for `docs` and `chore` work |
 | `verify` | Skill, run by `/solokit:verify` | Runs the project's test, lint and build commands; never reports work as done without that output, and saves it as evidence for the PR |
 | `reviewer` | Subagent | Reviews the diff in a fresh context against the PRD and the issue: requirement coverage, tests, risks, findings by severity |
-| `pr` | Skill, run by `/solokit:pr` | Opens the PR from the template with `Closes #n`, requirement IDs and test evidence; turns on auto-merge only after your OK |
+| `pr` | Skill, run by `/solokit:pr` | Opens the PR from the template with `Closes #n`, requirement IDs and a one-line verification result, then posts the full evidence and the review as PR comments; turns on auto-merge only after your OK |
 
 ## Change request flow
 

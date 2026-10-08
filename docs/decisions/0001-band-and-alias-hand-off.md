@@ -1,7 +1,7 @@
 ---
 id: "0001"
 date: 2026-10-08
-status: proposed
+status: accepted
 ---
 
 # Band and bare /solokit hand off with $.command.run

@@ -1,7 +1,7 @@
 ---
 id: "0002"
 date: 2026-10-08
-status: proposed
+status: accepted
 ---
 
 # Skills run kit scripts under allowed-tools and pass the data directory as an argument
