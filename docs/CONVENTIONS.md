@@ -1,4 +1,4 @@
-# solo-agent-coding-kit — Conventions v0.1
+# solo-agent-coding-kit — Conventions v0.2
 
 Oct 8, 2026 · @Yunhan Gao
 
@@ -80,7 +80,7 @@ Rules for the layout:
   "phase": "build",
   "gates": {
     "prd_approved": { "at": "2026-10-08T12:00:00Z", "prd_version": "1.0.0" },
-    "remote_applied": { "at": "2026-10-08T12:30:00Z", "ruleset_sha": "3f2a9c1" }
+    "remote_applied": { "at": "2026-10-08T12:30:00Z", "ruleset_sha": "sha256:5dbd15bee5c102a8f597f8b4caf2a47dc33ef7bac273d46110622db05c3da8cf" }
   },
   "prd": { "version": "1.1.0", "status": "approved", "source": "imported" },
   "counters": { "adr": 3, "cr": 2 },
@@ -158,14 +158,16 @@ One naming scheme ties a commit back to its issue, its requirement and the PRD v
 
 ## GitHub defaults for a solo developer
 
-The bootstrap script applies these with `gh` and keeps the ruleset as code in `.github/rulesets/main.json`; nothing here needs a second person.
+The bootstrap script applies these with `gh` and keeps the ruleset as code in `.github/rulesets/main.json`; nothing here needs a second person. Spike E2 verified them on fresh public repos ([ADR 0003](decisions/0003-bootstrap-order-required-check-and-ci-template.md)).
+
+**Order** (required): push the initial commit with `ci.yml` while no ruleset exists, wait for that push's `ci` run to pass, then apply the ruleset, merge options, labels and security settings. A ruleset that is active before the first push rejects that push.
 
 **Ruleset on the default branch (`main`)**
 
 | Rule | Setting | Why |
 | --- | --- | --- |
 | Require a pull request | On, **0 required approvals** | Every change has a PR and a record; GitHub does not let you approve your own PR, so any approval count locks you out |
-| Required status checks | `ci` must pass; branch must be up to date. Added only after the first `ci` run on `main` has passed, and `ci.yml` never uses path or branch filters, so the check always reports | The test suite is the reviewer that never gets tired |
+| Required status checks | `ci` from GitHub Actions (`integration_id` 15368) must pass; branch must be up to date. Added only after the first `ci` run on `main` has passed. `ci.yml` never filters `pull_request` by path or branch, so the check always reports; a behind PR is updated with `gh pr update-branch` before it merges | The test suite is the reviewer that never gets tired |
 | Block force pushes | On | History cannot be rewritten |
 | Restrict deletions | On | `main` cannot be deleted |
 | Linear history | On | Pairs with squash merge |
@@ -173,7 +175,7 @@ The bootstrap script applies these with `gh` and keeps the ruleset as code in `.
 
 **Repository settings**
 
-- Merge methods: squash only; PR title becomes the commit message.
+- Merge methods: squash only; the PR title becomes the commit title and the PR body the commit message.
 - Delete branch on merge: on. Auto-merge: on, so a green PR can merge itself after you approve it in chat.
 - Wiki and Projects: off unless asked.
 - Default visibility: public; a project can opt into private at bootstrap.
@@ -181,8 +183,10 @@ The bootstrap script applies these with `gh` and keeps the ruleset as code in `.
 **Security**
 
 - Dependabot alerts and security updates: on, with `.github/dependabot.yml` for the project's ecosystems.
-- Secret scanning and push protection: on (free for public repositories).
-- CodeQL default setup: on.
+- Secret scanning and push protection: on (free for public repositories, and already on for a new public repository).
+- CodeQL default setup: on. It needs one supported language; the workflow file alone counts as `actions`. Its checks are not required.
+
+**CI workflow** (`.github/workflows/ci.yml`): triggers on `pull_request` (types `opened`, `synchronize`, `reopened`, `edited`) with no `paths` or `branches` filter, and on `push` to `main`. One job named `ci` checks out with full history, checks the PR title on pull requests, detects whether anything outside `docs/` changed, and guards install, lint, test and build with step-level `if:` on that result. A skipped workflow never reports `ci` and blocks the PR, so nothing is skipped above the step level.
 
 **Private projects (opt-in)**: on a free personal account, rulesets and some security features may not be enforced for private repositories. If a project opts into private, the script reads what GitHub actually applied and reports any gap; the local hooks still block pushes to `main` either way.
 
@@ -310,7 +314,7 @@ Commands are the underlying interface; three interaction layers sit on top so th
 | --- | --- | --- |
 | 1. Commands that ask | Every command asks for what it needs with Claude Code's multiple-choice question UI instead of requiring flags. Flags such as `--repo` and `import` remain as shortcuts | v1 |
 | 2. One entry point | `/solokit:go` reads `state.json` and offers the 2–4 most likely next actions, recommended one first; in most moments the whole interaction is `/solokit:go` and Enter | v1 |
-| 3. Action band | An optional mod in the same plugin draws a band above the prompt with the phase, the active issue and numbered actions. A digit typed alone into the empty prompt presses the matching button; an Idea button opens a text field that feeds the change flow | After the core flow works; needs Claude Code v2.1.287+ |
+| 3. Action band | An optional mod in the same plugin draws a band above the prompt with the phase, the active issue and numbered actions. A digit typed alone into the empty prompt presses the matching button, which runs the command directly; an Idea button opens a text field that feeds the change flow ([ADR 0001](decisions/0001-band-and-alias-hand-off.md)) | After the core flow works; needs Claude Code v2.1.287+ |
 
 Examples of what layer 1 asks:
 
@@ -329,7 +333,7 @@ Plain language also works without any command: each skill's description lets Cla
 **Two rules the interaction layers never break**
 
 1. **Gates stay explicit.** Before PRD approval, applying remote settings or merging, the kit shows exactly what will happen (for example the ruleset diff) and waits for a confirmation. A hotkey or a preselected option never passes a gate on its own.
-2. **Unattended runs fall back.** When nobody can answer (`claude -p`, scheduled tasks), a command uses its flags or the remembered defaults, or stops and states what it needs. It never guesses past a gate.
+2. **Unattended runs fall back.** When nobody can answer (`claude -p`, scheduled tasks), the multiple-choice tool is absent; a command uses its flags or the remembered defaults, or stops and states what it needs. It never guesses past a gate.
 
 ## Decisions
 

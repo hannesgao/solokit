@@ -1,3 +1,9 @@
+---
+version: 0.4.0
+status: draft
+updated: 2026-10-08
+---
+
 # solokit — PRD
 
 Oct 8, 2026 · @Yunhan Gao
@@ -6,8 +12,8 @@ Oct 8, 2026 · @Yunhan Gao
 
 solokit is a self-built Claude Code plugin that runs a solo agent-coding project from idea to release: kickoff, PRD, GitHub repo and rules, issue-driven building, mid-project changes, release and retro. It replaces the setup prompts typed by hand at the start of every project with interactive commands that follow one set of conventions.
 
-- **Version** 0.3.0, **status** draft. The whole command set ships together as 1.0; nothing is deferred to a later version.
-- **Conventions** are defined in solo-agent-coding-kit — Conventions v0.1; this PRD specifies the plugin that implements them and does not repeat them.
+- **Version** 0.4.0, **status** draft. The whole command set ships together as 1.0; nothing is deferred to a later version.
+- **Conventions** are defined in solo-agent-coding-kit — Conventions v0.2; this PRD specifies the plugin that implements them and does not repeat them.
 - **Scope**: personal use, built from scratch, no dependency on any other Claude Code plugin. External requirements: Node.js (built-in modules only, no npm packages), `git` and `gh`.
 - **Display name** solo-agent-coding-kit; **plugin name** `solokit`; commands appear as `/solokit:<command>`.
 
@@ -64,8 +70,8 @@ Every requirement in this PRD ships in 1.0. IDs are stable; the prefix names the
 | ID | Requirement |
 | --- | --- |
 | CORE-1 | Read `.project/state.json` first and write it last. If its `schema` is older than the kit's, migrate it before anything else and report the migration. |
-| CORE-2 | Ask for missing inputs with Claude Code's multiple-choice questions (AskUserQuestion): at most one round per step of one to four questions, each with two to four options plus the automatic Other; the recommended option first, remembered answers preselected. A choice with more than four options shows the four most likely and takes the rest through Other, or is split into two steps. Every question has a flag that supplies the same input. |
-| CORE-3 | Every command can run to completion from arguments, flags and remembered defaults alone, because multiple-choice questions are unavailable in some runs (`--permission-prompts none`, `dontAsk` mode). If an input is still missing, stop and list exactly what is needed. A question that auto-continues unanswered (`askUserQuestionTimeout`) counts as no answer: ordinary steps take the recommended option, gates stop. Never pass a gate unattended. |
+| CORE-2 | Ask for missing inputs with Claude Code's multiple-choice questions (AskUserQuestion): at most one round per step of one to four questions, each with two to four options plus the automatic Other; the recommended option first, remembered answers preselected. A choice with more than four options shows the four most likely and takes the rest through Other, or is split into two steps. Every question has a flag that supplies the same input. Questions are asked inside the turn that invoked the command, so the skill's pre-approved script calls stay approved after the answer (ADR 0002). |
+| CORE-3 | Every command can run to completion from arguments, flags and remembered defaults alone, because multiple-choice questions are unavailable in some runs: AskUserQuestion is absent from every `claude -p` run without a permission host, whatever the permission mode or `--permission-prompts` value (ADR 0002). When the tool is absent, take flags first, then remembered defaults; an ordinary step with neither takes the recommended option, and a gate stops and lists exactly what is needed. A question that auto-continues unanswered (`askUserQuestionTimeout`) counts as no answer in the same way. Never pass a gate unattended. |
 | CORE-4 | Be idempotent: check the real state (files, git, GitHub) before each step; a finished step is reported as done and skipped. |
 | CORE-5 | Gate protocol: show a concrete preview of what will happen (files, API calls, diffs), wait for an explicit yes, and record the gate with a timestamp in `state.json`. |
 | CORE-6 | End with a one-line result and the suggested next command. |
@@ -79,14 +85,14 @@ Every requirement in this PRD ships in 1.0. IDs are stable; the prefix names the
 | ENT-1 | Outside a solokit project, offer: start from an idea (kickoff), or import an existing PRD. |
 | ENT-2 | Inside a project, offer two to four next actions chosen from the phase, recommended one first, and run the chosen command. |
 | ENT-3 | Choose the recommendation from state, for example: uncommitted changes on an issue branch suggest verify; verified changes suggest PR; no active issue suggests next; all milestone issues closed suggests release. |
-| ENT-4 | The action band mod also registers a bare `/solokit` command, because plugin skills are always namespaced; it hands off to `/solokit:go` by the mechanism spike E1 confirms, and is absent when the band is off or Claude Code is older than v2.1.287. |
+| ENT-4 | The action band mod also registers a bare `/solokit` command, because plugin skills are always namespaced. Its hook answers with one line and then, once the hook has returned (`$.clock.after`), runs `$.command.run({ command: "solokit:go", args })` with its own arguments; if that call is refused it puts `/solokit:go <args>` in the prompt (`$.prompt.fill`) for one Enter (ADR 0001). Interactive sessions only; absent when the band is off or Claude Code is older than v2.1.287. |
 
 **Status `/solokit:status`**
 
 | ID | Requirement |
 | --- | --- |
 | STA-1 | Print phase, gates passed and pending, PRD version and status, open change requests, milestone progress (closed of total issues), active issue and branch, and the kit version that created the project versus the installed one. |
-| STA-2 | Warn about drift: GitHub's applied ruleset differs from `.github/rulesets/main.json`, an issue in `state.json` no longer exists, PRD changed without a Changelog line. |
+| STA-2 | Warn about drift: GitHub's applied ruleset differs from `.github/rulesets/main.json` (compared as the intent view of BST-8), an issue in `state.json` no longer exists, PRD changed without a Changelog line. |
 | STA-3 | Read-only. Without network, show local information and mark GitHub-derived parts as unavailable. |
 
 ## Requirements: kickoff and PRD
@@ -135,9 +141,9 @@ The PRD can be drafted from a kickoff interview or imported from elsewhere; both
 | BST-4 | Existing repo (`--repo owner/name`): verify it exists, the user has admin rights, and it holds nothing beyond GitHub's creation-form files (README, LICENSE, `.gitignore`); merge those into the skeleton. Report settings that differ from the defaults and change them only on a yes. Refuse a repo with existing code. |
 | BST-5 | Build the local skeleton from the conventions: folders, `CLAUDE.md` (PRD summary, rules, stack commands), `README.md`, stack `.gitignore`, `.claude/settings.json`, `.github/` templates, `rulesets/main.json`, `dependabot.yml` for the detected ecosystems, `workflows/ci.yml`. |
 | BST-6 | Remote gate (**gate 2**): preview the repo to create or adopt, every setting, the ruleset JSON, labels, security switches and the file list; apply only on a yes. |
-| BST-7 | Apply in this order: push the initial commit, including `.github/workflows/ci.yml`, to `main`; wait until that push's `ci` run passes; enable the ruleset that requires `ci`; set merge options (squash only, delete branch on merge, auto-merge allowed); create labels; enable Dependabot alerts and security updates, secret scanning with push protection, and CodeQL default setup. Requiring the check only after it has reported once keeps the first PR from waiting on a status that never arrives. |
-| BST-8 | Read back what GitHub applied and compare it with the intent; report every gap; store the ruleset's hash in `state.json`. |
-| BST-9 | CI templates for Flutter, Node/TypeScript, Python, PHP and a generic fallback. Each defines one job named `ci` with install, lint, test and build steps, plus a pull-request-only step that checks the PR title against Conventional Commits in a few lines of shell. The workflow runs on every pull request and every push to `main`, never with `paths` or branch filters, because a filtered-out workflow leaves the required check pending and blocks the PR; work that does not apply to a change is skipped with step-level `if:` conditions inside the job. |
+| BST-7 | Apply in this order, which is required (ADR 0003): push the initial commit, including `.github/workflows/ci.yml`, to `main` while no ruleset exists; wait until that push's `ci` run passes, and stop with the step `failed` if it does not; create the ruleset that requires `ci`; set merge options (squash only with the PR title and body as the commit, delete branch on merge, auto-merge allowed, wiki and projects off) in one repository update; create labels; enable Dependabot alerts and security updates, secret scanning with push protection, and CodeQL default setup. A ruleset that is active before the first push rejects that push (`Required status check "ci" is expected`), even though the API accepts a check that has never run. |
+| BST-8 | Read back what GitHub applied (ruleset, merge options, each security setting) and compare it with the intent; report every gap. For the ruleset, compare the intent view: the top-level `name`, `target`, `enforcement`, `conditions` and `bypass_actors`, and for each rule type the intent sends only the parameter keys it sends, keys sorted and rules ordered by type. Keys GitHub adds (ids, links, timestamps, defaulted parameters such as `required_reviewers` and `require_extra_approval_for_unattributed_changes`) are listed as information, never as gaps. Store `sha256:` plus the hex digest of the view's canonical JSON as `gates.remote_applied.ruleset_sha` in `state.json` (ADR 0003). |
+| BST-9 | CI templates for Flutter, Node/TypeScript, Python, PHP and a generic fallback. Each defines one job named `ci`: checkout with full history; a pull-request-only step that checks the PR title against Conventional Commits in a few lines of shell; a change-detection step that reports whether anything outside `docs/` changed; then install, lint, test and build steps guarded by step-level `if:` on that output. The workflow triggers on `pull_request` (types `opened`, `synchronize`, `reopened`, `edited`, so a fixed title is re-checked) with no `paths` or `branches` filter, and on `push` to `main`. A filtered-out workflow never reports `ci` and blocks the PR for good, so skipping happens only inside the job (ADR 0003). The required check is `ci` from GitHub Actions (`integration_id` 15368). |
 | BST-10 | The skeleton's first CI run must pass (templates include a placeholder test), so the first real PR is not blocked. |
 | BST-11 | `--dry-run` prints every command and file without executing or writing anything. |
 
@@ -179,7 +185,7 @@ Planning turns the PRD into GitHub milestones and issues; the build loop takes o
 | PR-1 | Require valid verify evidence for the current commit; run verify first if it is missing. |
 | PR-2 | Run the `reviewer` agent and show findings by severity. Blocking findings are fixed, or waived with a reason that goes into the PR body together with the label review:waived. Security findings (secrets, injection, unsafe input handling) can never be waived. |
 | PR-3 | Push the branch and open the PR from the template: Conventional Commits title, summary, requirement IDs, `Closes #n`, verify evidence and the review summary. |
-| PR-4 | Merge (**gate 3**): ask whether to enable auto-merge; never merge or enable auto-merge without a yes. |
+| PR-4 | Merge (**gate 3**): ask whether to enable auto-merge; never merge or enable auto-merge without a yes. If the PR is behind `main` (the ruleset requires an up-to-date branch), update it with `gh pr update-branch` and say so before merging or enabling auto-merge, because auto-merge does not update a branch by itself (ADR 0003). |
 | PR-5 | After the merge: switch to `main`, pull, delete the local branch, clear `active.json` and suggest the next action. |
 
 ## Requirements: change flow
@@ -250,8 +256,8 @@ Hooks enforce the rules between commands, the reviewer checks work before it bec
 | --- | --- |
 | BAND-1 | Draw a band above the prompt with phase, active issue, PRD version and up to four numbered actions chosen as in ENT-2. |
 | BAND-2 | Digit hotkeys: a digit typed alone into the empty prompt presses the matching action. |
-| BAND-3 | An action hands over the same command a user would type: it submits it as the user (`$.prompt.submit` with `asUser: true`) if spike E1 shows that this expands skills, and otherwise puts it in the prompt (`$.prompt.fill`) for one Enter. It never passes a gate on its own, because the command shows its preview and asks. |
-| BAND-4 | The Idea action opens a text field; submitting hands over `/solokit:change` with that text as its argument, by the same mechanism as BAND-3. |
+| BAND-3 | An action hands over the same command a user would type by calling `$.command.run({ command: "solokit:<name>", args })` from the button, without awaiting it: the skill expands and its turn starts. If that call is refused, the action puts the command in the prompt (`$.prompt.fill`) for one Enter and says so in a toast. `$.prompt.submit` is never used for a slash command; the host refuses it (ADR 0001). An action never passes a gate on its own, because the command shows its preview and asks. |
+| BAND-4 | The Idea action opens a text field; submitting hands over `solokit:change` with that text as its argument, by the same mechanism and fallback as BAND-3. |
 | BAND-5 | Hidden outside solokit projects and collapsible; refreshes when `state.json` changes or a turn completes. |
 | BAND-6 | Uses only text and button elements, so it works in both the terminal and the Desktop app's Code tab; requires Claude Code v2.1.287 or later and stays silent on older versions. |
 
@@ -269,7 +275,7 @@ Three places hold data: plugin options set once per machine, remembered answers 
 | `kit_repo` | string, `owner/name` | empty | RET-4 (where kit-improvement issues go) |
 | `action_band` | boolean | `true` | BAND-1 |
 
-**Remembered answers**: the last owner, stack and similar choices are stored in `${CLAUDE_PLUGIN_DATA}/defaults.json`, which survives plugin updates, and preselected next time (CORE-2). Skills never write this file with the Write tool, which asks for permission outside the working directory; they call `node ${CLAUDE_PLUGIN_ROOT}/scripts/defaults.mjs`, pre-approved in each skill's `allowed-tools` as `Bash(node ${CLAUDE_PLUGIN_ROOT}/scripts/*)`. Claude Code substitutes both variables in skill text and in `allowed-tools`; hooks read them from the environment.
+**Remembered answers**: the last owner, stack and similar choices are stored in `${CLAUDE_PLUGIN_DATA}/defaults.json`, which survives plugin updates, and preselected next time (CORE-2). Skills never write this file with the Write tool, which asks for permission there in an interactive session and is denied in a `-p` run. They call `node ${CLAUDE_PLUGIN_ROOT}/scripts/defaults.mjs --data ${CLAUDE_PLUGIN_DATA} get|set …`, pre-approved in each skill's `allowed-tools` as `Bash(node ${CLAUDE_PLUGIN_ROOT}/scripts/*)`. Claude Code substitutes both variables in skill text and in `allowed-tools`, but does not set them in the environment of a command a skill runs, so a script receives the data directory only as an argument. Settings hooks read the variables from their environment. The grant lasts for the turn that invoked the skill and survives answering a multiple-choice question in that turn (ADR 0002).
 
 **Project state**
 
@@ -284,6 +290,7 @@ Three places hold data: plugin options set once per machine, remembered answers 
 | CFG-1 | Validate `state.json` against its schema on every read; on corruption, stop and offer to rebuild it from the repo and GitHub. |
 | CFG-2 | Ship a migration for every schema change; never require the user to edit state by hand. |
 | CFG-3 | Never store secrets or tokens; GitHub access always goes through the user's `gh` login. |
+| CFG-4 | Skills run kit scripts only as `node ${CLAUDE_PLUGIN_ROOT}/scripts/<name>.mjs …`, pre-approved by their `allowed-tools`. A script that reads or writes plugin data takes `--data ${CLAUDE_PLUGIN_DATA}` and never reads the location from the environment. No skill writes plugin data with Write or Edit (ADR 0002). |
 
 ## Technical architecture
 
@@ -343,11 +350,11 @@ Each part is tested where it can fail cheaply: scripts and hooks offline against
 | Plugin structure | `claude plugin validate --strict` | CI, every push |
 | Scripts | `--dry-run` output compared with golden files using node:test; no network | CI, every push |
 | Hooks | Feed JSON fixtures on stdin, assert exit code and message, including the 200 ms budget | CI, every push |
-| Action band | `claude plugin test` with stubbed `state.json` reads and button presses, terminal and desktop surfaces | CI, every push |
+| Action band | `claude plugin test` with stubbed `state.json` reads and button presses, terminal and desktop surfaces, including the `$.command.run` hand-off and its `$.prompt.fill` fallback | CI, every push |
 | Skills | `claude plugin eval` cases: PRD import fixtures (mapping report, no invented content), change classification fixtures (idea to expected class), entry-point recommendations per phase | Before each release |
-| GitHub behaviour | Scripts run for real against a sandbox owner: create repo, apply ruleset, read back, first PR passes, delete repo | Before each release |
+| GitHub behaviour | Scripts run for real against a sandbox owner, grown from `spikes/e2-ruleset/run.mjs`: create repo, apply ruleset, read back, first PR passes, docs-only PR passes, behind PR is updated and merged, delete repo | Before each release |
 | End to end | Full flow on a toy project: kickoff, PRD, bootstrap, plan, two issues, one change, release, retro | Before each release |
-| Windows | Hooks and scripts on Windows (paths, line endings, process spawning) | Before each release |
+| Windows | Hooks and scripts on Windows (paths, line endings, process spawning, a plugin data path with spaces passed to a pre-approved script) | Before each release |
 
 The sandbox owner needs a `gh` token with the `delete_repo` scope, used only by the test harness.
 
@@ -355,8 +362,8 @@ The sandbox owner needs a `gh` token with the `delete_repo` scope, used only by 
 
 All milestones belong to one release, 1.0; they fix only the build order, so each step can be used and tested before the next one starts.
 
-0. **M0 Spike**: run the two experiments still open in Open questions (E1 mod hand-off and skill permissions, E2 ruleset on a fresh repo), record each answer as an ADR and fold the results into this PRD and the conventions. Done when both have an ADR and no spike is open.
-1. **M1 Foundation**: plugin skeleton, `state.json` schema and migrations, shared behaviour, entry point, status, `state-sync` hook. Covers CORE, ENT, STA, CFG, HOOK-4, HOOK-5.
+0. **M0 Spike** (done 8 Oct 2026): ran the two experiments left in Open questions (E1 mod hand-off and skill permissions, E2 ruleset on a fresh repo), recorded the answers as ADRs 0001 to 0003 and folded the results into this PRD (0.4.0) and the conventions (v0.2). The spike code stays in `spikes/` as the starting point for M3's bootstrap scripts.
+1. **M1 Foundation**: plugin skeleton, `state.json` schema and migrations, shared behaviour, entry point, status, `state-sync` hook. Covers CORE, ENT-1 to ENT-3, STA, CFG, HOOK-4, HOOK-5.
 2. **M2 Kickoff and PRD**: interview, draft, check, import, approval gate. Covers KCK, PRD, IMP.
 3. **M3 Bootstrap**: both repo modes, templates, CI per stack, remote gate, read-back, `guard-main`. Covers BST, HOOK-1. Done when solokit re-applies its own repo rules.
 4. **M4 Plan and build loop**: issues, next, test-first, verify, reviewer, PR and merge gate, `issue-required`. Covers PLN, NXT, VER, PR, AGT, HOOK-2.
@@ -373,8 +380,9 @@ The largest risks are platform behaviour the kit relies on and a scope that is a
 | Risk | Likelihood | Impact | Mitigation |
 | --- | --- | --- | --- |
 | Full scope in one release delays any usable result | High | Medium | Build order M1 to M7 makes each milestone usable on real projects as soon as it is done |
-| Claude Code changes skills, hooks or mods APIs | Medium | High | Pin a minimum Claude Code version in the README; `claude plugin validate` and `claude plugin test` in CI; hooks fail open |
-| GitHub API or ruleset semantics differ from the docs, especially on a fresh repo | Medium | High | M0 spike against a sandbox owner; BST-8 read-back on every bootstrap |
+| Claude Code changes skills, hooks or mods APIs | Medium | High | Pin a minimum Claude Code version in the README; `claude plugin validate` and `claude plugin test` in CI; hooks fail open; the band falls back to `$.prompt.fill` when the host refuses `$.command.run` |
+| A plugin data path with spaces (common on Windows) breaks or no longer matches a skill's pre-approved script call | Medium | Medium | M1 settles the quoting rule by test; the Windows layer covers it (ADR 0002) |
+| GitHub API or ruleset semantics differ from the docs, especially on a fresh repo | Medium | High | M0 spike against a sandbox owner (ADR 0003); BST-8 read-back on every bootstrap, which also lists parameters GitHub adds, such as the undocumented `require_extra_approval_for_unattributed_changes` |
 | Skills behave inconsistently across runs (questions skipped, IDs invented) | Medium | Medium | Strict skeletons and checks (`prd check`), eval cases, scripts for anything deterministic |
 | Scripts or hooks behave differently on Windows | Medium | Medium | Windows test layer; Node.js built-ins for paths and processes, no shell-specific syntax |
 | Hooks slow down every tool call | Low | Medium | 200 ms budget tested in CI; no network in hooks |
@@ -387,8 +395,8 @@ Items marked **spike** are answered by experiment in M0; items marked **decision
 - [x] **Spike**, answered from the docs (8 Oct 2026): plugin skills are always namespaced (`/solokit:<skill>`), so the entry point is `/solokit:go`. A bare `/solokit` is possible only as a mod command (ENT-4).
 - [x] **Spike**, answered from the docs (8 Oct 2026): a multiple-choice round holds one to four questions with two to four options each, plus Other. The tool is removed with `--permission-prompts none` and denied in `dontAsk` mode (CORE-2, CORE-3).
 - [x] **Spike**, answered from the docs (8 Oct 2026): `${CLAUDE_PLUGIN_DATA}` is substituted in skill text and `allowed-tools`, but a Write there needs permission; remembered answers go through a pre-approved Node script (Configuration and state).
-- [ ] **Spike E1**, mod hand-off and skill permissions: read the generated `index.d.ts` for `$.command.run` and `$.prompt.*`, then test whether `$.prompt.submit({ text: "/solokit:next", asUser: true })` expands the skill, whether a mod command `/solokit` can hand off to `/solokit:go`, whether a skill's `allowed-tools` grant survives answering a multiple-choice question in the same turn, and what the question tool does in a plain `-p` run. Fallback: `$.prompt.fill` plus Enter.
-- [ ] **Spike E2**, ruleset on a fresh sandbox repo: does the API accept a required `ci` check that has never run; does the BST-7 order let the first PR merge with zero approvals and no bypass; does a docs-only PR pass with step-level skips; does the read-back (BST-8) match what was sent.
+- [x] **Spike E1** (8 Oct 2026, [ADR 0001](decisions/0001-band-and-alias-hand-off.md), [ADR 0002](decisions/0002-skill-permissions-and-remembered-defaults.md)), mod hand-off and skill permissions. The host refuses `$.prompt.submit` with a `/command` text. `$.command.run` from a band button expands the skill and starts its turn. The bare `/solokit` hands off with `$.command.run` once its own hook has returned, and `$.prompt.fill` works everywhere with one Enter. The `allowed-tools` grant survives answering a question in the same turn. AskUserQuestion is absent from every `-p` run without a permission host. Skill-run commands do not get `CLAUDE_PLUGIN_DATA` in their environment (ENT-4, CORE-2, CORE-3, BAND-3, BAND-4, CFG-4, Configuration).
+- [x] **Spike E2** (8 Oct 2026, [ADR 0003](decisions/0003-bootstrap-order-required-check-and-ci-template.md)), ruleset on a fresh sandbox repo. The API accepts a never-run `ci`, but an active ruleset then rejects the initial push, so the BST-7 order is required. In that order the first PR merges with zero approvals and no bypass. A docs-only PR passes with step-level skips, while a `paths` filter blocks it for good. A behind PR needs `gh pr update-branch`. The read-back matches everything sent, and GitHub adds two defaulted parameters (BST-7, BST-8, BST-9, PR-4, STA-2).
 - [x] **Decision** (8 Oct 2026): script runtime is Node.js with built-in modules only; no npm packages.
 - [x] **Decision** (8 Oct 2026): blocking reviewer findings may be waived with a reason and the `review:waived` label, except security findings, which must be fixed.
 - [x] **Decision** (8 Oct 2026): the release confirmation is one question that shows the notes and offers release, other version, edit notes or cancel.
@@ -397,13 +405,15 @@ Items marked **spike** are answered by experiment in M0; items marked **decision
 
 | Date | Version | Change |
 | --- | --- | --- |
+| 8 Oct 2026 | 0.4.0 | Spikes E1 and E2 closed (ADRs 0001–0003). Band and bare `/solokit` hand off with `$.command.run`, with `$.prompt.fill` as fallback (BAND-3, BAND-4, ENT-4). Questions stay in the invoking turn, and AskUserQuestion is absent from all `-p` runs without a host (CORE-2, CORE-3). Scripts get the plugin data directory as `--data` (Configuration, new CFG-4). The BST-7 order is required, with a detailed read-back and intent-view hash (BST-7, BST-8, STA-2), CI trigger and job shape (BST-9), and behind PRs updated before merge (PR-4). M0 done; M1 covers ENT-1 to ENT-3, and ENT-4 stays in M7. Frontmatter added. |
 | 8 Oct 2026 | 0.3.0 | Three spikes answered from the Claude Code docs: entry point `/solokit:go` with a mod alias (ENT-4); question limits and runs without questions (CORE-2, CORE-3); remembered answers written by a pre-approved script (Configuration). From the GitHub docs: ruleset applied after the first green CI run (BST-7) and CI without path filters (BST-9). Band hand-off (BAND-3, BAND-4). M0 reduced to experiments E1 and E2. |
 | 8 Oct 2026 | 0.2.0 | Decisions: Node.js runtime for scripts and hooks; waivable blocking findings except security (PR-2, RET-1); single release confirmation with notes preview (REL-2) |
 | 8 Oct 2026 | 0.1.0 | First draft: full command set in one release; adds `/solokit:prd check` and `/solokit:change --ideas` to the command surface |
 
 **References**
 
-- Conventions: solo-agent-coding-kit — Conventions v0.1
+- Conventions: solo-agent-coding-kit — Conventions v0.2
+- Decisions: [ADR 0001](decisions/0001-band-and-alias-hand-off.md) band and alias hand-off, [ADR 0002](decisions/0002-skill-permissions-and-remembered-defaults.md) skill permissions and remembered defaults, [ADR 0003](decisions/0003-bootstrap-order-required-check-and-ci-template.md) bootstrap order, required check and CI template
 - [Claude Code mods overview](https://code.claude.com/docs/en/plugins/mods/overview), [mods reference](https://code.claude.com/docs/en/plugins/mods/reference)
 - [Plugin manifest reference](https://code.claude.com/docs/en/plugins-reference)
 - [Publish and distribute a plugin](https://code.claude.com/docs/en/plugins/publish)
