@@ -338,9 +338,19 @@ build · #42 mood-rules-de · PRD 1.1.0      [1] Next  [2] Verify  [3] PR  [4] I
 
 Plain language also works without any command: each skill's description lets Claude Code start it when you say, for example, "I have a new idea for an export feature".
 
+**Which option comes first** (CORE-2). The first option is the one a question preselects, so it is chosen by a fixed precedence and names its source:
+
+1. a command-line flag;
+2. evidence in the project itself, such as a stack detected from the PRD or the folder name as repo name;
+3. a value set in `userConfig`;
+4. the last answer used, marked "(last used)";
+5. the built-in default.
+
+Only preference questions remember answers: owner, visibility, language, and stack (only when none is detected). Judgement questions (change class, next action, version, release confirmation) are never remembered and put the computed recommendation first. Gate confirmations (PRD approval, remote gate, merge, CR decision) are never remembered, so no earlier answer stands in for the current decision. When the kit's checks have passed, the option that passes the gate may come first, marked "(Recommended)", as release does (REL-2). What protects a gate is the full preview shown before the question, stopping when the question goes unanswered, and never remembering its answer. When a question auto-continues unanswered, an ordinary question takes its first option and a gate stops (CORE-3).
+
 **Two rules the interaction layers never break**
 
-1. **Gates stay explicit.** Before PRD approval, applying remote settings or merging, the kit shows exactly what will happen (for example the ruleset diff) and waits for a confirmation. A hotkey or a preselected option never passes a gate on its own.
+1. **Gates stay explicit.** Before PRD approval, applying remote settings or merging, the kit shows exactly what will happen (for example the ruleset diff) and waits for a confirmation. A hotkey, a remembered answer or an unanswered question never passes a gate on its own; only the user's answer to the question after the preview does.
 2. **Unattended runs fall back.** When nobody can answer (`claude -p`, scheduled tasks), the multiple-choice tool is absent; a command uses its flags or the remembered defaults, or stops and states what it needs. It never guesses past a gate.
 
 ## Decisions
