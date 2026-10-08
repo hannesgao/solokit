@@ -1,4 +1,4 @@
-# solo-agent-coding-kit — Conventions v0.1
+# solo-agent-coding-kit — Conventions v0.2
 
 Oct 8, 2026 · @Yunhan Gao
 
@@ -31,7 +31,8 @@ Every project gets the same skeleton: product documents under `docs/`, kit state
 
 ```text
 <project>/
-├── CLAUDE.md                      # short; points to docs/ and states the rules
+├── CLAUDE.md                      # local and gitignored; generated from the kit template; points to docs/ and states the rules
+├── .gitignore                     # lists /CLAUDE.md and .project/local/
 ├── README.md
 ├── docs/
 │   ├── kickoff.md                 # one-page project card (derived when a PRD is imported)
@@ -61,6 +62,7 @@ Rules for the layout:
 - Only `docs/PRD.md` describes what the product should be. Other documents explain why it changed or what is next.
 - `.project/state.json` is committed so a second machine or a cloud session can resume; anything machine-specific goes to `.project/local/`.
 - Paths are fixed. Skills refer to them by these names, so a project never renames them.
+- `CLAUDE.md` is per machine: bootstrap generates it from the kit's template, `/solokit:go` regenerates it when it is missing (a fresh clone, another machine), and `.gitignore` keeps it out of the repo. With the `hide_ai_attribution` option off, it is committed like any other file ([ADR 0004](decisions/0004-no-ai-attribution.md)).
 
 ## Project state file
 
@@ -75,12 +77,13 @@ Rules for the layout:
     "repo": "owner/pixel-pal",
     "repo_source": "created",
     "visibility": "public",
-    "language": "en"
+    "language": "en",
+    "stack": "flutter"
   },
   "phase": "build",
   "gates": {
     "prd_approved": { "at": "2026-10-08T12:00:00Z", "prd_version": "1.0.0" },
-    "remote_applied": { "at": "2026-10-08T12:30:00Z", "ruleset_sha": "3f2a9c1" }
+    "remote_applied": { "at": "2026-10-08T12:30:00Z", "ruleset_sha": "sha256:9e3f6f927eaff9c550bdb676fb5e35d9d23c001a4f2a2705b50a702b848e6b60" }
   },
   "prd": { "version": "1.1.0", "status": "approved", "source": "imported" },
   "counters": { "adr": 3, "cr": 2 },
@@ -145,7 +148,7 @@ One naming scheme ties a commit back to its issue, its requirement and the PRD v
 | Branch | `<type>/<issue>-<slug>`, type is `feat`, `fix`, `chore`, `docs`, `refactor`, `test` | `feat/42-mood-rules-de` |
 | Commit | Conventional Commits; body cites the requirement | `feat(mood): add German frustration rules` / `Refs: FR-11` |
 | PR title | Same as the squash commit | `feat(mood): add German frustration rules (#42)` |
-| PR body | Template: what, why, requirement IDs, `Closes #42`, test evidence |  |
+| PR body | Template: summary, requirement IDs, `Closes #42`, one line of verification result. It becomes the squash commit message, so the full test output and the review findings go in PR comments |  |
 | Release tag | `vMAJOR.MINOR.PATCH` | `v0.3.0` |
 
 **Labels** (created by bootstrap)
@@ -158,14 +161,16 @@ One naming scheme ties a commit back to its issue, its requirement and the PRD v
 
 ## GitHub defaults for a solo developer
 
-The bootstrap script applies these with `gh` and keeps the ruleset as code in `.github/rulesets/main.json`; nothing here needs a second person.
+The bootstrap script applies these with `gh` and keeps the ruleset as code in `.github/rulesets/main.json`; nothing here needs a second person. Spike E2 verified them on fresh public repos ([ADR 0003](decisions/0003-bootstrap-order-required-check-and-ci-template.md)).
+
+**Order** (required): push the initial commit with `ci.yml` while no ruleset exists, wait for that push's `ci` run to pass, then apply the ruleset, merge options, labels and security settings. A ruleset that is active before the first push rejects that push.
 
 **Ruleset on the default branch (`main`)**
 
 | Rule | Setting | Why |
 | --- | --- | --- |
 | Require a pull request | On, **0 required approvals** | Every change has a PR and a record; GitHub does not let you approve your own PR, so any approval count locks you out |
-| Required status checks | `ci` must pass; branch must be up to date. Added only after the first `ci` run on `main` has passed, and `ci.yml` never uses path or branch filters, so the check always reports | The test suite is the reviewer that never gets tired |
+| Required status checks | `ci` from GitHub Actions (`integration_id` 15368) must pass. Branch need not be up to date. Added only after the first `ci` run on `main` has passed. `ci.yml` never filters `pull_request` by path or branch, so the check always reports | The test suite is the reviewer that never gets tired. "Up to date" stays off: pushes to `main` run `ci` too, a release requires a green `main`, and Dependabot PRs would otherwise wait on a manual update after every merge |
 | Block force pushes | On | History cannot be rewritten |
 | Restrict deletions | On | `main` cannot be deleted |
 | Linear history | On | Pairs with squash merge |
@@ -173,16 +178,19 @@ The bootstrap script applies these with `gh` and keeps the ruleset as code in `.
 
 **Repository settings**
 
-- Merge methods: squash only; PR title becomes the commit message.
+- Merge methods: squash only; the PR title becomes the commit title and the PR body the commit message.
 - Delete branch on merge: on. Auto-merge: on, so a green PR can merge itself after you approve it in chat.
 - Wiki and Projects: off unless asked.
 - Default visibility: public; a project can opt into private at bootstrap.
 
 **Security**
 
-- Dependabot alerts and security updates: on, with `.github/dependabot.yml` for the project's ecosystems.
-- Secret scanning and push protection: on (free for public repositories).
-- CodeQL default setup: on.
+- Dependabot alerts and security updates: on, with `.github/dependabot.yml` for the project's ecosystems. Every ecosystem sets `commit-message: prefix: "chore(deps)"`, so Dependabot's PR titles pass the title check, and none uses `groups`, whose PR titles ignore the prefix.
+- Secret scanning and push protection: on (free for public repositories, and already on for a new public repository).
+- Private vulnerability reporting: on, so a security issue can be reported privately instead of in a public issue.
+- CodeQL default setup: on. It needs one supported language; the workflow file alone counts as `actions`. Its checks are not required.
+
+**CI workflow** (`.github/workflows/ci.yml`): triggers on `pull_request` (types `opened`, `synchronize`, `reopened`, `edited`) with no `paths` or `branches` filter, and on `push` to `main`. One job named `ci` checks out with full history, checks the PR title on pull requests, detects whether anything outside `docs/` changed, and guards install, lint, test and build with step-level `if:` on that result. A skipped workflow never reports `ci` and blocks the PR, so nothing is skipped above the step level.
 
 **Private projects (opt-in)**: on a free personal account, rulesets and some security features may not be enforced for private repositories. If a project opts into private, the script reads what GitHub actually applied and reports any gap; the local hooks still block pushes to `main` either way.
 
@@ -197,7 +205,7 @@ The bootstrap script applies these with `gh` and keeps the ruleset as code in `.
 
 CLAUDE.md states the rules in a few lines; hooks and permissions enforce the ones that matter, so the rules hold even when the instructions are forgotten.
 
-**CLAUDE.md skeleton** (under 60 lines; details live in `docs/`)
+**CLAUDE.md skeleton** (under 60 lines; details live in `docs/`). The file is generated locally from this template and gitignored, so every machine regenerates it rather than sharing a copy.
 
 ```markdown
 # <project>
@@ -214,7 +222,8 @@ CLAUDE.md states the rules in a few lines; hooks and permissions enforce the one
 - No code without an issue. New idea? Add it to docs/ideas.md or run the change flow.
 - Changing what the product does means changing docs/PRD.md first.
 - Conventional Commits; cite requirement IDs (Refs: FR-12).
-- Run the tests before opening a PR; paste the result in the PR body.
+- Run the tests before opening a PR; one result line in the PR body, the full output as a PR comment.
+- No AI attribution in commit messages, PR and issue titles, bodies and comments, or branch names: no Co-Authored-By trailers for an AI, no "Generated with" lines, no statements that the work was generated or assisted by AI or Claude. Technical names such as CLAUDE.md, .claude/, CLAUDE_* variables and claude commands are fine.
 
 ## Commands
 <build, test, lint, run commands for this stack>
@@ -225,6 +234,7 @@ CLAUDE.md states the rules in a few lines; hooks and permissions enforce the one
 - Allow without asking: reading the repo, running the project's test, lint and build commands, `git status`, `git diff`, `git log`, `gh issue view`, `gh pr view`.
 - Ask: `git push`, `gh pr create`, `gh pr merge`, package installs.
 - Deny: force pushes, pushes to `main`, `rm -rf` outside the repo, reading `.env*` files.
+- Attribution: `"attribution": { "commit": "", "pr": "", "sessionUrl": false }`, so Claude Code adds no commit trailer, pull request line or session link. The object form also works on versions older than v2.1.281, which reject `"attribution": false` and skip the whole file.
 
 **Hooks shipped by the kit**
 
@@ -233,7 +243,8 @@ CLAUDE.md states the rules in a few lines; hooks and permissions enforce the one
 | `guard-main` | `PreToolUse` on Bash | Blocks commits and pushes on `main`, and any force push |
 | `issue-required` | `PreToolUse` on Edit and Write of source files | Warns when no issue branch is active |
 | `prd-drift` | `Stop` | If the turn changed behaviour-facing code and `docs/PRD.md` did not change, reminds to check the change flow |
-| `state-sync` | `SessionStart` | Prints the current phase, open gates and the active issue, so a new session starts oriented |
+| `state-sync` | `SessionStart` | Prints the current phase, open gates and the active issue, so a new session starts oriented; says when `CLAUDE.md` is missing |
+| `no-ai-attribution` | `PreToolUse` on Bash | Blocks AI attribution in commit messages, PR and issue texts (including `--body-file` files) and branch-name segments `claude`, `anthropic`, `ai` |
 
 **Build-phase skills and agents** (all written in-house; no third-party plugin)
 
@@ -243,7 +254,7 @@ CLAUDE.md states the rules in a few lines; hooks and permissions enforce the one
 | `test-first` | Skill | Adds or updates a failing test for the requirement, then implements until it passes; skipped for `docs` and `chore` work |
 | `verify` | Skill, run by `/solokit:verify` | Runs the project's test, lint and build commands; never reports work as done without that output, and saves it as evidence for the PR |
 | `reviewer` | Subagent | Reviews the diff in a fresh context against the PRD and the issue: requirement coverage, tests, risks, findings by severity |
-| `pr` | Skill, run by `/solokit:pr` | Opens the PR from the template with `Closes #n`, requirement IDs and test evidence; turns on auto-merge only after your OK |
+| `pr` | Skill, run by `/solokit:pr` | Opens the PR from the template with `Closes #n`, requirement IDs and a one-line verification result, then posts the full evidence and the review as PR comments; turns on auto-merge only after your OK |
 
 ## Change request flow
 
@@ -310,7 +321,7 @@ Commands are the underlying interface; three interaction layers sit on top so th
 | --- | --- | --- |
 | 1. Commands that ask | Every command asks for what it needs with Claude Code's multiple-choice question UI instead of requiring flags. Flags such as `--repo` and `import` remain as shortcuts | v1 |
 | 2. One entry point | `/solokit:go` reads `state.json` and offers the 2–4 most likely next actions, recommended one first; in most moments the whole interaction is `/solokit:go` and Enter | v1 |
-| 3. Action band | An optional mod in the same plugin draws a band above the prompt with the phase, the active issue and numbered actions. A digit typed alone into the empty prompt presses the matching button; an Idea button opens a text field that feeds the change flow | After the core flow works; needs Claude Code v2.1.287+ |
+| 3. Action band | An optional mod in the same plugin draws a band above the prompt with the phase, the active issue and numbered actions. A digit typed alone into the empty prompt presses the matching button, which runs the command directly; an Idea button opens a text field that feeds the change flow ([ADR 0001](decisions/0001-band-and-alias-hand-off.md)) | After the core flow works; needs Claude Code v2.1.287+ |
 
 Examples of what layer 1 asks:
 
@@ -329,7 +340,7 @@ Plain language also works without any command: each skill's description lets Cla
 **Two rules the interaction layers never break**
 
 1. **Gates stay explicit.** Before PRD approval, applying remote settings or merging, the kit shows exactly what will happen (for example the ruleset diff) and waits for a confirmation. A hotkey or a preselected option never passes a gate on its own.
-2. **Unattended runs fall back.** When nobody can answer (`claude -p`, scheduled tasks), a command uses its flags or the remembered defaults, or stops and states what it needs. It never guesses past a gate.
+2. **Unattended runs fall back.** When nobody can answer (`claude -p`, scheduled tasks), the multiple-choice tool is absent; a command uses its flags or the remembered defaults, or stops and states what it needs. It never guesses past a gate.
 
 ## Decisions
 

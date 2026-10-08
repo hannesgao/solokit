@@ -1,7 +1,7 @@
 ---
 id: "0003"
 date: 2026-10-08
-status: proposed
+status: accepted
 ---
 
 # Bootstrap applies the ruleset after the first green ci, and CI never filters pull requests
@@ -10,7 +10,7 @@ status: proposed
 
 Bootstrap (BST-7 to BST-9) configures a fresh public repo with the solo ruleset from the Conventions: PR required with 0 approvals, `ci` required and up to date, no force pushes, no deletion, linear history and an empty bypass list. Spike E2 (#2) ran the ruleset against two sandbox repos. Evidence: `spikes/e2-ruleset/results/README.md`.
 
-The findings that decide this ADR:
+The findings that decide this ADR (the spike ran with "branch must be up to date" on; decision 2 turns it off):
 
 - The API accepts a required `ci` that has never run (201). It does not protect against the wrong order.
 - If the ruleset is active before the first commit, the initial push to `main` is rejected (`GH013 … Required status check "ci" is expected`). Bootstrap could not push its skeleton at all.
@@ -23,7 +23,12 @@ The findings that decide this ADR:
 ## Decision
 
 1. **The bootstrap order is required, not just safer.** Bootstrap pushes the initial commit, including `.github/workflows/ci.yml`, while no ruleset exists. It then waits for that push's `ci` run on `main` to succeed and fails the step if it does not. After that it creates the ruleset, sets the merge options, creates labels and enables security, in that order. Re-running bootstrap on a repo that already has the ruleset skips the push and the wait (CORE-4).
-2. **Required check.** The rule is `ci` with `integration_id: 15368` (GitHub Actions), so only an Actions job can satisfy it, and `strict_required_status_checks_policy: true` is kept. When a PR is `BEHIND`, `/solokit:pr` runs `gh pr update-branch` before it merges or enables auto-merge, and says so.
+2. **Required check.** The rule is `ci` with `integration_id: 15368` (GitHub Actions), so only an Actions job can satisfy it. "Branch must be up to date" is **off** (`strict_required_status_checks_policy: false`), for three reasons:
+   - Every push to `main` runs `ci` too, so a merge that breaks `main` shows up at once.
+   - REL-1 requires a green `main` before any release, so a red `main` cannot ship.
+   - Dependabot PRs never pass through `/solokit:pr`. With strict on, each of them would wait on a manual update after every other merge, and auto-merge does not update a branch by itself.
+
+   `/solokit:pr` therefore does not update behind branches.
 3. **CI template.** The template has these parts:
    - Triggers: `pull_request` with types `opened, synchronize, reopened, edited` and no `paths` or `branches` filter, plus `push` to `main`. `edited` re-runs the title check when a title is fixed. The `main` filter on `push` only defines "push to main"; push runs never feed a PR's required check.
    - One job named `ci` (`permissions: contents: read`).
@@ -32,7 +37,7 @@ The findings that decide this ADR:
      2. The Conventional Commits title check, only on `pull_request`, in a few lines of shell.
      3. A change-detection step that sets `code=true` unless every changed file is under `docs/`.
      4. Install, lint, test and build steps, each guarded by `if: steps.changes.outputs.code == 'true'`.
-4. **Ruleset template** (`templates/rulesets/solo-main.json`). It sends only documented parameters and leaves `require_extra_approval_for_unattributed_changes` to GitHub's default (`true`). Five PRs merged under that default, one of them with a GitHub-made update commit.
+4. **Ruleset template** (`templates/rulesets/solo-main.json`). It sends only documented parameters and leaves `require_extra_approval_for_unattributed_changes` to GitHub's default (`true`), which the read-back lists every time. Five PRs merged under that default, one of them with a GitHub-made update commit.
 5. **Read-back and hash (BST-8, STA-2).** Bootstrap compares an intent view of the applied ruleset with `.github/rulesets/main.json`:
    - The view keeps the top-level `name`, `target`, `enforcement`, `conditions` and `bypass_actors`.
    - For each rule type in the intent, it keeps only the parameter keys the intent sends.
@@ -45,7 +50,7 @@ The findings that decide this ADR:
 
 - A step that waits for CI adds about 30 to 60 s to bootstrap. If the first run fails, bootstrap stops before any ruleset exists and the repo stays unprotected, so BST-10 (the first run must pass) matters.
 - Every stack template must keep its expensive steps behind the change-detection output. Skipping the whole job, or the workflow, blocks the PR.
-- `/solokit:pr` handles `BEHIND` itself. A solo developer rarely has two PRs open, but auto-merge alone would wait forever on a behind branch.
+- A PR can merge with a `ci` result computed against an older `main`. Two PRs that pass on their own but conflict in behaviour can turn `main` red. That shows up on the push run, and REL-1 blocks the release until a fix PR turns `main` green again.
 - The hash is stable across GitHub adding new parameters with defaults. A future default that matters (such as the unattributed-changes approval) shows up only in the information list, so the read-back report prints that list every time.
 - CodeQL default setup adds two non-required checks to every PR.
 
@@ -54,6 +59,6 @@ The findings that decide this ADR:
 - **Ruleset first, `do_not_enforce_on_create: true`, then push**: possible in principle, but it adds a setting to the solo ruleset only to work around the order. The verified order needs no exception.
 - **Ruleset first with enforcement `disabled`, activated after the first run**: works, as the B fallback showed, but it is the same order with one more API call and one more state to recover from.
 - **`paths` filters to save CI minutes on docs PRs**: confirmed to block the PR.
-- **Dropping "branch must be up to date"**: removes the `BEHIND` friction but allows merging a PR whose `ci` ran against an old `main`. The Conventions keep it; `update-branch` is cheap.
+- **Keeping "branch must be up to date"** (as the spike ran it): every PR's `ci` result is computed against the current `main`. In exchange, every open PR goes `BEHIND` after any merge, auto-merge waits without updating, and Dependabot PRs need a manual update each time. The push run on `main` and the REL-1 precondition give enough protection for one developer.
 - **Hashing the full GET response**: changes with every timestamp and every new default GitHub adds.
 - **Sending `require_extra_approval_for_unattributed_changes: false` explicitly**: accepted by the API, but the parameter is undocumented and its meaning unknown. Revisit if it ever blocks a merge.
