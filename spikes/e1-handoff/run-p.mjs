@@ -16,6 +16,8 @@ const CASES = {
   'ask-prompts-none': ['-p', '/solokit-e1:ask', ...BASE, '--permission-prompts', 'none'],
   'ask-dontask': ['-p', '/solokit-e1:ask', ...BASE, '--permission-mode', 'dontAsk'],
   'perm-plain': ['-p', '/solokit-e1:perm', ...BASE],
+  'mod-cmd-2': ['-p', '/solokit 2', ...BASE],
+  'mod-cmd-4': ['-p', '/solokit 4', ...BASE],
 };
 
 const picked = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(CASES);

@@ -1,0 +1,1 @@
+{"skill":"go","at":"2026-10-08T13:51:03.166Z","cwd":"/home/hannesgao/cc_plugin_dev/solokit","ppid":155703}

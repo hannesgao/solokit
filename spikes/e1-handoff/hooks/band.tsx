@@ -5,8 +5,8 @@ import type { EngineInterface, Register } from 'claude-code'
 const LOG = '.spike/e1-mod-log.json'
 const TARGET = 'solokit-e1:go'
 
-type Way = '1' | '2' | '3'
-const NAMES: Record<Way, string> = { '1': 'submit', '2': 'run', '3': 'fill' }
+type Way = '1' | '2' | '3' | '4'
+const NAMES: Record<Way, string> = { '1': 'submit', '2': 'run', '3': 'fill', '4': 'deferred-run' }
 
 async function log($: EngineInterface, entry: Record<string, unknown>) {
   let entries: unknown[] = []
@@ -21,6 +21,17 @@ async function log($: EngineInterface, entry: Record<string, unknown>) {
 function handOff($: EngineInterface, way: Way, from: string) {
   const args = `from-${from}-${NAMES[way]}`
   const started = log($, { from, way: NAMES[way], args, phase: 'called' })
+  if (way === '4') {
+    // Run the command after the calling hook has returned, so it is not
+    // nested in the command.run dispatch the turn is waiting on.
+    $.clock.after(50, () => {
+      void $.command.run({ command: TARGET, args }).then(
+        result => started.then(() => log($, { from, way: NAMES[way], phase: 'resolved', result })),
+        error => started.then(() => log($, { from, way: NAMES[way], phase: 'rejected', error: String(error) })),
+      )
+    })
+    return
+  }
   const call =
     way === '1'
       ? $.prompt.submit({ text: `/${TARGET} ${args}`, asUser: true })
@@ -37,8 +48,8 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'solokit',
-      description: 'Spike E1: hand off to /solokit-e1:go (1 submit, 2 run, 3 fill)',
-      argumentHint: '[1|2|3]',
+      description: 'Spike E1: hand off to /solokit-e1:go (1 submit, 2 run, 3 fill, 4 deferred run)',
+      argumentHint: '[1|2|3|4]',
     })
     const commands = await $.command.list()
     await log($, {
@@ -50,8 +61,8 @@ export const register: Register = on => {
 
   on('command.run', { command: 'solokit' }, async ($, e) => {
     const way = e.args.trim()
-    if (way !== '1' && way !== '2' && way !== '3') {
-      return { text: 'usage: /solokit 1|2|3 (1 prompt.submit asUser, 2 command.run, 3 prompt.fill)' }
+    if (way !== '1' && way !== '2' && way !== '3' && way !== '4') {
+      return { text: 'usage: /solokit 1|2|3|4 (1 prompt.submit asUser, 2 command.run, 3 prompt.fill, 4 command.run after the hook returns)' }
     }
     handOff($, way, 'cmd')
     return { text: `E1 mod: /solokit ${way} handed off via ${NAMES[way]}` }
