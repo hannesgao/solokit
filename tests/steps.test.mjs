@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
@@ -120,5 +120,79 @@ test('before state.json exists steps still run; bookkeeping starts once a step c
 test('a step without check is refused', async t => {
   const root = project(t, base());
   await assert.rejects(runSteps(root, [{ name: 'x', run: () => {} }]), /needs check and run/);
-  mkdirSync(join(root, 'unused'), { recursive: true });
+});
+
+// Review follow-ups.
+
+const migrations = [{ from: 0, to: 1, name: 'add steps', up: st => ({ ...st, steps: {} }) }];
+
+test('a schema migration is reported, and a dry run migrates in memory only', async t => {
+  const root = project(t, { schema: 0, phase: 'bootstrap' });
+  const dry = await runSteps(root, [fileStep(root, 'a', [])], { dryRun: true, migrations, schema: 1 });
+  assert.deepEqual(dry.migrated, [{ from: 0, to: 1, name: 'add steps' }]);
+  assert.equal(onDisk(root).schema, 0);
+  const real = await runSteps(root, [fileStep(root, 'a', [])], { migrations, schema: 1 });
+  assert.deepEqual(real.migrated, [{ from: 0, to: 1, name: 'add steps' }]);
+  assert.equal(onDisk(root).schema, 1);
+});
+
+test('a step that creates state.json and then fails is recorded failed, so the next run does not skip it', async t => {
+  const root = project(t);
+  const createThenFail = {
+    name: 'kickoff.state',
+    check: () => existsSync(join(root, '.project', 'state.json')) && onDisk(root).steps['kickoff.state'] === 'done',
+    run: () => { writeState(root, base()); throw new Error('commit failed'); },
+  };
+  const report = await runSteps(root, [createThenFail]);
+  assert.equal(report.ok, false);
+  assert.equal(onDisk(root).steps['kickoff.state'], 'failed');
+  assert.equal(onDisk(root).failures['kickoff.state'].reason, 'commit failed');
+});
+
+test('a step recorded failed whose outcome now exists is done, and the report says the failure was cleared', async t => {
+  const root = project(t, { ...base({ a: 'failed' }), failures: { a: { reason: 'r', recovery: 'v', at: 't' } } });
+  writeFileSync(join(root, 'a.txt'), 'a');
+  const report = await runSteps(root, [fileStep(root, 'a', [])]);
+  assert.match(report.steps[0].note, /earlier failure cleared/);
+  assert.equal(onDisk(root).steps.a, 'done');
+  assert.equal('failures' in onDisk(root), false);
+});
+
+test('a run that edits state.json itself keeps its edit', async t => {
+  const root = project(t, base());
+  const step = { name: 'a', check: () => false, run: () => writeState(root, { ...onDisk(root), phase: 'plan' }) };
+  await runSteps(root, [step]);
+  assert.equal(onDisk(root).phase, 'plan');
+  assert.equal(onDisk(root).steps.a, 'done');
+});
+
+test('a check that throws during a dry run is reported but not recorded', async t => {
+  const root = project(t, base());
+  const report = await runSteps(root, [{ name: 'x', check: () => { throw new Error('offline'); }, run: () => {} }], { dryRun: true });
+  assert.equal(report.failed.name, 'x');
+  assert.equal(onDisk(root).steps.x, undefined);
+});
+
+test('an unreadable state.json is reported like any failure, not thrown', async t => {
+  const root = project(t);
+  writeState(root, base());
+  writeFileSync(join(root, '.project', 'state.json'), '{ broken');
+  const report = await runSteps(root, [fileStep(root, 'a', [])]);
+  assert.equal(report.ok, false);
+  assert.match(report.failed.error, /not valid JSON/);
+  assert.ok(report.failed.recovery);
+});
+
+test('step names must be non-empty and unique', async t => {
+  const root = project(t, base());
+  const step = name => ({ name, check: () => true, run: () => {} });
+  await assert.rejects(runSteps(root, [step('')]), /non-empty name/);
+  await assert.rejects(runSteps(root, [step('a'), step('a')]), /duplicate step "a"/);
+});
+
+test('failed runs and failed checks give the same default recovery', async t => {
+  const root = project(t, base());
+  const a = await runSteps(root, [{ name: 'x', check: () => { throw new Error('e'); }, run: () => {} }]);
+  const b = await runSteps(root, [{ name: 'x', check: () => false, run: () => { throw new Error('e'); } }]);
+  assert.equal(a.failed.recovery, b.failed.recovery);
 });

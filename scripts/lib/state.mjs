@@ -20,6 +20,9 @@ const statePath = root => join(root, STATE_FILE);
 const now = () => new Date().toISOString();
 const isObject = v => v !== null && typeof v === 'object' && !Array.isArray(v);
 
+// The recovery printed when a failure brings none of its own (CORE-7).
+export const defaultRecovery = step => `Fix the cause, then run the command again; step "${step}" starts over.`;
+
 export const notAProject = () =>
   new StateError(`no ${STATE_FILE} here: not a solokit project`, 'Run /solokit:go in the project folder to start or import a project.');
 
@@ -117,7 +120,7 @@ export async function withState(root, step, body, options = {}) {
     writeState(root, next);
     return { state: next, migrated };
   } catch (error) {
-    error.recovery ??= `Fix the cause, then run the command again; step "${step}" starts over.`;
+    error.recovery ??= defaultRecovery(step);
     try {
       writeState(root, withFailure(before, step, error.message, error.recovery));
     } catch (recordError) {
