@@ -1,0 +1,242 @@
+[
+  {
+    "at": "2026-10-08T13:41:09.988Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:41:26.421Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:41:31.039Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:41:36.560Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:41:42.712Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:42:17.475Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:42:20.824Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:42:26.339Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:42:38.566Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:42:41.939Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  }
+]
