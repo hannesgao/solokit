@@ -185,8 +185,9 @@ The bootstrap script applies these with `gh` and keeps the ruleset as code in `.
 
 **Security**
 
-- Dependabot alerts and security updates: on, with `.github/dependabot.yml` for the project's ecosystems.
+- Dependabot alerts and security updates: on, with `.github/dependabot.yml` for the project's ecosystems. Every ecosystem sets `commit-message: prefix: "chore(deps)"`, so Dependabot's PR titles pass the title check, and none uses `groups`, whose PR titles ignore the prefix.
 - Secret scanning and push protection: on (free for public repositories, and already on for a new public repository).
+- Private vulnerability reporting: on, so a security issue can be reported privately instead of in a public issue.
 - CodeQL default setup: on. It needs one supported language; the workflow file alone counts as `actions`. Its checks are not required.
 
 **CI workflow** (`.github/workflows/ci.yml`): triggers on `pull_request` (types `opened`, `synchronize`, `reopened`, `edited`) with no `paths` or `branches` filter, and on `push` to `main`. One job named `ci` checks out with full history, checks the PR title on pull requests, detects whether anything outside `docs/` changed, and guards install, lint, test and build with step-level `if:` on that result. A skipped workflow never reports `ci` and blocks the PR, so nothing is skipped above the step level.
