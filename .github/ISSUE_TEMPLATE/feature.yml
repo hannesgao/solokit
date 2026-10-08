@@ -1,0 +1,31 @@
+name: Feature
+description: Implement one or more PRD requirements.
+title: "feat: "
+labels: ["type:feature"]
+body:
+  - type: input
+    id: requirements
+    attributes:
+      label: Requirement IDs
+      description: IDs from docs/PRD.md, e.g. CORE-1, CORE-4
+    validations:
+      required: true
+  - type: input
+    id: prd-version
+    attributes:
+      label: PRD version
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Taken from the PRD; one checkbox per criterion.
+      value: "- [ ] "
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes

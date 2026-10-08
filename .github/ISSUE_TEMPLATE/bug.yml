@@ -1,0 +1,25 @@
+name: Bug
+description: The product does not do what the PRD says.
+title: "fix: "
+labels: ["type:bug"]
+body:
+  - type: input
+    id: requirements
+    attributes:
+      label: Requirement IDs
+      description: The requirement the behaviour breaks.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happens
+      description: Steps, command, output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What the PRD says should happen
+    validations:
+      required: true
