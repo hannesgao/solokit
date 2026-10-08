@@ -46,7 +46,7 @@ jobs:
             echo "code=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         if: steps.changes.outputs.code == 'true'
         with:
           node-version: 22
