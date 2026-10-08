@@ -1,5 +1,5 @@
 ---
-version: 1.0.0
+version: 1.0.1
 status: approved
 updated: 2026-10-08
 ---
@@ -12,7 +12,7 @@ Oct 8, 2026 · @Yunhan Gao
 
 solokit is a self-built Claude Code plugin that runs a solo agent-coding project from idea to release: kickoff, PRD, GitHub repo and rules, issue-driven building, mid-project changes, release and retro. It replaces the setup prompts typed by hand at the start of every project with interactive commands that follow one set of conventions.
 
-- **Version** 1.0.0, **status** approved. The whole command set ships together as 1.0; nothing is deferred to a later version.
+- **Version** 1.0.1, **status** approved. The whole command set ships together as 1.0; nothing is deferred to a later version.
 - **Conventions** are defined in solo-agent-coding-kit — Conventions v0.2; this PRD specifies the plugin that implements them and does not repeat them.
 - **Scope**: personal use, built from scratch, no dependency on any other Claude Code plugin. External requirements: Node.js (built-in modules only, no npm packages), `git` and `gh`.
 - **Display name** solo-agent-coding-kit; **plugin name** `solokit`; commands appear as `/solokit:<command>`.
@@ -115,7 +115,7 @@ The PRD can be drafted from a kickoff interview or imported from elsewhere; both
 | PRD-1 | p0 | Draft `docs/PRD.md` from the kickoff, following the required PRD skeleton, section by section; ask only for facts the kickoff does not give. |
 | PRD-2 | p0 | Give every requirement a stable ID with an area prefix and a priority, and assign it to a milestone. |
 | PRD-3 | p0 | Require at least one milestone and a Testing section; `/solokit:plan` depends on both. |
-| PRD-4 | p1 | `/solokit:prd check` validates the PRD: skeleton complete, IDs unique, every requirement in a milestone, Open questions listed. Approval runs it first. |
+| PRD-4 | p0 | `/solokit:prd check` validates the PRD: skeleton complete, IDs unique, every requirement in a milestone, Open questions listed. Approval runs it first. |
 | PRD-5 | p0 | Approval (**gate 1**): show the check result and a one-screen summary; on yes set `status: approved` and version `1.0.0`, add the Changelog line, record the gate and commit `docs: approve PRD v1.0.0`. |
 | PRD-6 | p1 | After approval, `docs/PRD.md` changes only through the change flow; direct edits trigger the drift warning. |
 
@@ -160,7 +160,7 @@ Planning turns the PRD into GitHub milestones and issues; the build loop takes o
 | --- | --- | --- |
 | PLN-1 | p0 | Create one GitHub milestone per PRD milestone, titled `M<n> <name>`, with the PRD's description. |
 | PLN-2 | p0 | Propose issues from requirements: one per requirement by default, small related requirements grouped. Each issue carries the requirement IDs, PRD version, acceptance criteria taken from the PRD, type and priority labels, and its milestone. |
-| PLN-3 | p0 | Show the full list before creating anything; mark each created issue with a hidden marker (`<!-- solokit:req=FR-12 -->`) so a re-run never duplicates. |
+| PLN-3 | p0 | Show the full list before creating anything; mark each created issue with a hidden marker so a re-run never duplicates: `<!-- solokit:req=FR-12 -->` for one requirement, `<!-- solokit:req=FR-12,FR-13 -->` (comma-separated, no spaces) for an issue that groups several. |
 | PLN-4 | p1 | After a PRD change, re-plan only the requirement IDs that changed: add issues for new ones, close issues for removed ones with a link to the change request. |
 
 **Next `/solokit:next`**
@@ -413,6 +413,7 @@ Items marked **spike** are answered by experiment in M0; items marked **decision
 
 | Date | Version | Change |
 | --- | --- | --- |
+| 8 Oct 2026 | 1.0.1 | Tweak: PLN-3 states the comma-separated marker for grouped issues; PRD-4 raised to p0 because the approval gate (PRD-5) depends on it (#13). |
 | 8 Oct 2026 | 1.0.0 | Approved (gate 1, PRD-5) after the PRD check: 100 requirements (72 p0, 21 p1, 7 p2), IDs unique, each in exactly one milestone M1 to M7, no open question. From here on the PRD changes only through the change flow (PRD-6). |
 | 8 Oct 2026 | 0.5.0 | No AI attribution by default (ADR 0004): `CLAUDE.md` generated locally and gitignored with a no-attribution rule (BST-5, BST-12), regenerated when missing (ENT-5, M3), attribution settings off in the project (BST-13), `no-ai-attribution` hook (HOOK-6, M4), switch `hide_ai_attribution` (CFG-5); `stack` added to the state's project facts. Dependabot PR titles prefixed `chore(deps)` (BST-5); private vulnerability reporting enabled at bootstrap (BST-7). |
 | 8 Oct 2026 | 0.4.0 | Spikes E1 and E2 closed (ADRs 0001–0003). Band and bare `/solokit` hand off with `$.command.run`, with `$.prompt.fill` as fallback (BAND-3, BAND-4, ENT-4). Questions stay in the invoking turn, and AskUserQuestion is absent from all `-p` runs without a host (CORE-2, CORE-3). Scripts get the plugin data directory as `--data` (Configuration, new CFG-4). The BST-7 order is required, with a detailed read-back and intent-view hash (BST-7, BST-8, STA-2), CI trigger and job shape (BST-9), and no up-to-date requirement on the required check. The PR body is kept short because it becomes the squash commit message, with the verify output and review in PR comments (PR-3). M0 done; M1 covers ENT-1 to ENT-3, and ENT-4 stays in M7. Every requirement gets a priority within its milestone (PRD-2). Frontmatter added. |
