@@ -102,6 +102,7 @@ Rules for the layout:
 - `phase` is one of `kickoff`, `prd`, `bootstrap`, `plan`, `build`, `release`, `retro`. The change flow does not change the phase; it runs alongside.
 - A command refuses to start a phase whose gate has not passed, and says which gate is missing.
 - Every step in `steps` is idempotent. A command checks reality first (does the repo exist, is the ruleset applied) and only then trusts `steps`.
+- A step that fails is `"failed"` in `steps`, and `failures.<step>` holds its `reason`, the `recovery` to print and the time `at`. The rest of the file stays as it was before the step, and the entry is removed when the step later succeeds. The file is always written whole (temp file, then rename).
 - `counters` hand out the next ADR and CR numbers, so numbers never collide.
 - `.project/local/` holds per-machine data such as the active issue or a session note, and is gitignored.
 
