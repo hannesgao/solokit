@@ -1,0 +1,280 @@
+[
+  {
+    "at": "2026-10-08T13:49:06.116Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T13:49:30.110Z",
+    "from": "band",
+    "way": "submit",
+    "args": "from-band-submit",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:49:30.111Z",
+    "from": "band",
+    "way": "submit",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: prompt.submit: submits a prompt to the model; a text beginning with / would run a command as the user; run one with $.command.run({ command }) (host check)"
+  },
+  {
+    "at": "2026-10-08T13:49:31.673Z",
+    "from": "band",
+    "way": "submit",
+    "args": "from-band-submit",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:49:31.675Z",
+    "from": "band",
+    "way": "submit",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: prompt.submit: submits a prompt to the model; a text beginning with / would run a command as the user; run one with $.command.run({ command }) (host check)"
+  },
+  {
+    "at": "2026-10-08T13:49:45.173Z",
+    "from": "band",
+    "way": "run",
+    "args": "from-band-run",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:49:45.307Z",
+    "from": "band",
+    "way": "run",
+    "phase": "resolved",
+    "result": {}
+  },
+  {
+    "at": "2026-10-08T13:50:53.151Z",
+    "from": "band",
+    "way": "submit",
+    "args": "from-band-submit",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:50:53.152Z",
+    "from": "band",
+    "way": "submit",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: prompt.submit: submits a prompt to the model; a text beginning with / would run a command as the user; run one with $.command.run({ command }) (host check)"
+  },
+  {
+    "at": "2026-10-08T13:51:03.076Z",
+    "from": "band",
+    "way": "run",
+    "args": "from-band-run",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:51:03.194Z",
+    "from": "band",
+    "way": "run",
+    "phase": "resolved",
+    "result": {}
+  },
+  {
+    "at": "2026-10-08T13:51:07.700Z",
+    "from": "band",
+    "way": "fill",
+    "args": "from-band-fill",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:51:07.702Z",
+    "from": "band",
+    "way": "fill",
+    "phase": "resolved",
+    "result": {
+      "isFilled": true,
+      "text": "",
+      "cursor": 0
+    }
+  },
+  {
+    "at": "2026-10-08T13:51:21.489Z",
+    "from": "band",
+    "way": "submit",
+    "args": "from-band-submit",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:51:21.490Z",
+    "from": "band",
+    "way": "submit",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: prompt.submit: submits a prompt to the model; a text beginning with / would run a command as the user; run one with $.command.run({ command }) (host check)"
+  },
+  {
+    "at": "2026-10-08T13:51:23.857Z",
+    "from": "band",
+    "way": "submit",
+    "args": "from-band-submit",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:51:23.858Z",
+    "from": "band",
+    "way": "submit",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: prompt.submit: submits a prompt to the model; a text beginning with / would run a command as the user; run one with $.command.run({ command }) (host check)"
+  },
+  {
+    "at": "2026-10-08T13:51:25.005Z",
+    "from": "band",
+    "way": "submit",
+    "args": "from-band-submit",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:51:25.006Z",
+    "from": "band",
+    "way": "submit",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: prompt.submit: submits a prompt to the model; a text beginning with / would run a command as the user; run one with $.command.run({ command }) (host check)"
+  },
+  {
+    "at": "2026-10-08T13:51:50.355Z",
+    "from": "band",
+    "way": "run",
+    "args": "from-band-run",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:51:50.417Z",
+    "from": "band",
+    "way": "run",
+    "phase": "resolved",
+    "result": {}
+  },
+  {
+    "at": "2026-10-08T13:52:14.743Z",
+    "from": "band",
+    "way": "fill",
+    "args": "from-band-fill",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:52:14.744Z",
+    "from": "band",
+    "way": "fill",
+    "phase": "resolved",
+    "result": {
+      "isFilled": true,
+      "text": "",
+      "cursor": 0
+    }
+  },
+  {
+    "at": "2026-10-08T13:52:53.581Z",
+    "from": "band",
+    "way": "submit",
+    "args": "from-band-submit",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:52:53.582Z",
+    "from": "band",
+    "way": "submit",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: prompt.submit: submits a prompt to the model; a text beginning with / would run a command as the user; run one with $.command.run({ command }) (host check)"
+  },
+  {
+    "at": "2026-10-08T13:53:47.635Z",
+    "from": "band",
+    "way": "run",
+    "args": "from-band-run",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:53:47.698Z",
+    "from": "band",
+    "way": "run",
+    "phase": "resolved",
+    "result": {}
+  },
+  {
+    "at": "2026-10-08T13:54:26.946Z",
+    "from": "band",
+    "way": "fill",
+    "args": "from-band-fill",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:54:26.947Z",
+    "from": "band",
+    "way": "fill",
+    "phase": "resolved",
+    "result": {
+      "isFilled": true,
+      "text": "",
+      "cursor": 0
+    }
+  },
+  {
+    "at": "2026-10-08T13:55:06.038Z",
+    "from": "cmd",
+    "way": "submit",
+    "args": "from-cmd-submit",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:55:06.048Z",
+    "from": "cmd",
+    "way": "submit",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: prompt.submit: called from a command.run hook, it would wait on the turn this hook is holding; submit from a later event (turn.complete) (host check)"
+  },
+  {
+    "at": "2026-10-08T13:55:35.396Z",
+    "from": "cmd",
+    "way": "run",
+    "args": "from-cmd-run",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:55:35.406Z",
+    "from": "cmd",
+    "way": "run",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: command.run: called from a command.run hook, it would wait on the turn this hook is holding; answer { text } instead, or run it from a later event (turn.complete) (host check)"
+  },
+  {
+    "at": "2026-10-08T13:55:43.733Z",
+    "from": "cmd",
+    "way": "fill",
+    "args": "from-cmd-fill",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T13:55:43.743Z",
+    "from": "cmd",
+    "way": "fill",
+    "phase": "resolved",
+    "result": {
+      "isFilled": true,
+      "text": "",
+      "cursor": 0
+    }
+  }
+]

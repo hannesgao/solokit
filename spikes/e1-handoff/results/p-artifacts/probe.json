@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "at": "2026-10-08T13:41:47.174Z",
+    "argDir": "/home/hannesgao/.claude/plugins/data/solokit-e1-inline",
+    "envDir": null,
+    "envPluginRoot": null,
+    "cwd": "/home/hannesgao/cc_plugin_dev/solokit"
+  },
+  {
+    "n": 2,
+    "at": "2026-10-08T13:41:50.261Z",
+    "argDir": "/home/hannesgao/.claude/plugins/data/solokit-e1-inline",
+    "envDir": null,
+    "envPluginRoot": null,
+    "cwd": "/home/hannesgao/cc_plugin_dev/solokit"
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "at": "2026-10-08T14:00:51.044Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T14:00:52.509Z",
+    "from": "cmd",
+    "way": "run",
+    "args": "from-cmd-run",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T14:00:52.518Z",
+    "from": "cmd",
+    "way": "run",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: command.run: called from a command.run hook, it would wait on the turn this hook is holding; answer { text } instead, or run it from a later event (turn.complete) (host check)"
+  },
+  {
+    "at": "2026-10-08T14:00:54.294Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T14:00:54.344Z",
+    "from": "cmd",
+    "way": "deferred-run",
+    "args": "from-cmd-deferred-run",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T14:00:54.482Z",
+    "from": "cmd",
+    "way": "deferred-run",
+    "phase": "rejected",
+    "error": "HooksError: solokit-e1: $.command.run is not available in this mode: no session is bound in this process (the REPL has not mounted and no headless session is built); catch it and carry on"
+  }
+]
