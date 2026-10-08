@@ -5,8 +5,10 @@
 // through `gh`. Every step reads first and writes only what differs.
 //
 // Usage (from the repo root):
-//   node spikes/e2-ruleset/apply.mjs --repo <owner/name> [--ruleset .github/rulesets/main.json] [--dry-run]
+//   node spikes/e2-ruleset/apply.mjs --repo <owner/name> [--ruleset .github/rulesets/main.json]
+//     [--delete-labels name,name] [--dry-run]
 //
+// --delete-labels removes the named labels when no issue or PR carries them.
 // --dry-run reads the repo and prints every write it would make, making none.
 // The report is printed and saved to spikes/e2-ruleset/results/apply/.
 
@@ -25,6 +27,7 @@ const flag = name => {
 const REPO = flag('repo');
 const DRY = argv.includes('--dry-run');
 const RULESET_FILE = flag('ruleset') ?? '.github/rulesets/main.json';
+const DELETE_LABELS = flag('delete-labels')?.split(',').filter(Boolean) ?? [];
 if (!REPO || !/^[\w.-]+\/[\w.-]+$/.test(REPO)) {
   console.error('usage: node spikes/e2-ruleset/apply.mjs --repo <owner/name> [--ruleset <file>] [--dry-run]');
   process.exit(2);
@@ -145,7 +148,18 @@ if (!existing && ciRun?.conclusion !== 'success') {
       actions.push({ label: want.name, action: 'update' });
     }
   }
-  const others = have.map(l => l.name).filter(n => !LABELS.some(w => w.name === n) && !n.startsWith('cr:'));
+  for (const name of DELETE_LABELS) {
+    if (!have.some(l => l.name === name)) continue;
+    const q = encodeURIComponent(`repo:${REPO} label:"${name}"`);
+    const used = ghApi('GET', `/search/issues?q=${q}&per_page=1`).body?.total_count;
+    if (used === 0) {
+      write('DELETE', `/repos/${REPO}/labels/${encodeURIComponent(name)}`);
+      actions.push({ label: name, action: 'delete' });
+    } else {
+      actions.push({ label: name, action: 'kept', reason: `used by ${used ?? 'an unknown number of'} issues or PRs` });
+    }
+  }
+  const others = have.map(l => l.name).filter(n => !LABELS.some(w => w.name === n) && !DELETE_LABELS.includes(n) && !n.startsWith('cr:'));
   report.steps.labels = { actions, otherLabels: others };
 }
 
@@ -158,6 +172,7 @@ function securityState() {
     secretScanning: ghApi('GET', `/repos/${REPO}`).body?.security_and_analysis?.secret_scanning?.status === 'enabled',
     pushProtection: ghApi('GET', `/repos/${REPO}`).body?.security_and_analysis?.secret_scanning_push_protection?.status === 'enabled',
     codeqlDefaultSetup: ghApi('GET', `/repos/${REPO}/code-scanning/default-setup`).body?.state === 'configured',
+    privateVulnerabilityReporting: ghApi('GET', `/repos/${REPO}/private-vulnerability-reporting`).body?.enabled === true,
   };
 }
 
@@ -171,6 +186,7 @@ function securityState() {
     });
   }
   if (!before.codeqlDefaultSetup) write('PATCH', `/repos/${REPO}/code-scanning/default-setup`, { state: 'configured', query_suite: 'default' });
+  if (!before.privateVulnerabilityReporting) write('PUT', `/repos/${REPO}/private-vulnerability-reporting`);
   report.steps.security = { before };
 }
 
