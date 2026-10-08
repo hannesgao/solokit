@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
+import { test } from 'node:test';
+
+import { checkConventions } from './lib/conventions.mjs';
+
+const fixture = name => fileURLToPath(new URL(`./fixtures/conventions/${name}`, import.meta.url));
+const rules = name => checkConventions(fixture(name)).map(v => v.rule);
+
+test('a compliant plugin has no violations, and hooks may read their environment', () => {
+  assert.deepEqual(checkConventions(fixture('good')), []);
+});
+
+test('CFG-4: a skill calls kit scripts only as node ${CLAUDE_PLUGIN_ROOT}/scripts/<name>.mjs', () => {
+  assert.deepEqual(rules('bad-call'), ['script-call']);
+});
+
+test('CFG-4: a skill that calls a kit script pre-approves it in allowed-tools', () => {
+  assert.deepEqual(rules('bad-allowed'), ['allowed-tools']);
+});
+
+test('CFG-4: ${CLAUDE_PLUGIN_DATA} appears in a skill only as the --data argument', () => {
+  assert.deepEqual(rules('bad-data'), ['data-arg']);
+});
+
+test('CFG-4: scripts never read the plugin data location from the environment', () => {
+  assert.deepEqual(rules('bad-env'), ['data-env']);
+});
+
+test('CFG-3: scripts and hooks never handle GitHub tokens', () => {
+  assert.deepEqual(rules('bad-token'), ['token']);
+});
+
+test('violations carry file and line', () => {
+  const [violation] = checkConventions(fixture('bad-env'));
+  assert.equal(violation.file, 'scripts/x.mjs');
+  assert.equal(violation.line, 1);
+});
+
+test('this repo follows the conventions', () => {
+  assert.deepEqual(checkConventions(fileURLToPath(new URL('..', import.meta.url))), []);
+});

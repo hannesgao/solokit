@@ -1,0 +1,14 @@
+{
+  "name": "solokit",
+  "owner": {
+    "name": "Hannes Gao",
+    "url": "https://github.com/hannesgao"
+  },
+  "description": "Personal marketplace for solokit (solo-agent-coding-kit).",
+  "plugins": [
+    {
+      "name": "solokit",
+      "source": "./"
+    }
+  ]
+}

@@ -62,9 +62,13 @@ jobs:
           curl -fsSL https://claude.ai/install.sh | bash -s 2.1.294
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
+      # With marketplace.json present, `validate .` checks the marketplace and
+      # the plugin's components but not plugin.json, so both run.
       - name: Plugin structure (claude plugin validate --strict)
         if: steps.changes.outputs.code == 'true' && hashFiles('.claude-plugin/plugin.json') != ''
-        run: claude plugin validate --strict .
+        run: |
+          claude plugin validate --strict .
+          claude plugin validate --strict .claude-plugin/plugin.json
 
       - name: Action band (claude plugin test)
         if: steps.changes.outputs.code == 'true' && hashFiles('hooks/**/*.test.ts', 'hooks/**/*.test.tsx', 'tests/**/*.test.ts', 'tests/**/*.test.tsx') != ''

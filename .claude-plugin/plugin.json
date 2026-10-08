@@ -1,0 +1,52 @@
+{
+  "name": "solokit",
+  "displayName": "solo-agent-coding-kit",
+  "version": "0.1.0",
+  "description": "Runs a solo agent-coding project from idea to release: kickoff, PRD, GitHub repo and rules, issue-driven building, change flow, release and retro.",
+  "author": {
+    "name": "Hannes Gao",
+    "url": "https://github.com/hannesgao"
+  },
+  "repository": "https://github.com/hannesgao/solokit",
+  "license": "Apache-2.0",
+  "keywords": ["workflow", "prd", "github", "solo"],
+  "userConfig": {
+    "default_owner": {
+      "type": "string",
+      "title": "Default GitHub owner",
+      "description": "User or organisation that new repos are created under; asked on the first bootstrap when empty.",
+      "default": ""
+    },
+    "default_visibility": {
+      "type": "string",
+      "title": "Default repo visibility",
+      "description": "Visibility preselected when bootstrap creates a repo.",
+      "options": ["public", "private"],
+      "default": "public"
+    },
+    "language": {
+      "type": "string",
+      "title": "Project document language",
+      "description": "Language for repo documents in new projects, as a language code such as en.",
+      "default": "en"
+    },
+    "kit_repo": {
+      "type": "string",
+      "title": "Kit repository",
+      "description": "owner/name of the solokit repo where retros open kit-improvement issues.",
+      "default": ""
+    },
+    "hide_ai_attribution": {
+      "type": "boolean",
+      "title": "Hide AI attribution",
+      "description": "Keep CLAUDE.md local, turn off attribution settings and block attribution in commits, PRs, issues and branch names.",
+      "default": true
+    },
+    "action_band": {
+      "type": "boolean",
+      "title": "Action band",
+      "description": "Show the action band above the prompt in solokit projects.",
+      "default": true
+    }
+  }
+}
