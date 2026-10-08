@@ -1,0 +1,152 @@
+{
+  "step": "same-pr-with-workflow",
+  "repo": "hannesgao/solokit-e2-b",
+  "startedAt": "2026-10-08T14:17:15.642Z",
+  "endedAt": "2026-10-08T14:18:04.761Z",
+  "outcome": {
+    "pr": 1,
+    "ci": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-08T14:17:34Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/hannesgao/solokit-e2-b/actions/runs/37791232900/job/113358849875",
+        "name": "ci",
+        "startedAt": "2026-10-08T14:17:28Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      }
+    ],
+    "mergeStateStatus": "CLEAN",
+    "merge": {
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "state": "MERGED",
+    "firstPushRunOnMain": {
+      "conclusion": "success",
+      "databaseId": 37791296075,
+      "event": "push",
+      "headSha": "a13beba114476ac6b2fdcdf1d40f935ec9941599",
+      "name": "CI",
+      "status": "completed"
+    }
+  },
+  "calls": [
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com fetch -q origin",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com checkout -q -B feat/1-hello origin/feat/1-hello",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com add -A",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com commit -q -m ci: add workflow",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push -q origin feat/1-hello",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr list -R hannesgao/solokit-e2-b --head feat/1-hello --state open --json number",
+      "exitCode": 0,
+      "stdout": "[{\"number\":1}]",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 1 -R hannesgao/solokit-e2-b --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"fa3f8f42c894104e1a2284a287683491548d7ce2\",\"mergeStateStatus\":\"UNKNOWN\",\"mergeable\":\"UNKNOWN\",\"number\":1,\"state\":\"OPEN\",\"statusCheckRollup\":[]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 1 -R hannesgao/solokit-e2-b --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"fa3f8f42c894104e1a2284a287683491548d7ce2\",\"mergeStateStatus\":\"BLOCKED\",\"mergeable\":\"MERGEABLE\",\"number\":1,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"0001-01-01T00:00:00Z\",\"conclusion\":\"\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-b/actions/runs/37791232900/job/113358849875\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:28Z\",\"status\":\"IN_PROGRESS\",\"workflowName\":\"CI\"}]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 1 -R hannesgao/solokit-e2-b --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"fa3f8f42c894104e1a2284a287683491548d7ce2\",\"mergeStateStatus\":\"CLEAN\",\"mergeable\":\"MERGEABLE\",\"number\":1,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:17:34Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-b/actions/runs/37791232900/job/113358849875\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:28Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"}]}",
+      "stderr": ""
+    },
+    {
+      "waited": "ci on PR #1",
+      "ms": 28110,
+      "view": {
+        "autoMergeRequest": null,
+        "headRefOid": "fa3f8f42c894104e1a2284a287683491548d7ce2",
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 1,
+        "state": "OPEN",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-10-08T14:17:34Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-b/actions/runs/37791232900/job/113358849875",
+            "name": "ci",
+            "startedAt": "2026-10-08T14:17:28Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ]
+      }
+    },
+    {
+      "cmd": "gh pr merge 1 -R hannesgao/solokit-e2-b --squash",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 1 -R hannesgao/solokit-e2-b --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"fa3f8f42c894104e1a2284a287683491548d7ce2\",\"mergeStateStatus\":\"UNKNOWN\",\"mergeable\":\"UNKNOWN\",\"number\":1,\"state\":\"MERGED\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:17:34Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-b/actions/runs/37791232900/job/113358849875\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:28Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"}]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com ls-remote origin refs/heads/main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "a13beba114476ac6b2fdcdf1d40f935ec9941599\trefs/heads/main",
+      "stderr": ""
+    },
+    {
+      "waited": "run for a13beba114476ac6b2fdcdf1d40f935ec9941599 on main",
+      "ms": 12274,
+      "run": {
+        "conclusion": "success",
+        "databaseId": 37791296075,
+        "event": "push",
+        "headSha": "a13beba114476ac6b2fdcdf1d40f935ec9941599",
+        "name": "CI",
+        "status": "completed"
+      }
+    }
+  ]
+}

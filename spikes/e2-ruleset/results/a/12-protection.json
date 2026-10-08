@@ -1,0 +1,78 @@
+{
+  "step": "protection",
+  "repo": "hannesgao/solokit-e2-a",
+  "startedAt": "2026-10-08T14:21:56.491Z",
+  "endedAt": "2026-10-08T14:22:04.118Z",
+  "outcome": {
+    "directPush": {
+      "exitCode": 1,
+      "stderr": "remote: error: GH013: Repository rule violations found for refs/heads/main.        \nremote: Review all repository rules at https://github.com/hannesgao/solokit-e2-a/rules?ref=refs%2Fheads%2Fmain        \nremote: \nremote: - Changes must be made through a pull request.        \nremote: \nremote: - Required status check \"ci\" is expected.        \nremote: \nTo https://github.com/hannesgao/solokit-e2-a.git\n ! [remote rejected] HEAD -> main (push declined due to repository rule violations)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-a.git'"
+    },
+    "forcePush": {
+      "exitCode": 1,
+      "stderr": "remote: error: GH013: Repository rule violations found for refs/heads/main.        \nremote: Review all repository rules at https://github.com/hannesgao/solokit-e2-a/rules?ref=refs%2Fheads%2Fmain        \nremote: \nremote: - Cannot force-push to this branch        \nremote: \nremote: - Changes must be made through a pull request.        \nremote: \nTo https://github.com/hannesgao/solokit-e2-a.git\n ! [remote rejected] HEAD~1 -> main (push declined due to repository rule violations)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-a.git'"
+    },
+    "deleteMain": {
+      "exitCode": 1,
+      "stderr": "To https://github.com/hannesgao/solokit-e2-a.git\n ! [remote rejected] main (refusing to delete the current branch: refs/heads/main)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-a.git'"
+    }
+  },
+  "calls": [
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com fetch -q origin",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com checkout -q -B main origin/main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com add -A",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com commit -q -m chore: direct push to main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push origin HEAD:main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "remote: error: GH013: Repository rule violations found for refs/heads/main.        \nremote: Review all repository rules at https://github.com/hannesgao/solokit-e2-a/rules?ref=refs%2Fheads%2Fmain        \nremote: \nremote: - Changes must be made through a pull request.        \nremote: \nremote: - Required status check \"ci\" is expected.        \nremote: \nTo https://github.com/hannesgao/solokit-e2-a.git\n ! [remote rejected] HEAD -> main (push declined due to repository rule violations)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-a.git'"
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com reset -q --hard origin/main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push --force origin HEAD~1:main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "remote: error: GH013: Repository rule violations found for refs/heads/main.        \nremote: Review all repository rules at https://github.com/hannesgao/solokit-e2-a/rules?ref=refs%2Fheads%2Fmain        \nremote: \nremote: - Cannot force-push to this branch        \nremote: \nremote: - Changes must be made through a pull request.        \nremote: \nTo https://github.com/hannesgao/solokit-e2-a.git\n ! [remote rejected] HEAD~1 -> main (push declined due to repository rule violations)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-a.git'"
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push origin :main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "To https://github.com/hannesgao/solokit-e2-a.git\n ! [remote rejected] main (refusing to delete the current branch: refs/heads/main)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-a.git'"
+    }
+  ]
+}

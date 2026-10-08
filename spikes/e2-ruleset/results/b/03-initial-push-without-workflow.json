@@ -1,0 +1,528 @@
+{
+  "step": "initial-push-without-workflow",
+  "repo": "hannesgao/solokit-e2-b",
+  "startedAt": "2026-10-08T14:15:47.733Z",
+  "endedAt": "2026-10-08T14:15:56.506Z",
+  "outcome": {
+    "pushExitCode": 1,
+    "pushStderr": "remote: error: GH013: Repository rule violations found for refs/heads/main.        \nremote: Review all repository rules at https://github.com/hannesgao/solokit-e2-b/rules?ref=refs%2Fheads%2Fmain        \nremote: \nremote: - Required status check \"ci\" is expected.        \nremote: \nTo https://github.com/hannesgao/solokit-e2-b.git\n ! [remote rejected] main -> main (push declined due to repository rule violations)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-b.git'",
+    "sha": "c74a228cab8eb263a7dbb33322b727460a4fe601",
+    "defaultBranch": "main",
+    "fallback": {
+      "pushedWithRulesetDisabled": true
+    },
+    "rulesInForce": [
+      "deletion",
+      "non_fast_forward",
+      "required_linear_history",
+      "pull_request",
+      "required_status_checks"
+    ]
+  },
+  "calls": [
+    {
+      "cmd": "git ls-remote --heads https://github.com/hannesgao/solokit-e2-b.git main",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com init -q -b main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com remote add origin https://github.com/hannesgao/solokit-e2-b.git",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com add -A",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com commit -q -m chore: initial commit",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push -q -u origin main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "remote: error: GH013: Repository rule violations found for refs/heads/main.        \nremote: Review all repository rules at https://github.com/hannesgao/solokit-e2-b/rules?ref=refs%2Fheads%2Fmain        \nremote: \nremote: - Required status check \"ci\" is expected.        \nremote: \nTo https://github.com/hannesgao/solokit-e2-b.git\n ! [remote rejected] main -> main (push declined due to repository rule violations)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-b.git'"
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com rev-parse HEAD",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "c74a228cab8eb263a7dbb33322b727460a4fe601",
+      "stderr": ""
+    },
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-b",
+      "status": 200,
+      "body": {
+        "id": 1410461260,
+        "node_id": "R_kgDOVBHuTA",
+        "name": "solokit-e2-b",
+        "full_name": "hannesgao/solokit-e2-b",
+        "private": false,
+        "owner": {
+          "login": "hannesgao",
+          "id": 7233642,
+          "node_id": "MDQ6VXNlcjcyMzM2NDI=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/7233642?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hannesgao",
+          "html_url": "https://github.com/hannesgao",
+          "followers_url": "https://api.github.com/users/hannesgao/followers",
+          "following_url": "https://api.github.com/users/hannesgao/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hannesgao/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hannesgao/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hannesgao/subscriptions",
+          "organizations_url": "https://api.github.com/users/hannesgao/orgs",
+          "repos_url": "https://api.github.com/users/hannesgao/repos",
+          "events_url": "https://api.github.com/users/hannesgao/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hannesgao/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hannesgao/solokit-e2-b",
+        "description": "solokit spike E2 sandbox (b); safe to delete",
+        "fork": false,
+        "url": "https://api.github.com/repos/hannesgao/solokit-e2-b",
+        "forks_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/forks",
+        "keys_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/teams",
+        "hooks_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/hooks",
+        "issue_events_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/events",
+        "assignees_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/tags",
+        "blobs_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/languages",
+        "stargazers_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/stargazers",
+        "contributors_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/contributors",
+        "subscribers_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/subscribers",
+        "subscription_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/subscription",
+        "commits_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/merges",
+        "archive_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/downloads",
+        "issues_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hannesgao/solokit-e2-b/deployments",
+        "created_at": "2026-10-08T14:15:43Z",
+        "updated_at": "2026-10-08T14:15:44Z",
+        "pushed_at": "2026-10-08T14:15:44Z",
+        "git_url": "git://github.com/hannesgao/solokit-e2-b.git",
+        "ssh_url": "git@github.com:hannesgao/solokit-e2-b.git",
+        "clone_url": "https://github.com/hannesgao/solokit-e2-b.git",
+        "svn_url": "https://github.com/hannesgao/solokit-e2-b",
+        "homepage": null,
+        "size": 0,
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "language": null,
+        "has_issues": true,
+        "has_projects": true,
+        "has_downloads": false,
+        "has_wiki": true,
+        "has_pages": false,
+        "has_discussions": false,
+        "forks_count": 0,
+        "mirror_url": null,
+        "archived": false,
+        "disabled": false,
+        "open_issues_count": 0,
+        "license": null,
+        "allow_forking": true,
+        "is_template": false,
+        "web_commit_signoff_required": false,
+        "has_pull_requests": true,
+        "pull_request_creation_policy": "all",
+        "topics": [],
+        "visibility": "public",
+        "forks": 0,
+        "open_issues": 0,
+        "watchers": 0,
+        "default_branch": "main",
+        "permissions": {
+          "admin": true,
+          "maintain": true,
+          "push": true,
+          "triage": true,
+          "pull": true
+        },
+        "temp_clone_token": "",
+        "allow_squash_merge": true,
+        "allow_merge_commit": true,
+        "allow_rebase_merge": true,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false,
+        "allow_update_branch": false,
+        "use_squash_pr_title_as_default": false,
+        "squash_merge_commit_message": "COMMIT_MESSAGES",
+        "squash_merge_commit_title": "COMMIT_OR_PR_TITLE",
+        "merge_commit_message": "PR_TITLE",
+        "merge_commit_title": "MERGE_MESSAGE",
+        "security_and_analysis": {
+          "secret_scanning": {
+            "status": "enabled"
+          },
+          "secret_scanning_push_protection": {
+            "status": "enabled"
+          },
+          "dependabot_security_updates": {
+            "status": "disabled"
+          },
+          "secret_scanning_non_provider_patterns": {
+            "status": "disabled"
+          },
+          "secret_scanning_validity_checks": {
+            "status": "disabled"
+          }
+        },
+        "network_count": 0,
+        "subscribers_count": 0
+      }
+    },
+    {
+      "api": "PUT /repos/hannesgao/solokit-e2-b/rulesets/24728974",
+      "sent": {
+        "name": "solo-main",
+        "target": "branch",
+        "enforcement": "disabled",
+        "conditions": {
+          "ref_name": {
+            "include": [
+              "~DEFAULT_BRANCH"
+            ],
+            "exclude": []
+          }
+        },
+        "bypass_actors": [],
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "type": "required_linear_history"
+          },
+          {
+            "type": "pull_request",
+            "parameters": {
+              "required_approving_review_count": 0,
+              "dismiss_stale_reviews_on_push": false,
+              "require_code_owner_review": false,
+              "require_last_push_approval": false,
+              "required_review_thread_resolution": false,
+              "allowed_merge_methods": [
+                "squash"
+              ]
+            }
+          },
+          {
+            "type": "required_status_checks",
+            "parameters": {
+              "strict_required_status_checks_policy": true,
+              "do_not_enforce_on_create": false,
+              "required_status_checks": [
+                {
+                  "context": "ci",
+                  "integration_id": 15368
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "status": 200,
+      "body": {
+        "id": 24728974,
+        "name": "solo-main",
+        "target": "branch",
+        "source_type": "Repository",
+        "source": "hannesgao/solokit-e2-b",
+        "enforcement": "disabled",
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~DEFAULT_BRANCH"
+            ]
+          }
+        },
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "type": "required_linear_history"
+          },
+          {
+            "type": "pull_request",
+            "parameters": {
+              "required_approving_review_count": 0,
+              "dismiss_stale_reviews_on_push": false,
+              "required_reviewers": [],
+              "require_code_owner_review": false,
+              "require_last_push_approval": false,
+              "required_review_thread_resolution": false,
+              "require_extra_approval_for_unattributed_changes": true,
+              "allowed_merge_methods": [
+                "squash"
+              ]
+            }
+          },
+          {
+            "type": "required_status_checks",
+            "parameters": {
+              "strict_required_status_checks_policy": true,
+              "do_not_enforce_on_create": false,
+              "required_status_checks": [
+                {
+                  "context": "ci",
+                  "integration_id": 15368
+                }
+              ]
+            }
+          }
+        ],
+        "node_id": "RRS_lACqUmVwb3NpdG9yec5UEe5MzgF5VY4",
+        "created_at": "2026-10-08T16:15:48.216+02:00",
+        "updated_at": "2026-10-08T16:15:53.701+02:00",
+        "bypass_actors": [],
+        "current_user_can_bypass": "never",
+        "_links": {
+          "self": {
+            "href": "https://api.github.com/repos/hannesgao/solokit-e2-b/rulesets/24728974"
+          },
+          "html": {
+            "href": "https://github.com/hannesgao/solokit-e2-b/rules/24728974"
+          }
+        }
+      }
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push -q -u origin main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "api": "PUT /repos/hannesgao/solokit-e2-b/rulesets/24728974",
+      "sent": {
+        "name": "solo-main",
+        "target": "branch",
+        "enforcement": "active",
+        "conditions": {
+          "ref_name": {
+            "include": [
+              "~DEFAULT_BRANCH"
+            ],
+            "exclude": []
+          }
+        },
+        "bypass_actors": [],
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "type": "required_linear_history"
+          },
+          {
+            "type": "pull_request",
+            "parameters": {
+              "required_approving_review_count": 0,
+              "dismiss_stale_reviews_on_push": false,
+              "require_code_owner_review": false,
+              "require_last_push_approval": false,
+              "required_review_thread_resolution": false,
+              "allowed_merge_methods": [
+                "squash"
+              ]
+            }
+          },
+          {
+            "type": "required_status_checks",
+            "parameters": {
+              "strict_required_status_checks_policy": true,
+              "do_not_enforce_on_create": false,
+              "required_status_checks": [
+                {
+                  "context": "ci",
+                  "integration_id": 15368
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "status": 200,
+      "body": {
+        "id": 24728974,
+        "name": "solo-main",
+        "target": "branch",
+        "source_type": "Repository",
+        "source": "hannesgao/solokit-e2-b",
+        "enforcement": "active",
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~DEFAULT_BRANCH"
+            ]
+          }
+        },
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "type": "required_linear_history"
+          },
+          {
+            "type": "pull_request",
+            "parameters": {
+              "required_approving_review_count": 0,
+              "dismiss_stale_reviews_on_push": false,
+              "required_reviewers": [],
+              "require_code_owner_review": false,
+              "require_last_push_approval": false,
+              "required_review_thread_resolution": false,
+              "require_extra_approval_for_unattributed_changes": true,
+              "allowed_merge_methods": [
+                "squash"
+              ]
+            }
+          },
+          {
+            "type": "required_status_checks",
+            "parameters": {
+              "strict_required_status_checks_policy": true,
+              "do_not_enforce_on_create": false,
+              "required_status_checks": [
+                {
+                  "context": "ci",
+                  "integration_id": 15368
+                }
+              ]
+            }
+          }
+        ],
+        "node_id": "RRS_lACqUmVwb3NpdG9yec5UEe5MzgF5VY4",
+        "created_at": "2026-10-08T16:15:48.216+02:00",
+        "updated_at": "2026-10-08T16:15:56.055+02:00",
+        "bypass_actors": [],
+        "current_user_can_bypass": "never",
+        "_links": {
+          "self": {
+            "href": "https://api.github.com/repos/hannesgao/solokit-e2-b/rulesets/24728974"
+          },
+          "html": {
+            "href": "https://github.com/hannesgao/solokit-e2-b/rules/24728974"
+          }
+        }
+      }
+    },
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-b/rules/branches/main",
+      "status": 200,
+      "body": [
+        {
+          "type": "deletion",
+          "ruleset_source_type": "Repository",
+          "ruleset_source": "hannesgao/solokit-e2-b",
+          "ruleset_id": 24728974
+        },
+        {
+          "type": "non_fast_forward",
+          "ruleset_source_type": "Repository",
+          "ruleset_source": "hannesgao/solokit-e2-b",
+          "ruleset_id": 24728974
+        },
+        {
+          "type": "required_linear_history",
+          "ruleset_source_type": "Repository",
+          "ruleset_source": "hannesgao/solokit-e2-b",
+          "ruleset_id": 24728974
+        },
+        {
+          "type": "pull_request",
+          "parameters": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": false,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": false,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash"
+            ]
+          },
+          "ruleset_source_type": "Repository",
+          "ruleset_source": "hannesgao/solokit-e2-b",
+          "ruleset_id": 24728974
+        },
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "ci",
+                "integration_id": 15368
+              }
+            ]
+          },
+          "ruleset_source_type": "Repository",
+          "ruleset_source": "hannesgao/solokit-e2-b",
+          "ruleset_id": 24728974
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "step": "wait-main-ci",
+  "repo": "hannesgao/solokit-e2-a",
+  "startedAt": "2026-10-08T14:15:48.678Z",
+  "endedAt": "2026-10-08T14:16:16.626Z",
+  "outcome": {
+    "sha": "ae9c94915d4e0532680ad585c56fb95950725183",
+    "run": {
+      "conclusion": "success",
+      "databaseId": 37791031579,
+      "event": "push",
+      "headSha": "ae9c94915d4e0532680ad585c56fb95950725183",
+      "name": "CI",
+      "status": "completed"
+    }
+  },
+  "calls": [
+    {
+      "waited": "run for ae9c94915d4e0532680ad585c56fb95950725183 on main",
+      "ms": 27948,
+      "run": {
+        "conclusion": "success",
+        "databaseId": 37791031579,
+        "event": "push",
+        "headSha": "ae9c94915d4e0532680ad585c56fb95950725183",
+        "name": "CI",
+        "status": "completed"
+      }
+    }
+  ]
+}
