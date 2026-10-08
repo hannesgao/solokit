@@ -1,0 +1,40 @@
+[
+  {
+    "at": "2026-10-08T14:07:59.163Z",
+    "phase": "session.start",
+    "commands": [
+      {
+        "name": "solokit-e1:ask",
+        "description": "Spike E1 question probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:go",
+        "description": "Spike E1 hand-off target. Writes a marker file and echoes its arguments. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      },
+      {
+        "name": "solokit-e1:perm",
+        "description": "Spike E1 permission probe. Only run when invoked explicitly.",
+        "source": "plugin",
+        "plugin": "solokit-e1"
+      }
+    ]
+  },
+  {
+    "at": "2026-10-08T14:08:19.852Z",
+    "from": "cmd",
+    "way": "deferred-run",
+    "args": "from-cmd-deferred-run",
+    "phase": "called"
+  },
+  {
+    "at": "2026-10-08T14:08:20.067Z",
+    "from": "cmd",
+    "way": "deferred-run",
+    "phase": "resolved",
+    "result": {}
+  }
+]
