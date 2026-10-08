@@ -1,0 +1,329 @@
+{
+  "step": "strict-up-to-date",
+  "repo": "hannesgao/solokit-e2-a",
+  "startedAt": "2026-10-08T14:17:22.666Z",
+  "endedAt": "2026-10-08T14:19:06.526Z",
+  "outcome": {
+    "prs": [
+      2,
+      3
+    ],
+    "mergeA": {
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "bMergeStateAfterAMerged": "UNKNOWN",
+    "mergeBDirect": {
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "X Pull request hannesgao/solokit-e2-a#3 is not mergeable: the head branch is not up to date with the base branch.\nTo have the pull request merged after all the requirements have been met, add the `--auto` flag.\nTo use administrator privileges to immediately merge the pull request, add the `--admin` flag."
+    },
+    "autoB": {
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "bAfterAuto": {
+      "state": "OPEN",
+      "mergeStateStatus": "BEHIND",
+      "autoMergeRequest": {
+        "authorEmail": null,
+        "commitBody": null,
+        "commitHeadline": null,
+        "mergeMethod": "SQUASH",
+        "enabledAt": "2026-10-08T14:18:17Z",
+        "enabledBy": {
+          "id": "MDQ6VXNlcjcyMzM2NDI=",
+          "is_bot": false,
+          "login": "hannesgao",
+          "name": "Hannes | hannesgao.eth"
+        }
+      }
+    },
+    "updateBranch": {
+      "exitCode": 0,
+      "stdout": "✓ PR branch updated",
+      "stderr": ""
+    },
+    "bFinalState": "MERGED"
+  },
+  "calls": [
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com fetch -q origin",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com checkout -q -B feat/2-alpha origin/main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com add -A",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com commit -q -m feat: add alpha",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push -q -f -u origin feat/2-alpha",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "remote: \nremote: Create a pull request for 'feat/2-alpha' on GitHub by visiting:        \nremote:      https://github.com/hannesgao/solokit-e2-a/pull/new/feat/2-alpha        \nremote:"
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com fetch -q origin",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com checkout -q -B feat/3-beta origin/main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com add -A",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com commit -q -m feat: add beta",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push -q -f -u origin feat/3-beta",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "remote: \nremote: Create a pull request for 'feat/3-beta' on GitHub by visiting:        \nremote:      https://github.com/hannesgao/solokit-e2-a/pull/new/feat/3-beta        \nremote:"
+    },
+    {
+      "cmd": "gh pr list -R hannesgao/solokit-e2-a --head feat/2-alpha --state open --json number",
+      "exitCode": 0,
+      "stdout": "[]",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr create -R hannesgao/solokit-e2-a --head feat/2-alpha --base main --title feat: add alpha --body Strict policy check, first PR.",
+      "exitCode": 0,
+      "stdout": "https://github.com/hannesgao/solokit-e2-a/pull/2",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr list -R hannesgao/solokit-e2-a --head feat/3-beta --state open --json number",
+      "exitCode": 0,
+      "stdout": "[]",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr create -R hannesgao/solokit-e2-a --head feat/3-beta --base main --title feat: add beta --body Strict policy check, second PR.",
+      "exitCode": 0,
+      "stdout": "https://github.com/hannesgao/solokit-e2-a/pull/3",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 2 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"41b039da08761025e27ead9971d1d73a46d39dd8\",\"mergeStateStatus\":\"BLOCKED\",\"mergeable\":\"MERGEABLE\",\"number\":2,\"state\":\"OPEN\",\"statusCheckRollup\":[]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 2 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"41b039da08761025e27ead9971d1d73a46d39dd8\",\"mergeStateStatus\":\"BLOCKED\",\"mergeable\":\"MERGEABLE\",\"number\":2,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"0001-01-01T00:00:00Z\",\"conclusion\":\"\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791265341/job/113359002770\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:50Z\",\"status\":\"IN_PROGRESS\",\"workflowName\":\"CI\"}]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 2 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"41b039da08761025e27ead9971d1d73a46d39dd8\",\"mergeStateStatus\":\"CLEAN\",\"mergeable\":\"MERGEABLE\",\"number\":2,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:17:56Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791265341/job/113359002770\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:50Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"}]}",
+      "stderr": ""
+    },
+    {
+      "waited": "ci on PR #2",
+      "ms": 25121,
+      "view": {
+        "autoMergeRequest": null,
+        "headRefOid": "41b039da08761025e27ead9971d1d73a46d39dd8",
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 2,
+        "state": "OPEN",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-10-08T14:17:56Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/actions/runs/37791265341/job/113359002770",
+            "name": "ci",
+            "startedAt": "2026-10-08T14:17:50Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ]
+      }
+    },
+    {
+      "cmd": "gh pr view 3 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"de37e00ee193c5814c3cf01038759a7488bddcbb\",\"mergeStateStatus\":\"UNSTABLE\",\"mergeable\":\"MERGEABLE\",\"number\":3,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"0001-01-01T00:00:00Z\",\"conclusion\":\"\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791269783/job/113358989364\",\"name\":\"Analyze (actions)\",\"startedAt\":\"2026-10-08T14:17:45Z\",\"status\":\"IN_PROGRESS\",\"workflowName\":\"CodeQL\"},{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:17:51Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791272336/job/113358989725\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:45Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"}]}",
+      "stderr": ""
+    },
+    {
+      "waited": "ci on PR #3",
+      "ms": 958,
+      "view": {
+        "autoMergeRequest": null,
+        "headRefOid": "de37e00ee193c5814c3cf01038759a7488bddcbb",
+        "mergeStateStatus": "UNSTABLE",
+        "mergeable": "MERGEABLE",
+        "number": 3,
+        "state": "OPEN",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/actions/runs/37791269783/job/113358989364",
+            "name": "Analyze (actions)",
+            "startedAt": "2026-10-08T14:17:45Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-10-08T14:17:51Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/actions/runs/37791272336/job/113358989725",
+            "name": "ci",
+            "startedAt": "2026-10-08T14:17:45Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ]
+      }
+    },
+    {
+      "cmd": "gh pr merge 2 -R hannesgao/solokit-e2-a --squash",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 3 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"de37e00ee193c5814c3cf01038759a7488bddcbb\",\"mergeStateStatus\":\"UNKNOWN\",\"mergeable\":\"UNKNOWN\",\"number\":3,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"0001-01-01T00:00:00Z\",\"conclusion\":\"\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791269783/job/113358989364\",\"name\":\"Analyze (actions)\",\"startedAt\":\"2026-10-08T14:17:45Z\",\"status\":\"IN_PROGRESS\",\"workflowName\":\"CodeQL\"},{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:17:51Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791272336/job/113358989725\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:45Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"},{\"__typename\":\"CheckRun\",\"completedAt\":\"0001-01-01T00:00:00Z\",\"conclusion\":\"\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/runs/113359221924\",\"name\":\"CodeQL\",\"startedAt\":\"2026-10-08T14:18:12Z\",\"status\":\"QUEUED\",\"workflowName\":\"\"}]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr merge 3 -R hannesgao/solokit-e2-a --squash",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "X Pull request hannesgao/solokit-e2-a#3 is not mergeable: the head branch is not up to date with the base branch.\nTo have the pull request merged after all the requirements have been met, add the `--auto` flag.\nTo use administrator privileges to immediately merge the pull request, add the `--admin` flag."
+    },
+    {
+      "cmd": "gh pr merge 3 -R hannesgao/solokit-e2-a --squash --auto",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 3 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":{\"authorEmail\":null,\"commitBody\":null,\"commitHeadline\":null,\"mergeMethod\":\"SQUASH\",\"enabledAt\":\"2026-10-08T14:18:17Z\",\"enabledBy\":{\"id\":\"MDQ6VXNlcjcyMzM2NDI=\",\"is_bot\":false,\"login\":\"hannesgao\",\"name\":\"Hannes | hannesgao.eth\"}},\"headRefOid\":\"de37e00ee193c5814c3cf01038759a7488bddcbb\",\"mergeStateStatus\":\"BEHIND\",\"mergeable\":\"MERGEABLE\",\"number\":3,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:17:51Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791272336/job/113358989725\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:45Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"},{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:18:32Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791269783/job/113358989364\",\"name\":\"Analyze (actions)\",\"startedAt\":\"2026-10-08T14:17:45Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CodeQL\"},{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:18:20Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/runs/113359221924\",\"name\":\"CodeQL\",\"startedAt\":\"2026-10-08T14:18:12Z\",\"status\":\"COMPLETED\",\"workflowName\":\"\"}]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr update-branch 3 -R hannesgao/solokit-e2-a",
+      "exitCode": 0,
+      "stdout": "✓ PR branch updated",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 3 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":{\"authorEmail\":null,\"commitBody\":null,\"commitHeadline\":null,\"mergeMethod\":\"SQUASH\",\"enabledAt\":\"2026-10-08T14:18:17Z\",\"enabledBy\":{\"id\":\"MDQ6VXNlcjcyMzM2NDI=\",\"is_bot\":false,\"login\":\"hannesgao\",\"name\":\"Hannes | hannesgao.eth\"}},\"headRefOid\":\"de37e00ee193c5814c3cf01038759a7488bddcbb\",\"mergeStateStatus\":\"UNKNOWN\",\"mergeable\":\"UNKNOWN\",\"number\":3,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:17:51Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791272336/job/113358989725\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:45Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"},{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:18:32Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791269783/job/113358989364\",\"name\":\"Analyze (actions)\",\"startedAt\":\"2026-10-08T14:17:45Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CodeQL\"},{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:18:20Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/runs/113359221924\",\"name\":\"CodeQL\",\"startedAt\":\"2026-10-08T14:18:12Z\",\"status\":\"COMPLETED\",\"workflowName\":\"\"}]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 3 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":{\"authorEmail\":null,\"commitBody\":null,\"commitHeadline\":null,\"mergeMethod\":\"SQUASH\",\"enabledAt\":\"2026-10-08T14:18:17Z\",\"enabledBy\":{\"id\":\"MDQ6VXNlcjcyMzM2NDI=\",\"is_bot\":false,\"login\":\"hannesgao\",\"name\":\"Hannes | hannesgao.eth\"}},\"headRefOid\":\"af48fbda6f132088e9f12fd241417a3e0458b888\",\"mergeStateStatus\":\"BLOCKED\",\"mergeable\":\"MERGEABLE\",\"number\":3,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"0001-01-01T00:00:00Z\",\"conclusion\":\"\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791417507/job/113359501280\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:18:50Z\",\"status\":\"IN_PROGRESS\",\"workflowName\":\"CI\"},{\"__typename\":\"CheckRun\",\"completedAt\":\"0001-01-01T00:00:00Z\",\"conclusion\":\"\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791415317/job/113359498783\",\"name\":\"Analyze (actions)\",\"startedAt\":\"2026-10-08T14:18:49Z\",\"status\":\"IN_PROGRESS\",\"workflowName\":\"CodeQL\"}]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 3 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":{\"authorEmail\":null,\"commitBody\":null,\"commitHeadline\":null,\"mergeMethod\":\"SQUASH\",\"enabledAt\":\"2026-10-08T14:18:17Z\",\"enabledBy\":{\"id\":\"MDQ6VXNlcjcyMzM2NDI=\",\"is_bot\":false,\"login\":\"hannesgao\",\"name\":\"Hannes | hannesgao.eth\"}},\"headRefOid\":\"af48fbda6f132088e9f12fd241417a3e0458b888\",\"mergeStateStatus\":\"UNKNOWN\",\"mergeable\":\"UNKNOWN\",\"number\":3,\"state\":\"MERGED\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"0001-01-01T00:00:00Z\",\"conclusion\":\"\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791415317/job/113359498783\",\"name\":\"Analyze (actions)\",\"startedAt\":\"2026-10-08T14:18:49Z\",\"status\":\"IN_PROGRESS\",\"workflowName\":\"CodeQL\"},{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:18:56Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791417507/job/113359501280\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:18:50Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"}]}",
+      "stderr": ""
+    },
+    {
+      "waited": "merged on PR #3",
+      "ms": 24846,
+      "view": {
+        "autoMergeRequest": {
+          "authorEmail": null,
+          "commitBody": null,
+          "commitHeadline": null,
+          "mergeMethod": "SQUASH",
+          "enabledAt": "2026-10-08T14:18:17Z",
+          "enabledBy": {
+            "id": "MDQ6VXNlcjcyMzM2NDI=",
+            "is_bot": false,
+            "login": "hannesgao",
+            "name": "Hannes | hannesgao.eth"
+          }
+        },
+        "headRefOid": "af48fbda6f132088e9f12fd241417a3e0458b888",
+        "mergeStateStatus": "UNKNOWN",
+        "mergeable": "UNKNOWN",
+        "number": 3,
+        "state": "MERGED",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/actions/runs/37791415317/job/113359498783",
+            "name": "Analyze (actions)",
+            "startedAt": "2026-10-08T14:18:49Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-10-08T14:18:56Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/actions/runs/37791417507/job/113359501280",
+            "name": "ci",
+            "startedAt": "2026-10-08T14:18:50Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,619 @@
+{
+  "step": "security",
+  "repo": "hannesgao/solokit-e2-a",
+  "startedAt": "2026-10-08T14:16:20.793Z",
+  "endedAt": "2026-10-08T14:16:50.812Z",
+  "outcome": {
+    "before": {
+      "vulnerabilityAlerts": 404,
+      "automatedSecurityFixes": {
+        "enabled": false,
+        "paused": false
+      },
+      "securityAndAnalysis": {
+        "secret_scanning": {
+          "status": "enabled"
+        },
+        "secret_scanning_push_protection": {
+          "status": "enabled"
+        },
+        "dependabot_security_updates": {
+          "status": "disabled"
+        },
+        "secret_scanning_non_provider_patterns": {
+          "status": "disabled"
+        },
+        "secret_scanning_validity_checks": {
+          "status": "disabled"
+        }
+      },
+      "codeqlDefaultSetup": {
+        "state": "not-configured",
+        "languages": [
+          "actions"
+        ],
+        "query_suite": "default",
+        "threat_model": "remote",
+        "updated_at": null,
+        "schedule": null,
+        "runner_type": "standard",
+        "runner_label": null
+      }
+    },
+    "set": {
+      "vulnerabilityAlerts": 204,
+      "automatedSecurityFixes": 204,
+      "secretScanning": 200,
+      "codeqlDefaultSetup": {
+        "status": 202,
+        "body": {
+          "run_id": 37791112723,
+          "run_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/actions/runs/37791112723"
+        }
+      }
+    },
+    "after": {
+      "vulnerabilityAlerts": 204,
+      "automatedSecurityFixes": {
+        "enabled": true,
+        "paused": false
+      },
+      "securityAndAnalysis": {
+        "secret_scanning": {
+          "status": "enabled"
+        },
+        "secret_scanning_push_protection": {
+          "status": "enabled"
+        },
+        "dependabot_security_updates": {
+          "status": "enabled"
+        },
+        "secret_scanning_non_provider_patterns": {
+          "status": "disabled"
+        },
+        "secret_scanning_validity_checks": {
+          "status": "disabled"
+        }
+      },
+      "codeqlDefaultSetup": {
+        "state": "configured",
+        "languages": [],
+        "query_suite": "default",
+        "threat_model": "remote",
+        "updated_at": null,
+        "schedule": null,
+        "runner_type": "standard",
+        "runner_label": ""
+      }
+    }
+  },
+  "calls": [
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-a/vulnerability-alerts",
+      "status": 404,
+      "body": {
+        "message": "Vulnerability alerts are disabled.",
+        "documentation_url": "https://docs.github.com/rest/repos/repos#check-if-vulnerability-alerts-are-enabled-for-a-repository",
+        "status": "404"
+      },
+      "stderr": "gh: Vulnerability alerts are disabled. (HTTP 404)"
+    },
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-a/automated-security-fixes",
+      "status": 200,
+      "body": {
+        "enabled": false,
+        "paused": false
+      }
+    },
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-a",
+      "status": 200,
+      "body": {
+        "id": 1410461249,
+        "node_id": "R_kgDOVBHuQQ",
+        "name": "solokit-e2-a",
+        "full_name": "hannesgao/solokit-e2-a",
+        "private": false,
+        "owner": {
+          "login": "hannesgao",
+          "id": 7233642,
+          "node_id": "MDQ6VXNlcjcyMzM2NDI=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/7233642?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hannesgao",
+          "html_url": "https://github.com/hannesgao",
+          "followers_url": "https://api.github.com/users/hannesgao/followers",
+          "following_url": "https://api.github.com/users/hannesgao/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hannesgao/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hannesgao/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hannesgao/subscriptions",
+          "organizations_url": "https://api.github.com/users/hannesgao/orgs",
+          "repos_url": "https://api.github.com/users/hannesgao/repos",
+          "events_url": "https://api.github.com/users/hannesgao/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hannesgao/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hannesgao/solokit-e2-a",
+        "description": "solokit spike E2 sandbox (a); safe to delete",
+        "fork": false,
+        "url": "https://api.github.com/repos/hannesgao/solokit-e2-a",
+        "forks_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/forks",
+        "keys_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/teams",
+        "hooks_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/hooks",
+        "issue_events_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/events",
+        "assignees_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/tags",
+        "blobs_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/languages",
+        "stargazers_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/stargazers",
+        "contributors_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/contributors",
+        "subscribers_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/subscribers",
+        "subscription_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/subscription",
+        "commits_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/merges",
+        "archive_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/downloads",
+        "issues_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/deployments",
+        "created_at": "2026-10-08T14:15:42Z",
+        "updated_at": "2026-10-08T14:16:19Z",
+        "pushed_at": "2026-10-08T14:15:48Z",
+        "git_url": "git://github.com/hannesgao/solokit-e2-a.git",
+        "ssh_url": "git@github.com:hannesgao/solokit-e2-a.git",
+        "clone_url": "https://github.com/hannesgao/solokit-e2-a.git",
+        "svn_url": "https://github.com/hannesgao/solokit-e2-a",
+        "homepage": null,
+        "size": 0,
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "language": null,
+        "has_issues": true,
+        "has_projects": true,
+        "has_downloads": false,
+        "has_wiki": false,
+        "has_pages": false,
+        "has_discussions": false,
+        "forks_count": 0,
+        "mirror_url": null,
+        "archived": false,
+        "disabled": false,
+        "open_issues_count": 0,
+        "license": null,
+        "allow_forking": true,
+        "is_template": false,
+        "web_commit_signoff_required": false,
+        "has_pull_requests": true,
+        "pull_request_creation_policy": "all",
+        "topics": [],
+        "visibility": "public",
+        "forks": 0,
+        "open_issues": 0,
+        "watchers": 0,
+        "default_branch": "main",
+        "permissions": {
+          "admin": true,
+          "maintain": true,
+          "push": true,
+          "triage": true,
+          "pull": true
+        },
+        "temp_clone_token": "",
+        "allow_squash_merge": true,
+        "allow_merge_commit": true,
+        "allow_rebase_merge": true,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false,
+        "allow_update_branch": false,
+        "use_squash_pr_title_as_default": false,
+        "squash_merge_commit_message": "COMMIT_MESSAGES",
+        "squash_merge_commit_title": "COMMIT_OR_PR_TITLE",
+        "merge_commit_message": "PR_TITLE",
+        "merge_commit_title": "MERGE_MESSAGE",
+        "security_and_analysis": {
+          "secret_scanning": {
+            "status": "enabled"
+          },
+          "secret_scanning_push_protection": {
+            "status": "enabled"
+          },
+          "dependabot_security_updates": {
+            "status": "disabled"
+          },
+          "secret_scanning_non_provider_patterns": {
+            "status": "disabled"
+          },
+          "secret_scanning_validity_checks": {
+            "status": "disabled"
+          }
+        },
+        "network_count": 0,
+        "subscribers_count": 0
+      }
+    },
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-a/code-scanning/default-setup",
+      "status": 200,
+      "body": {
+        "state": "not-configured",
+        "languages": [
+          "actions"
+        ],
+        "query_suite": "default",
+        "threat_model": "remote",
+        "updated_at": null,
+        "schedule": null,
+        "runner_type": "standard",
+        "runner_label": null
+      }
+    },
+    {
+      "api": "PUT /repos/hannesgao/solokit-e2-a/vulnerability-alerts",
+      "status": 204,
+      "body": null
+    },
+    {
+      "api": "PUT /repos/hannesgao/solokit-e2-a/automated-security-fixes",
+      "status": 204,
+      "body": null
+    },
+    {
+      "api": "PATCH /repos/hannesgao/solokit-e2-a",
+      "sent": {
+        "security_and_analysis": {
+          "secret_scanning": {
+            "status": "enabled"
+          },
+          "secret_scanning_push_protection": {
+            "status": "enabled"
+          }
+        }
+      },
+      "status": 200,
+      "body": {
+        "id": 1410461249,
+        "node_id": "R_kgDOVBHuQQ",
+        "name": "solokit-e2-a",
+        "full_name": "hannesgao/solokit-e2-a",
+        "private": false,
+        "owner": {
+          "login": "hannesgao",
+          "id": 7233642,
+          "node_id": "MDQ6VXNlcjcyMzM2NDI=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/7233642?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hannesgao",
+          "html_url": "https://github.com/hannesgao",
+          "followers_url": "https://api.github.com/users/hannesgao/followers",
+          "following_url": "https://api.github.com/users/hannesgao/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hannesgao/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hannesgao/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hannesgao/subscriptions",
+          "organizations_url": "https://api.github.com/users/hannesgao/orgs",
+          "repos_url": "https://api.github.com/users/hannesgao/repos",
+          "events_url": "https://api.github.com/users/hannesgao/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hannesgao/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hannesgao/solokit-e2-a",
+        "description": "solokit spike E2 sandbox (a); safe to delete",
+        "fork": false,
+        "url": "https://api.github.com/repos/hannesgao/solokit-e2-a",
+        "forks_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/forks",
+        "keys_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/teams",
+        "hooks_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/hooks",
+        "issue_events_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/events",
+        "assignees_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/tags",
+        "blobs_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/languages",
+        "stargazers_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/stargazers",
+        "contributors_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/contributors",
+        "subscribers_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/subscribers",
+        "subscription_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/subscription",
+        "commits_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/merges",
+        "archive_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/downloads",
+        "issues_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/deployments",
+        "created_at": "2026-10-08T14:15:42Z",
+        "updated_at": "2026-10-08T14:16:19Z",
+        "pushed_at": "2026-10-08T14:15:48Z",
+        "git_url": "git://github.com/hannesgao/solokit-e2-a.git",
+        "ssh_url": "git@github.com:hannesgao/solokit-e2-a.git",
+        "clone_url": "https://github.com/hannesgao/solokit-e2-a.git",
+        "svn_url": "https://github.com/hannesgao/solokit-e2-a",
+        "homepage": null,
+        "size": 0,
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "language": null,
+        "has_issues": true,
+        "has_projects": false,
+        "has_downloads": false,
+        "has_wiki": false,
+        "has_pages": false,
+        "has_discussions": false,
+        "forks_count": 0,
+        "mirror_url": null,
+        "archived": false,
+        "disabled": false,
+        "open_issues_count": 0,
+        "license": null,
+        "allow_forking": true,
+        "is_template": false,
+        "web_commit_signoff_required": false,
+        "has_pull_requests": true,
+        "pull_request_creation_policy": "all",
+        "topics": [],
+        "visibility": "public",
+        "forks": 0,
+        "open_issues": 0,
+        "watchers": 0,
+        "default_branch": "main",
+        "permissions": {
+          "admin": true,
+          "maintain": true,
+          "push": true,
+          "triage": true,
+          "pull": true
+        },
+        "allow_squash_merge": true,
+        "allow_merge_commit": false,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": true,
+        "delete_branch_on_merge": true,
+        "allow_update_branch": false,
+        "use_squash_pr_title_as_default": true,
+        "squash_merge_commit_message": "PR_BODY",
+        "squash_merge_commit_title": "PR_TITLE",
+        "merge_commit_message": "PR_TITLE",
+        "merge_commit_title": "MERGE_MESSAGE",
+        "security_and_analysis": {
+          "secret_scanning": {
+            "status": "enabled"
+          },
+          "secret_scanning_push_protection": {
+            "status": "enabled"
+          },
+          "dependabot_security_updates": {
+            "status": "enabled"
+          },
+          "secret_scanning_non_provider_patterns": {
+            "status": "disabled"
+          },
+          "secret_scanning_validity_checks": {
+            "status": "disabled"
+          }
+        },
+        "network_count": 0,
+        "subscribers_count": 0
+      }
+    },
+    {
+      "api": "PATCH /repos/hannesgao/solokit-e2-a/code-scanning/default-setup",
+      "sent": {
+        "state": "configured",
+        "query_suite": "default"
+      },
+      "status": 202,
+      "body": {
+        "run_id": 37791112723,
+        "run_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/actions/runs/37791112723"
+      }
+    },
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-a/vulnerability-alerts",
+      "status": 204,
+      "body": null
+    },
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-a/automated-security-fixes",
+      "status": 200,
+      "body": {
+        "enabled": true,
+        "paused": false
+      }
+    },
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-a",
+      "status": 200,
+      "body": {
+        "id": 1410461249,
+        "node_id": "R_kgDOVBHuQQ",
+        "name": "solokit-e2-a",
+        "full_name": "hannesgao/solokit-e2-a",
+        "private": false,
+        "owner": {
+          "login": "hannesgao",
+          "id": 7233642,
+          "node_id": "MDQ6VXNlcjcyMzM2NDI=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/7233642?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hannesgao",
+          "html_url": "https://github.com/hannesgao",
+          "followers_url": "https://api.github.com/users/hannesgao/followers",
+          "following_url": "https://api.github.com/users/hannesgao/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hannesgao/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hannesgao/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hannesgao/subscriptions",
+          "organizations_url": "https://api.github.com/users/hannesgao/orgs",
+          "repos_url": "https://api.github.com/users/hannesgao/repos",
+          "events_url": "https://api.github.com/users/hannesgao/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hannesgao/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hannesgao/solokit-e2-a",
+        "description": "solokit spike E2 sandbox (a); safe to delete",
+        "fork": false,
+        "url": "https://api.github.com/repos/hannesgao/solokit-e2-a",
+        "forks_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/forks",
+        "keys_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/teams",
+        "hooks_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/hooks",
+        "issue_events_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/events",
+        "assignees_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/tags",
+        "blobs_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/languages",
+        "stargazers_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/stargazers",
+        "contributors_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/contributors",
+        "subscribers_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/subscribers",
+        "subscription_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/subscription",
+        "commits_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/merges",
+        "archive_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/downloads",
+        "issues_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/deployments",
+        "created_at": "2026-10-08T14:15:42Z",
+        "updated_at": "2026-10-08T14:16:19Z",
+        "pushed_at": "2026-10-08T14:15:48Z",
+        "git_url": "git://github.com/hannesgao/solokit-e2-a.git",
+        "ssh_url": "git@github.com:hannesgao/solokit-e2-a.git",
+        "clone_url": "https://github.com/hannesgao/solokit-e2-a.git",
+        "svn_url": "https://github.com/hannesgao/solokit-e2-a",
+        "homepage": null,
+        "size": 0,
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "language": null,
+        "has_issues": true,
+        "has_projects": false,
+        "has_downloads": false,
+        "has_wiki": false,
+        "has_pages": false,
+        "has_discussions": false,
+        "forks_count": 0,
+        "mirror_url": null,
+        "archived": false,
+        "disabled": false,
+        "open_issues_count": 0,
+        "license": null,
+        "allow_forking": true,
+        "is_template": false,
+        "web_commit_signoff_required": false,
+        "has_pull_requests": true,
+        "pull_request_creation_policy": "all",
+        "topics": [],
+        "visibility": "public",
+        "forks": 0,
+        "open_issues": 0,
+        "watchers": 0,
+        "default_branch": "main",
+        "permissions": {
+          "admin": true,
+          "maintain": true,
+          "push": true,
+          "triage": true,
+          "pull": true
+        },
+        "temp_clone_token": "",
+        "allow_squash_merge": true,
+        "allow_merge_commit": false,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": true,
+        "delete_branch_on_merge": true,
+        "allow_update_branch": false,
+        "use_squash_pr_title_as_default": true,
+        "squash_merge_commit_message": "PR_BODY",
+        "squash_merge_commit_title": "PR_TITLE",
+        "merge_commit_message": "PR_TITLE",
+        "merge_commit_title": "MERGE_MESSAGE",
+        "security_and_analysis": {
+          "secret_scanning": {
+            "status": "enabled"
+          },
+          "secret_scanning_push_protection": {
+            "status": "enabled"
+          },
+          "dependabot_security_updates": {
+            "status": "enabled"
+          },
+          "secret_scanning_non_provider_patterns": {
+            "status": "disabled"
+          },
+          "secret_scanning_validity_checks": {
+            "status": "disabled"
+          }
+        },
+        "network_count": 0,
+        "subscribers_count": 0
+      }
+    },
+    {
+      "api": "GET /repos/hannesgao/solokit-e2-a/code-scanning/default-setup",
+      "status": 200,
+      "body": {
+        "state": "configured",
+        "languages": [],
+        "query_suite": "default",
+        "threat_model": "remote",
+        "updated_at": null,
+        "schedule": null,
+        "runner_type": "standard",
+        "runner_label": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "step": "feature-pr",
+  "repo": "hannesgao/solokit-e2-a",
+  "startedAt": "2026-10-08T14:16:52.306Z",
+  "endedAt": "2026-10-08T14:17:22.666Z",
+  "outcome": {
+    "pr": 1,
+    "mergeStateBeforeCi": "BLOCKED",
+    "ciDone": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-08T14:17:14Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/actions/runs/37791191673/job/113358704746",
+        "name": "ci",
+        "startedAt": "2026-10-08T14:17:09Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      }
+    ],
+    "mergeStateAfterCi": "CLEAN",
+    "merge": {
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "state": "MERGED"
+  },
+  "calls": [
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com fetch -q origin",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com checkout -q -B feat/1-hello origin/main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com add -A",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com commit -q -m feat: add hello",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push -q -f -u origin feat/1-hello",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/a",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "remote: \nremote: Create a pull request for 'feat/1-hello' on GitHub by visiting:        \nremote:      https://github.com/hannesgao/solokit-e2-a/pull/new/feat/1-hello        \nremote:"
+    },
+    {
+      "cmd": "gh pr list -R hannesgao/solokit-e2-a --head feat/1-hello --state open --json number",
+      "exitCode": 0,
+      "stdout": "[]",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr create -R hannesgao/solokit-e2-a --head feat/1-hello --base main --title feat: add hello --body First feature PR for spike E2.",
+      "exitCode": 0,
+      "stdout": "https://github.com/hannesgao/solokit-e2-a/pull/1",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 1 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"bd5743c2a15554b7fe47cee232050ac90e030207\",\"mergeStateStatus\":\"BLOCKED\",\"mergeable\":\"MERGEABLE\",\"number\":1,\"state\":\"OPEN\",\"statusCheckRollup\":[]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 1 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"bd5743c2a15554b7fe47cee232050ac90e030207\",\"mergeStateStatus\":\"BLOCKED\",\"mergeable\":\"MERGEABLE\",\"number\":1,\"state\":\"OPEN\",\"statusCheckRollup\":[]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 1 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"bd5743c2a15554b7fe47cee232050ac90e030207\",\"mergeStateStatus\":\"CLEAN\",\"mergeable\":\"MERGEABLE\",\"number\":1,\"state\":\"OPEN\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:17:14Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791191673/job/113358704746\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:09Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"}]}",
+      "stderr": ""
+    },
+    {
+      "waited": "ci on PR #1",
+      "ms": 13311,
+      "view": {
+        "autoMergeRequest": null,
+        "headRefOid": "bd5743c2a15554b7fe47cee232050ac90e030207",
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 1,
+        "state": "OPEN",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-10-08T14:17:14Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/actions/runs/37791191673/job/113358704746",
+            "name": "ci",
+            "startedAt": "2026-10-08T14:17:09Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ]
+      }
+    },
+    {
+      "cmd": "gh pr merge 1 -R hannesgao/solokit-e2-a --squash",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 1 -R hannesgao/solokit-e2-a --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"bd5743c2a15554b7fe47cee232050ac90e030207\",\"mergeStateStatus\":\"UNKNOWN\",\"mergeable\":\"UNKNOWN\",\"number\":1,\"state\":\"MERGED\",\"statusCheckRollup\":[{\"__typename\":\"CheckRun\",\"completedAt\":\"2026-10-08T14:17:14Z\",\"conclusion\":\"SUCCESS\",\"detailsUrl\":\"https://github.com/hannesgao/solokit-e2-a/actions/runs/37791191673/job/113358704746\",\"name\":\"ci\",\"startedAt\":\"2026-10-08T14:17:09Z\",\"status\":\"COMPLETED\",\"workflowName\":\"CI\"}]}",
+      "stderr": ""
+    }
+  ]
+}

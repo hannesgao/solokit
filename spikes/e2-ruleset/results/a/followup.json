@@ -1,0 +1,46 @@
+{
+  "codeqlDefaultSetup": {
+    "state": "configured",
+    "languages": [
+      "actions"
+    ],
+    "query_suite": "default",
+    "threat_model": "remote",
+    "updated_at": "2026-10-08T14:17:11Z",
+    "schedule": "weekly",
+    "runner_type": "standard",
+    "runner_label": ""
+  },
+  "extraApprovalParam": {
+    "putWithFalse": {
+      "exitCode": 0
+    },
+    "readBackAfterFalse": {
+      "required_approving_review_count": 0,
+      "dismiss_stale_reviews_on_push": false,
+      "required_reviewers": [],
+      "require_code_owner_review": false,
+      "require_last_push_approval": false,
+      "required_review_thread_resolution": false,
+      "require_extra_approval_for_unattributed_changes": false,
+      "allowed_merge_methods": [
+        "squash"
+      ]
+    },
+    "putOriginalWithoutParam": {
+      "exitCode": 0
+    },
+    "readBackAfterOriginal": {
+      "required_approving_review_count": 0,
+      "dismiss_stale_reviews_on_push": false,
+      "required_reviewers": [],
+      "require_code_owner_review": false,
+      "require_last_push_approval": false,
+      "required_review_thread_resolution": false,
+      "require_extra_approval_for_unattributed_changes": true,
+      "allowed_merge_methods": [
+        "squash"
+      ]
+    }
+  }
+}

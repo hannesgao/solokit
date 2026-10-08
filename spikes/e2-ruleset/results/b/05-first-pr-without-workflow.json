@@ -1,0 +1,88 @@
+{
+  "step": "first-pr-without-workflow",
+  "repo": "hannesgao/solokit-e2-b",
+  "startedAt": "2026-10-08T14:15:58.891Z",
+  "endedAt": "2026-10-08T14:17:15.640Z",
+  "outcome": {
+    "pr": 1,
+    "mergeStateStatus": "BLOCKED",
+    "rollup": [],
+    "prChecks": {
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "no checks reported on the 'feat/1-hello' branch"
+    },
+    "merge": {
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "X Pull request hannesgao/solokit-e2-b#1 is not mergeable: the base branch policy prohibits the merge.\nTo have the pull request merged after all the requirements have been met, add the `--auto` flag.\nTo use administrator privileges to immediately merge the pull request, add the `--admin` flag."
+    }
+  },
+  "calls": [
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com fetch -q origin",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com checkout -q -B feat/1-hello origin/main",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com add -A",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com commit -q -m feat: add hello",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c user.name=Hannes | hannesgao.eth -c user.email=7233642+hannesgao@users.noreply.github.com push -q -f -u origin feat/1-hello",
+      "cwd": "/home/hannesgao/cc_plugin_dev/solokit/spikes/e2-ruleset/.work/b",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "remote: \nremote: Create a pull request for 'feat/1-hello' on GitHub by visiting:        \nremote:      https://github.com/hannesgao/solokit-e2-b/pull/new/feat/1-hello        \nremote:"
+    },
+    {
+      "cmd": "gh pr list -R hannesgao/solokit-e2-b --head feat/1-hello --state open --json number",
+      "exitCode": 0,
+      "stdout": "[]",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr create -R hannesgao/solokit-e2-b --head feat/1-hello --base main --title feat: add hello --body First PR while ci has never run anywhere.",
+      "exitCode": 0,
+      "stdout": "https://github.com/hannesgao/solokit-e2-b/pull/1",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr view 1 -R hannesgao/solokit-e2-b --json number,state,mergeStateStatus,mergeable,headRefOid,statusCheckRollup,autoMergeRequest",
+      "exitCode": 0,
+      "stdout": "{\"autoMergeRequest\":null,\"headRefOid\":\"323ea7c8955ac145ff766ea8a633ce8e5db3c48d\",\"mergeStateStatus\":\"BLOCKED\",\"mergeable\":\"MERGEABLE\",\"number\":1,\"state\":\"OPEN\",\"statusCheckRollup\":[]}",
+      "stderr": ""
+    },
+    {
+      "cmd": "gh pr checks 1 -R hannesgao/solokit-e2-b",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "no checks reported on the 'feat/1-hello' branch"
+    },
+    {
+      "cmd": "gh pr merge 1 -R hannesgao/solokit-e2-b --squash",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "X Pull request hannesgao/solokit-e2-b#1 is not mergeable: the base branch policy prohibits the merge.\nTo have the pull request merged after all the requirements have been met, add the `--auto` flag.\nTo use administrator privileges to immediately merge the pull request, add the `--admin` flag."
+    }
+  ]
+}

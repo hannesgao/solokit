@@ -1,0 +1,396 @@
+{
+  "repo": "hannesgao/solokit-e2-a",
+  "steps": [
+    {
+      "step": "create-repo",
+      "startedAt": "2026-10-08T14:15:40.957Z",
+      "outcome": {
+        "created": true,
+        "stdout": "https://github.com/hannesgao/solokit-e2-a",
+        "stderr": ""
+      }
+    },
+    {
+      "step": "initial-push",
+      "startedAt": "2026-10-08T14:15:45.935Z",
+      "outcome": {
+        "pushExitCode": 0,
+        "pushStderr": "",
+        "sha": "ae9c94915d4e0532680ad585c56fb95950725183",
+        "defaultBranch": "main"
+      }
+    },
+    {
+      "step": "wait-main-ci",
+      "startedAt": "2026-10-08T14:15:48.678Z",
+      "outcome": {
+        "sha": "ae9c94915d4e0532680ad585c56fb95950725183",
+        "run": {
+          "conclusion": "success",
+          "databaseId": 37791031579,
+          "event": "push",
+          "headSha": "ae9c94915d4e0532680ad585c56fb95950725183",
+          "name": "CI",
+          "status": "completed"
+        }
+      }
+    },
+    {
+      "step": "apply-ruleset",
+      "startedAt": "2026-10-08T14:16:16.626Z",
+      "outcome": {
+        "method": "POST",
+        "status": 201,
+        "id": 24729036
+      }
+    },
+    {
+      "step": "merge-options",
+      "startedAt": "2026-10-08T14:16:17.800Z",
+      "outcome": {
+        "status": 200,
+        "gaps": []
+      }
+    },
+    {
+      "step": "security",
+      "startedAt": "2026-10-08T14:16:20.793Z",
+      "outcome": {
+        "before": {
+          "vulnerabilityAlerts": 404,
+          "automatedSecurityFixes": {
+            "enabled": false,
+            "paused": false
+          },
+          "securityAndAnalysis": {
+            "secret_scanning": {
+              "status": "enabled"
+            },
+            "secret_scanning_push_protection": {
+              "status": "enabled"
+            },
+            "dependabot_security_updates": {
+              "status": "disabled"
+            },
+            "secret_scanning_non_provider_patterns": {
+              "status": "disabled"
+            },
+            "secret_scanning_validity_checks": {
+              "status": "disabled"
+            }
+          },
+          "codeqlDefaultSetup": {
+            "state": "not-configured",
+            "languages": [
+              "actions"
+            ],
+            "query_suite": "default",
+            "threat_model": "remote",
+            "updated_at": null,
+            "schedule": null,
+            "runner_type": "standard",
+            "runner_label": null
+          }
+        },
+        "set": {
+          "vulnerabilityAlerts": 204,
+          "automatedSecurityFixes": 204,
+          "secretScanning": 200,
+          "codeqlDefaultSetup": {
+            "status": 202,
+            "body": {
+              "run_id": 37791112723,
+              "run_url": "https://api.github.com/repos/hannesgao/solokit-e2-a/actions/runs/37791112723"
+            }
+          }
+        },
+        "after": {
+          "vulnerabilityAlerts": 204,
+          "automatedSecurityFixes": {
+            "enabled": true,
+            "paused": false
+          },
+          "securityAndAnalysis": {
+            "secret_scanning": {
+              "status": "enabled"
+            },
+            "secret_scanning_push_protection": {
+              "status": "enabled"
+            },
+            "dependabot_security_updates": {
+              "status": "enabled"
+            },
+            "secret_scanning_non_provider_patterns": {
+              "status": "disabled"
+            },
+            "secret_scanning_validity_checks": {
+              "status": "disabled"
+            }
+          },
+          "codeqlDefaultSetup": {
+            "state": "configured",
+            "languages": [],
+            "query_suite": "default",
+            "threat_model": "remote",
+            "updated_at": null,
+            "schedule": null,
+            "runner_type": "standard",
+            "runner_label": ""
+          }
+        }
+      }
+    },
+    {
+      "step": "readback",
+      "startedAt": "2026-10-08T14:23:13.516Z",
+      "outcome": {
+        "rawDiff": [
+          {
+            "path": ".rules[3].parameters.required_reviewers",
+            "change": "added by GitHub",
+            "value": []
+          },
+          {
+            "path": ".rules[3].parameters.require_extra_approval_for_unattributed_changes",
+            "change": "added by GitHub",
+            "value": true
+          },
+          {
+            "path": ".id",
+            "change": "added by GitHub",
+            "value": 24729036
+          },
+          {
+            "path": ".source_type",
+            "change": "added by GitHub",
+            "value": "Repository"
+          },
+          {
+            "path": ".source",
+            "change": "added by GitHub",
+            "value": "hannesgao/solokit-e2-a"
+          },
+          {
+            "path": ".node_id",
+            "change": "added by GitHub",
+            "value": "RRS_lACqUmVwb3NpdG9yec5UEe5BzgF5Vcw"
+          },
+          {
+            "path": ".created_at",
+            "change": "added by GitHub",
+            "value": "2026-10-08T16:16:18.101+02:00"
+          },
+          {
+            "path": ".updated_at",
+            "change": "added by GitHub",
+            "value": "2026-10-08T16:22:57.449+02:00"
+          },
+          {
+            "path": ".current_user_can_bypass",
+            "change": "added by GitHub",
+            "value": "never"
+          },
+          {
+            "path": "._links",
+            "change": "added by GitHub",
+            "value": {
+              "self": {
+                "href": "https://api.github.com/repos/hannesgao/solokit-e2-a/rulesets/24729036"
+              },
+              "html": {
+                "href": "https://github.com/hannesgao/solokit-e2-a/rules/24729036"
+              }
+            }
+          }
+        ],
+        "normalizedDiff": [
+          {
+            "path": ".rules[2].parameters.require_extra_approval_for_unattributed_changes",
+            "change": "added by GitHub",
+            "value": true
+          },
+          {
+            "path": ".rules[2].parameters.required_reviewers",
+            "change": "added by GitHub",
+            "value": []
+          }
+        ],
+        "intentDiff": [],
+        "hashSent": "5dbd15bee5c102a8f597f8b4caf2a47dc33ef7bac273d46110622db05c3da8cf",
+        "hashGotFull": "136959801eb536371cdacf0bd8500a6024f3691108f4ca562172af451e03be9a",
+        "hashGotIntentView": "5dbd15bee5c102a8f597f8b4caf2a47dc33ef7bac273d46110622db05c3da8cf",
+        "intentHashesMatch": true
+      }
+    },
+    {
+      "step": "feature-pr",
+      "startedAt": "2026-10-08T14:16:52.306Z",
+      "outcome": {
+        "pr": 1,
+        "mergeStateBeforeCi": "BLOCKED",
+        "ciDone": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-10-08T14:17:14Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/actions/runs/37791191673/job/113358704746",
+            "name": "ci",
+            "startedAt": "2026-10-08T14:17:09Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ],
+        "mergeStateAfterCi": "CLEAN",
+        "merge": {
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "state": "MERGED"
+      }
+    },
+    {
+      "step": "strict-up-to-date",
+      "startedAt": "2026-10-08T14:17:22.666Z",
+      "outcome": {
+        "prs": [
+          2,
+          3
+        ],
+        "mergeA": {
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "bMergeStateAfterAMerged": "UNKNOWN",
+        "mergeBDirect": {
+          "exitCode": 1,
+          "stdout": "",
+          "stderr": "X Pull request hannesgao/solokit-e2-a#3 is not mergeable: the head branch is not up to date with the base branch.\nTo have the pull request merged after all the requirements have been met, add the `--auto` flag.\nTo use administrator privileges to immediately merge the pull request, add the `--admin` flag."
+        },
+        "autoB": {
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "bAfterAuto": {
+          "state": "OPEN",
+          "mergeStateStatus": "BEHIND",
+          "autoMergeRequest": {
+            "authorEmail": null,
+            "commitBody": null,
+            "commitHeadline": null,
+            "mergeMethod": "SQUASH",
+            "enabledAt": "2026-10-08T14:18:17Z",
+            "enabledBy": {
+              "id": "MDQ6VXNlcjcyMzM2NDI=",
+              "is_bot": false,
+              "login": "hannesgao",
+              "name": "Hannes | hannesgao.eth"
+            }
+          }
+        },
+        "updateBranch": {
+          "exitCode": 0,
+          "stdout": "✓ PR branch updated",
+          "stderr": ""
+        },
+        "bFinalState": "MERGED"
+      }
+    },
+    {
+      "step": "docs-only-pr",
+      "startedAt": "2026-10-08T14:19:06.526Z",
+      "outcome": {
+        "pr": 4,
+        "ci": {
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        "jobs": [
+          {
+            "name": "ci",
+            "conclusion": "success",
+            "steps": [
+              "Set up job: success",
+              "Run actions/checkout@v4: success",
+              "Check PR title (Conventional Commits): success",
+              "Detect code changes: success",
+              "Test: skipped",
+              "Post Run actions/checkout@v4: success",
+              "Complete job: success"
+            ]
+          }
+        ],
+        "merge": {
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "state": "MERGED"
+      }
+    },
+    {
+      "step": "paths-filter-counter-check",
+      "startedAt": "2026-10-08T14:19:34.911Z",
+      "outcome": {
+        "pr": 5,
+        "rollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-10-08T14:20:23Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/actions/runs/37791545676/job/113359961712",
+            "name": "Analyze (actions)",
+            "startedAt": "2026-10-08T14:19:48Z",
+            "status": "COMPLETED",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-10-08T14:20:19Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/hannesgao/solokit-e2-a/runs/113360185909",
+            "name": "CodeQL",
+            "startedAt": "2026-10-08T14:20:13Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ],
+        "mergeStateStatus": "BLOCKED",
+        "prChecks": {
+          "exitCode": 0,
+          "stdout": "Analyze (actions)\tpass\t35s\thttps://github.com/hannesgao/solokit-e2-a/actions/runs/37791545676/job/113359961712\t\nCodeQL\tpass\t6s\thttps://github.com/hannesgao/solokit-e2-a/runs/113360185909",
+          "stderr": ""
+        },
+        "checkRuns": [
+          "CodeQL",
+          "Analyze (actions)"
+        ],
+        "merge": {
+          "exitCode": 1,
+          "stdout": "",
+          "stderr": "X Pull request hannesgao/solokit-e2-a#5 is not mergeable: the base branch policy prohibits the merge.\nTo have the pull request merged after all the requirements have been met, add the `--auto` flag.\nTo use administrator privileges to immediately merge the pull request, add the `--admin` flag."
+        }
+      }
+    },
+    {
+      "step": "protection",
+      "startedAt": "2026-10-08T14:21:56.491Z",
+      "outcome": {
+        "directPush": {
+          "exitCode": 1,
+          "stderr": "remote: error: GH013: Repository rule violations found for refs/heads/main.        \nremote: Review all repository rules at https://github.com/hannesgao/solokit-e2-a/rules?ref=refs%2Fheads%2Fmain        \nremote: \nremote: - Changes must be made through a pull request.        \nremote: \nremote: - Required status check \"ci\" is expected.        \nremote: \nTo https://github.com/hannesgao/solokit-e2-a.git\n ! [remote rejected] HEAD -> main (push declined due to repository rule violations)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-a.git'"
+        },
+        "forcePush": {
+          "exitCode": 1,
+          "stderr": "remote: error: GH013: Repository rule violations found for refs/heads/main.        \nremote: Review all repository rules at https://github.com/hannesgao/solokit-e2-a/rules?ref=refs%2Fheads%2Fmain        \nremote: \nremote: - Cannot force-push to this branch        \nremote: \nremote: - Changes must be made through a pull request.        \nremote: \nTo https://github.com/hannesgao/solokit-e2-a.git\n ! [remote rejected] HEAD~1 -> main (push declined due to repository rule violations)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-a.git'"
+        },
+        "deleteMain": {
+          "exitCode": 1,
+          "stderr": "To https://github.com/hannesgao/solokit-e2-a.git\n ! [remote rejected] main (refusing to delete the current branch: refs/heads/main)\nerror: failed to push some refs to 'https://github.com/hannesgao/solokit-e2-a.git'"
+        }
+      }
+    }
+  ]
+}
