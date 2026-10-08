@@ -1,6 +1,6 @@
 # Spike E2 results: solo ruleset on a fresh repo
 
-Issue #2. Sandbox repos `hannesgao/solokit-e2-a` and `hannesgao/solokit-e2-b`, both public, run on 8 Oct 2026 with gh 2.83.1.
+Issue #2. Sandbox repos `hannesgao/solokit-e2-a` and `hannesgao/solokit-e2-b`, both public, run on 8 Oct 2026 with gh 2.83.1; both were deleted by the owner after the run.
 The decision drawn from these results is [ADR 0003](../../../docs/decisions/0003-bootstrap-order-required-check-and-ci-template.md).
 
 ## How to re-run
