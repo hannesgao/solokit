@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
@@ -27,5 +27,14 @@ test('a failure before the rename keeps the old content and removes the temp fil
     /disk full/,
   );
   assert.equal(readFileSync(file, 'utf8'), 'old\n');
+  assert.deepEqual(readdirSync(dir), ['a.json']);
+});
+
+test('a failing rename removes the temp file and keeps the target', t => {
+  const dir = sandbox();
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const target = join(dir, 'a.json');
+  mkdirSync(join(target, 'occupied'), { recursive: true });
+  assert.throws(() => writeFileAtomic(target, 'new\n'));
   assert.deepEqual(readdirSync(dir), ['a.json']);
 });

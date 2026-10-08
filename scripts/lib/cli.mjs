@@ -41,15 +41,17 @@ function checkDataDir(data) {
   }
 }
 
-// Runs a script body and prints `{ ok: true, result }`, or `{ ok: false, error }`
-// with exit code 2 for bad input and 1 for any other failure.
+// Runs a script body and prints `{ ok: true, result }`, or `{ ok: false, error,
+// recovery? }` with exit code 2 for bad input and 1 for any other failure; an
+// error's `recovery` says how to get going again (CORE-7).
 export async function main(spec, body, argv = process.argv.slice(2)) {
   try {
     const result = await body(parseCli(argv, spec));
     process.stdout.write(`${JSON.stringify({ ok: true, result })}\n`);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    process.stdout.write(`${JSON.stringify({ ok: false, error: message })}\n`);
+    const recovery = error instanceof Error ? error.recovery : undefined;
+    process.stdout.write(`${JSON.stringify({ ok: false, error: message, ...(recovery ? { recovery } : {}) })}\n`);
     process.exitCode = error instanceof CliError ? 2 : 1;
   }
 }

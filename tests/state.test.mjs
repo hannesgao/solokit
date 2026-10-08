@@ -66,7 +66,7 @@ test('writeState writes formatted JSON with a trailing newline', t => {
 test('withState reads first and writes the body result last', async t => {
   const root = project(t, base());
   const result = await withState(root, 'kickoff.card', state => ({ ...state, phase: 'bootstrap', steps: { ...state.steps, 'kickoff.card': 'done' } }));
-  assert.equal(result.phase, 'bootstrap');
+  assert.equal(result.state.phase, 'bootstrap');
   assert.equal(onDisk(root).phase, 'bootstrap');
   assert.equal(onDisk(root).steps['kickoff.card'], 'done');
 });
@@ -133,4 +133,110 @@ test('state.mjs fail-step records the failure without touching the rest', t => {
   assert.equal(onDisk(root).failures['plan.issues'].recovery, 'Wait an hour and run /solokit:plan again.');
   assert.equal(onDisk(root).phase, 'prd');
   assert.equal(existsSync(join(root, '.project', 'state.json')), true);
+});
+
+// Review follow-ups.
+
+test('a body that writes the state and then throws still leaves the state as it was before the step', async t => {
+  const root = project(t, base());
+  await assert.rejects(withState(root, 'x', state => { writeState(root, { ...state, phase: 'half-done' }); throw new Error('boom'); }));
+  assert.equal(onDisk(root).phase, 'prd');
+  assert.equal(onDisk(root).steps.x, 'failed');
+});
+
+test('when recording the failure fails, the original error still surfaces', async t => {
+  const root = project(t, base());
+  const error = await withState(root, 'x', () => {
+    rmSync(join(root, '.project'), { recursive: true, force: true });
+    writeFileSync(join(root, '.project'), 'not a directory');
+    throw new Error('original cause');
+  }).catch(e => e);
+  assert.equal(error.message, 'original cause');
+  assert.ok(error.failureNotRecorded);
+});
+
+test('a body that returns nothing marks the step failed', async t => {
+  const root = project(t, base());
+  await assert.rejects(withState(root, 'x', () => undefined), /must return the state/);
+  assert.equal(onDisk(root).steps.x, 'failed');
+});
+
+test('withState reports a migration and carries the recovery on the error', async t => {
+  const root = project(t, { schema: 0, phase: 'prd' });
+  const migrations = [{ from: 0, to: 1, name: 'add steps', up: s => ({ ...s, steps: {} }) }];
+  const ok = await withState(root, 'x', s => s, { migrations, schema: 1 });
+  assert.deepEqual(ok.migrated, [{ from: 0, to: 1, name: 'add steps' }]);
+  assert.equal(ok.state.steps.x, 'done');
+  const error = await withState(root, 'y', () => { throw new Error('nope'); }, { migrations, schema: 1 }).catch(e => e);
+  assert.match(error.recovery, /run the command again/);
+});
+
+test('a step that succeeds without setting its status becomes done and its failure is cleared', async t => {
+  const root = project(t, { ...base(), steps: { x: 'failed' }, failures: { x: { reason: 'r', recovery: 'v', at: 't' } } });
+  await withState(root, 'x', s => s);
+  assert.equal(onDisk(root).steps.x, 'done');
+  assert.equal('failures' in onDisk(root), false);
+});
+
+test('a migration that throws names the migration; a migration that skips a schema is refused', () => {
+  assert.throws(() => migrateState({ schema: 0 }, [{ from: 0, to: 1, name: 'add steps', up: () => { throw new Error('bad'); } }], 1), /migration 0→1 "add steps" failed: bad/);
+  assert.throws(() => migrateState({ schema: 0 }, [{ from: 0, to: 2, name: 'jump', up: s => s }], 2), /must go from 0 to 1/);
+});
+
+test('a state file whose root is not an object is an error', t => {
+  for (const text of ['null', '[]', '3']) {
+    assert.throws(() => readState(project(t, text)), /must be a JSON object/);
+  }
+});
+
+test('other read errors are not mistaken for a missing project', t => {
+  const root = project(t);
+  mkdirSync(join(root, '.project', 'state.json'), { recursive: true });
+  assert.throws(() => readState(root), /EISDIR/);
+});
+
+test('readState with write: false migrates in memory only', t => {
+  const root = project(t, { schema: 0, phase: 'prd' });
+  const migrations = [{ from: 0, to: 1, name: 'add steps', up: s => ({ ...s, steps: {} }) }];
+  readState(root, { migrations, schema: 1, write: false });
+  assert.equal(onDisk(root).schema, 0);
+});
+
+test('state.mjs patch refuses a root that is not an object, a schema change and __proto__', t => {
+  const root = project(t, base());
+  for (const json of ['null', '[]', '"x"', '{"schema":2}', '{"__proto__":{"a":1}}']) {
+    const r = cli(root, 'patch', '--json', json);
+    assert.equal(r.status, 2, json);
+  }
+  assert.deepEqual(onDisk(root), base());
+});
+
+test('state.mjs patch replaces arrays and deletes with null below the root', t => {
+  const root = project(t, { ...base(), list: [1, 2], nested: { a: 1, b: 2 } });
+  cli(root, 'patch', '--json', '{"list":[3],"nested":{"a":null}}');
+  assert.deepEqual(onDisk(root).list, [3]);
+  assert.deepEqual(onDisk(root).nested, { b: 2 });
+});
+
+test('state.mjs takes --project and refuses an unsubstituted one', t => {
+  const root = project(t, base());
+  const elsewhere = project(t);
+  const r = spawnSync(process.execPath, [CLI, 'read', '--project', root], { cwd: elsewhere, encoding: 'utf8' });
+  assert.equal(JSON.parse(r.stdout).result.state.phase, 'prd');
+  const bad = spawnSync(process.execPath, [CLI, 'read', '--project', '${CLAUDE_PROJECT_DIR}'], { cwd: elsewhere, encoding: 'utf8' });
+  assert.equal(bad.status, 2);
+});
+
+test('state.mjs fail-step prints the recovery; usage errors exit 2; dry-run checks the project', t => {
+  const root = project(t, base());
+  const r = cli(root, 'fail-step', 'x', '--reason', 'r', '--recovery', 'Do this.');
+  assert.equal(r.out.result.recovery, 'Do this.');
+  assert.equal(cli(root, 'fail-step', 'x').status, 2);
+  assert.equal(cli(project(t), 'fail-step', 'x', '--reason', 'r', '--recovery', 'v', '--dry-run').status, 1);
+});
+
+test('a failed command prints its recovery next to the error', t => {
+  const r = cli(project(t), 'patch', '--json', '{}');
+  assert.equal(r.status, 1);
+  assert.ok(r.out.recovery);
 });

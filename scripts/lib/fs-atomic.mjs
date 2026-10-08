@@ -20,9 +20,38 @@ export function writeFileAtomic(path, text, options = {}) {
       closeSync(fd);
     }
     options.beforeRename?.();
-    renameSync(temp, path);
+    renameWithRetry(temp, path);
   } catch (error) {
     rmSync(temp, { force: true });
     throw error;
+  }
+  syncDir(dir);
+}
+
+// On Windows a rename over a file another process has open (an editor, a
+// virus scanner) fails for a moment with EPERM, EBUSY or EACCES; retry briefly.
+function renameWithRetry(from, to) {
+  for (let attempt = 1; ; attempt += 1) {
+    try {
+      renameSync(from, to);
+      return;
+    } catch (error) {
+      if (attempt >= 5 || !['EPERM', 'EBUSY', 'EACCES'].includes(error.code)) throw error;
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 20 * attempt);
+    }
+  }
+}
+
+// Flushes the directory entry of the rename where the platform allows it
+// (POSIX); Windows cannot open a directory this way, which is fine there.
+function syncDir(dir) {
+  let fd;
+  try {
+    fd = openSync(dir, 'r');
+    fsyncSync(fd);
+  } catch {
+    // best effort
+  } finally {
+    if (fd !== undefined) closeSync(fd);
   }
 }
