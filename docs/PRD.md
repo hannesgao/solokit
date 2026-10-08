@@ -1,5 +1,5 @@
 ---
-version: 1.0.1
+version: 1.0.2
 status: approved
 updated: 2026-10-08
 ---
@@ -12,7 +12,7 @@ Oct 8, 2026 · @Yunhan Gao
 
 solokit is a self-built Claude Code plugin that runs a solo agent-coding project from idea to release: kickoff, PRD, GitHub repo and rules, issue-driven building, mid-project changes, release and retro. It replaces the setup prompts typed by hand at the start of every project with interactive commands that follow one set of conventions.
 
-- **Version** 1.0.1, **status** approved. The whole command set ships together as 1.0; nothing is deferred to a later version.
+- **Version** 1.0.2, **status** approved. The whole command set ships together as 1.0; nothing is deferred to a later version.
 - **Conventions** are defined in solo-agent-coding-kit — Conventions v0.2; this PRD specifies the plugin that implements them and does not repeat them.
 - **Scope**: personal use, built from scratch, no dependency on any other Claude Code plugin. External requirements: Node.js (built-in modules only, no npm packages), `git` and `gh`.
 - **Display name** solo-agent-coding-kit; **plugin name** `solokit`; commands appear as `/solokit:<command>`.
@@ -70,8 +70,8 @@ Every requirement in this PRD ships in 1.0. IDs are stable; the prefix names the
 | ID | Priority | Requirement |
 | --- | --- | --- |
 | CORE-1 | p0 | Read `.project/state.json` first and write it last. If its `schema` is older than the kit's, migrate it before anything else and report the migration. |
-| CORE-2 | p0 | Ask for missing inputs with Claude Code's multiple-choice questions (AskUserQuestion): at most one round per step of one to four questions, each with two to four options plus the automatic Other; the recommended option first, remembered answers preselected. A choice with more than four options shows the four most likely and takes the rest through Other, or is split into two steps. Every question has a flag that supplies the same input. Questions are asked inside the turn that invoked the command, so the skill's pre-approved script calls stay approved after the answer (ADR 0002). |
-| CORE-3 | p1 | Every command can run to completion from arguments, flags and remembered defaults alone, because multiple-choice questions are unavailable in some runs: AskUserQuestion is absent from every `claude -p` run without a permission host, whatever the permission mode or `--permission-prompts` value (ADR 0002). When the tool is absent, take flags first, then remembered defaults; an ordinary step with neither takes the recommended option, and a gate stops and lists exactly what is needed. A question that auto-continues unanswered (`askUserQuestionTimeout`) counts as no answer in the same way. Never pass a gate unattended. |
+| CORE-2 | p0 | Ask for missing inputs with Claude Code's multiple-choice questions (AskUserQuestion): at most one round per step of one to four questions, each with two to four options plus the automatic Other. A choice with more than four options shows the four most likely and takes the rest through Other, or is split into two steps. Every question has a flag that supplies the same input. The first option is the one a question preselects; it names its source and comes from the first of: a command-line flag, evidence in the project itself (a stack detected from the PRD, the folder name), a value set in `userConfig`, the last answer used (marked "(last used)"), the built-in default. Only preference questions remember answers: owner, visibility, language, and stack (only when none is detected). Judgement questions (change class, next action, version, release confirmation) are never remembered and put the computed recommendation first. Gate confirmations (PRD approval, remote gate, merge, CR decision) are never remembered or preselected: the option that passes the gate is never the first one. Questions are asked inside the turn that invoked the command, so the skill's pre-approved script calls stay approved after the answer (ADR 0002). |
+| CORE-3 | p1 | Every command can run to completion from arguments, flags and remembered defaults alone, because multiple-choice questions are unavailable in some runs: AskUserQuestion is absent from every `claude -p` run without a permission host, whatever the permission mode or `--permission-prompts` value (ADR 0002). When the tool is absent, take flags first, then remembered defaults; an ordinary step with neither takes the recommended option, and a gate stops and lists exactly what is needed. A question that auto-continues unanswered (`askUserQuestionTimeout`) counts as no answer: an ordinary question takes its first option, a gate stops. Never pass a gate unattended. |
 | CORE-4 | p0 | Be idempotent: check the real state (files, git, GitHub) before each step; a finished step is reported as done and skipped. |
 | CORE-5 | p0 | Gate protocol: show a concrete preview of what will happen (files, API calls, diffs), wait for an explicit yes, and record the gate with a timestamp in `state.json`. |
 | CORE-6 | p2 | End with a one-line result and the suggested next command. |
@@ -413,6 +413,7 @@ Items marked **spike** are answered by experiment in M0; items marked **decision
 
 | Date | Version | Change |
 | --- | --- | --- |
+| 8 Oct 2026 | 1.0.2 | Tweak: CORE-2 resolves "recommended first" against "remembered answers preselected" with a source precedence for the first option, remembers only preference questions and never preselects a gate; CORE-3 states that an unanswered ordinary question takes its first option (#86). |
 | 8 Oct 2026 | 1.0.1 | Tweak: PLN-3 states the comma-separated marker for grouped issues; PRD-4 raised to p0 because the approval gate (PRD-5) depends on it (#13). |
 | 8 Oct 2026 | 1.0.0 | Approved (gate 1, PRD-5) after the PRD check: 100 requirements (72 p0, 21 p1, 7 p2), IDs unique, each in exactly one milestone M1 to M7, no open question. From here on the PRD changes only through the change flow (PRD-6). |
 | 8 Oct 2026 | 0.5.0 | No AI attribution by default (ADR 0004): `CLAUDE.md` generated locally and gitignored with a no-attribution rule (BST-5, BST-12), regenerated when missing (ENT-5, M3), attribution settings off in the project (BST-13), `no-ai-attribution` hook (HOOK-6, M4), switch `hide_ai_attribution` (CFG-5); `stack` added to the state's project facts. Dependabot PR titles prefixed `chore(deps)` (BST-5); private vulnerability reporting enabled at bootstrap (BST-7). |
