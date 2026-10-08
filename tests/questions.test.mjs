@@ -1,4 +1,9 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 
 import { buildRound, QuestionError } from '../scripts/lib/questions.mjs';
@@ -15,6 +20,7 @@ const owner = {
     { value: 'acme', description: 'The acme organisation' },
   ],
 };
+const CLI = fileURLToPath(new URL('../scripts/questions.mjs', import.meta.url));
 const first = round => round.questions[0].options[0];
 const values = round => round.questions[0].options.map(o => o.value);
 
@@ -29,7 +35,7 @@ test('preference precedence: evidence, then userConfig, then last used, then the
   assert.equal(first(buildRound([evidence], { config: { default_owner: 'me' }, remembered: { owner: 'me' } })).label, 'acme (detected)');
   assert.equal(first(buildRound([owner], { config: { default_owner: 'acme' }, remembered: { owner: 'me' } })).label, 'acme (from /config)');
   assert.equal(first(buildRound([owner], { config: { default_owner: '' }, remembered: { owner: 'acme' } })).label, 'acme (last used)');
-  assert.equal(first(buildRound([{ ...owner, default: 'me' }], {})).label, 'me (Recommended)');
+  assert.equal(first(buildRound([{ ...owner, default: 'me' }], {})).label, 'me (default)');
 });
 
 test('the first option keeps the others in their given order', () => {
@@ -90,19 +96,83 @@ test('round and option limits are enforced', () => {
   assert.throws(() => buildRound([{ ...owner, kind: 'other' }], {}), /kind/);
 });
 
-test('questions.mjs build reads remembered answers from --data and returns the round', async t => {
-  const { spawnSync } = await import('node:child_process');
-  const { mkdtempSync, rmSync, writeFileSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
-  const { join } = await import('node:path');
+test('questions.mjs build reads remembered answers from --data and returns the round', t => {
   const dir = mkdtempSync(join(tmpdir(), 'solokit-q-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   writeFileSync(join(dir, 'defaults.json'), '{"owner":"acme"}\n');
-  const cli = new URL('../scripts/questions.mjs', import.meta.url);
-  const r = spawnSync(process.execPath, [cli.pathname, 'build', '--data', dir, '--spec', JSON.stringify([owner])], { encoding: 'utf8' });
+  const r = spawnSync(process.execPath, [CLI, 'build', '--data', dir, '--spec', JSON.stringify([owner])], { encoding: 'utf8' });
   assert.equal(r.status, 0, r.stdout);
   const { result } = JSON.parse(r.stdout);
   assert.equal(result.questions[0].options[0].label, 'acme (last used)');
-  const bad = spawnSync(process.execPath, [cli.pathname, 'build', '--data', dir, '--spec', '[]'], { encoding: 'utf8' });
+  const bad = spawnSync(process.execPath, [CLI, 'build', '--data', dir, '--spec', '[]'], { encoding: 'utf8' });
   assert.equal(bad.status, 2);
+});
+
+// Review follow-ups.
+
+const gate = { id: 'approve', kind: 'gate', question: 'Approve the PRD?', header: 'Gate 1', flag: '--approve', recommended: 'approve', options: [{ value: 'approve' }, { value: 'edit' }, { value: 'cancel' }] };
+
+test('a flag never answers a gate: the question is still asked, with the flagged option first', () => {
+  const round = buildRound([gate], { flags: { '--approve': 'approve' } });
+  assert.deepEqual(round.answered, {});
+  assert.equal(first(round).label, 'approve (from flag)');
+});
+
+test('a flag answers a judgement question', () => {
+  const cls = { id: 'class', kind: 'judgement', question: 'Class?', header: 'Class', flag: '--class', recommended: 'feature', options: [{ value: 'bug' }, { value: 'feature' }] };
+  assert.deepEqual(buildRound([cls], { flags: { '--class': 'bug' } }).answered, { class: { value: 'bug', source: 'flag' } });
+});
+
+test('a recommendation must be one of the options', () => {
+  assert.throws(() => buildRound([{ ...gate, recommended: 'ship it' }], { checksPassed: true }), /recommended .* one of the options/);
+});
+
+test('with failed checks the passing option stays among the four shown, last', () => {
+  const big = { ...gate, options: ['approve', 'a', 'b', 'c', 'd'].map(value => ({ value })) };
+  const round = buildRound([big], { checksPassed: false });
+  assert.deepEqual(round.questions[0].options.map(o => o.value), ['a', 'b', 'c', 'approve']);
+  assert.deepEqual(round.questions[0].more, ['d']);
+});
+
+test('a userConfig value equal to the manifest default counts as not set', () => {
+  const visibility = { id: 'visibility', kind: 'preference', question: 'Visibility?', header: 'Visibility', flag: '--private', configKey: 'default_visibility', default: 'public', options: [{ value: 'public' }, { value: 'private' }] };
+  const ctx = { config: { default_visibility: 'public' }, configDefaults: { default_visibility: 'public' }, remembered: { visibility: 'private' } };
+  assert.equal(first(buildRound([visibility], ctx)).label, 'private (last used)');
+  assert.equal(first(buildRound([visibility], { ...ctx, config: { default_visibility: 'private' }, remembered: {} })).label, 'private (from /config)');
+});
+
+test('lookups ignore inherited keys and non-string values', () => {
+  const weird = { ...owner, id: 'constructor', flag: 'toString' };
+  const round = buildRound([weird], { flags: {}, remembered: { constructor: { x: 1 } } });
+  assert.equal(round.questions.length, 1);
+  assert.ok(round.questions[0].options.every(o => !o.label.includes('object')));
+});
+
+test('ids, question texts and option labels must be unique; specs must be objects', () => {
+  assert.throws(() => buildRound([owner, { ...owner, flag: '--other' }], {}), /duplicate question id "owner"/);
+  assert.throws(() => buildRound([owner, { ...owner, id: 'o2', flag: '--o2' }], {}), /duplicate question text/);
+  assert.throws(() => buildRound([{ ...owner, options: [{ value: 'a' }, { value: 'a' }] }], {}), /duplicate option/);
+  assert.throws(() => buildRound([null], {}), QuestionError);
+  assert.throws(() => buildRound([{ ...owner, id: '' }], {}), /needs an id/);
+});
+
+test('the round also comes ready for AskUserQuestion, with internal fields stripped', () => {
+  const { ask } = buildRound([owner], {});
+  assert.deepEqual(Object.keys(ask.questions[0]).sort(), ['header', 'multiSelect', 'options', 'question']);
+  assert.deepEqual(Object.keys(ask.questions[0].options[0]).sort(), ['description', 'label']);
+});
+
+test('the questions.mjs CLI: bad JSON and a missing spec exit 2, --checks-passed reaches gates, a corrupt defaults.json is a warning', t => {
+  const dir = mkdtempSync(join(tmpdir(), 'solokit-q-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const run = (...args) => spawnSync(process.execPath, [CLI, 'build', '--data', dir, ...args], { encoding: 'utf8' });
+  for (const args of [['--spec', '{nope'], ['--spec', '[]', '--flags', '{nope'], ['--spec', JSON.stringify([owner]), '--config', 'x'], [], ['--spec', '[null]']]) {
+    assert.equal(run(...args).status, 2, JSON.stringify(args));
+  }
+  const passed = JSON.parse(run('--spec', JSON.stringify([gate]), '--checks-passed').stdout).result;
+  assert.equal(passed.questions[0].options[0].label, 'approve (Recommended)');
+  writeFileSync(join(dir, 'defaults.json'), '{ broken');
+  const warned = JSON.parse(run('--spec', JSON.stringify([owner])).stdout);
+  assert.equal(warned.ok, true);
+  assert.match(warned.result.warnings[0], /defaults\.json/);
 });

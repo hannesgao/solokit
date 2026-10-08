@@ -60,7 +60,7 @@ export function checkConventions(root) {
     // Any spelling of the plugin data directory: the substitution, a shell
     // variable, or a resolved path. Only `--data ${CLAUDE_PLUGIN_DATA}` passes;
     // reads are refused too, since scripts own the files' format (#82).
-    for (const m of text.matchAll(/\$\{CLAUDE_PLUGIN_DATA\b[^}]*\}|\$CLAUDE_PLUGIN_DATA\b|\.claude\/plugins\/data\//g)) {
+    for (const m of text.matchAll(/\$\{CLAUDE_PLUGIN_DATA\b[^}]*\}|\$(?:env:)?CLAUDE_PLUGIN_DATA\b|%CLAUDE_PLUGIN_DATA%|\.claude[\/\\]plugins[\/\\]data\b/g)) {
       const exact = m[0] === '${CLAUDE_PLUGIN_DATA}';
       if (!exact || text.slice(m.index - '--data '.length, m.index) !== '--data ') {
         add('data-arg', path, text, m.index, 'name the plugin data directory only as `--data ${CLAUDE_PLUGIN_DATA}` to a kit script; read and write remembered answers through scripts/defaults.mjs, never with Read, Write or Edit');

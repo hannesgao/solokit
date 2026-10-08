@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -47,4 +47,28 @@ test('--data is required and must be absolute; dry run writes nothing', t => {
   const dry = run('--data', dir, 'set', 'owner=acme', '--dry-run');
   assert.deepEqual(dry.out.result, { owner: 'acme' });
   assert.deepEqual(readdirSync(dir), []);
+});
+
+test('values are validated per key', t => {
+  const dir = data(t);
+  for (const pair of ['visibility=foo', 'stack=cobol', 'language=English', 'owner=bad owner!']) {
+    assert.equal(run('--data', dir, 'set', pair).status, 2, pair);
+  }
+  assert.equal(run('--data', dir, 'set', 'visibility=private', 'stack=generic', 'language=de', 'owner=acme-org').status, 0);
+});
+
+test('list and get show only preference keys with string values', t => {
+  const dir = data(t);
+  writeFileSync(join(dir, 'defaults.json'), JSON.stringify({ owner: 'acme', class: 'feature', stack: { x: 1 } }));
+  assert.deepEqual(run('--data', dir, 'list').out.result, { owner: 'acme' });
+});
+
+test('a corrupt defaults.json is reported, not silently overwritten', t => {
+  const dir = data(t);
+  writeFileSync(join(dir, 'defaults.json'), '{ broken');
+  const listed = run('--data', dir, 'list');
+  assert.equal(listed.status, 1);
+  assert.ok(listed.out.recovery);
+  assert.equal(run('--data', dir, 'set', 'owner=acme').status, 1);
+  assert.equal(readFileSync(join(dir, 'defaults.json'), 'utf8'), '{ broken');
 });

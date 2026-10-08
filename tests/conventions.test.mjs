@@ -45,7 +45,7 @@ test('CFG-3: token flags and enterprise tokens are caught', () => {
 
 test('CFG-4 (#82): every spelling of the data directory is caught', () => {
   assert.deepEqual(rules('bad-data-bare'), ['data-arg', 'data-arg']);
-  assert.deepEqual(rules('bad-data-path'), ['data-arg', 'data-arg']);
+  assert.deepEqual(rules('bad-data-path'), ['data-arg', 'data-arg', 'data-arg', 'data-arg', 'data-arg', 'data-arg']);
 });
 
 test('CFG-4 (#82): a read grant on the data directory is refused; scripts own its format', () => {
